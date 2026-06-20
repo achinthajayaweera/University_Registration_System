@@ -33,5 +33,15 @@ javac src/finalProjectDuplicate/*.java
 java -cp src finalProjectDuplicate.Main
 ```
 
+## Test Credentials
+| Username   | Password   | Role    |
+|------------|------------|---------|
+| admin1     | admin1a    | Admin   |
+| advisor1   | advisor1a  | Advisor |
+| advisor2   | advisor2a  | Advisor |
+| 2408050001 | JakeLee    | Student |
+| 2409110003 | TinTun     | Student |
+| 2409240001 | Khant      | Student |
+
 ## Current Status
-**v1 – Foundation**: Core data models (`Student`, `Course`) and project structure scaffolded. Login page UI banner is in place. Authentication logic is a stub — to be implemented in the next version.
+**v2 – Authentication**: All 6 system users defined in `IDsPasswords`. Login now validates credentials against the full user list using a loop. Successful login prints a welcome message with the user's name. Role-based menu routing is stubbed — coming next.

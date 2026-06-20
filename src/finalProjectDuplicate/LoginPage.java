@@ -8,7 +8,7 @@ public class LoginPage {
     private String username = null;
     private String password = null;
 
-    // Display login banner and accept credentials
+    // Login page — accepts credentials and validates against user store
     public void verify() {
         System.out.println("=================================================");
         System.out.println("   🎓 Welcome to Stamford Registration System  ");
@@ -18,14 +18,20 @@ public class LoginPage {
         System.out.print("> Password: ");
         password = sc.next();
 
-        // TODO: validate credentials against user records
-        System.out.println("\nUsername: " + username + " entered.");
-        System.out.println("(Authentication not yet implemented)");
+        IDsPasswords user = IDsPasswords.checkLogin(username, password);
+
+        if (user != null) {
+            System.out.println("\nLOGIN SUCCESSFUL");
+            System.out.println("================\n");
+            System.out.println("Welcome " + user.getName() + "!");
+        } else {
+            System.out.println("\n❌ Login failed. Invalid username or password.");
+        }
     }
 
-    // TODO: implement role checking
+    // TODO: role detection and menu routing — coming in next version
     public void checkRole() {
-        System.out.println("(Role checking not yet implemented)");
+        System.out.println("(Role-based menu routing not yet implemented)");
     }
 
 }
