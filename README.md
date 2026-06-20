@@ -26,8 +26,6 @@ src/
 ```
 
 ## How to Run
-1. Compile all `.java` files inside `src/finalProjectDuplicate/`
-2. Run the `Main` class:
 ```bash
 javac src/finalProjectDuplicate/*.java
 java -cp src finalProjectDuplicate.Main
@@ -44,4 +42,4 @@ java -cp src finalProjectDuplicate.Main
 | 2409240001 | Khant      | Student |
 
 ## Current Status
-**v2 – Authentication**: All 6 system users defined in `IDsPasswords`. Login now validates credentials against the full user list using a loop. Successful login prints a welcome message with the user's name. Role-based menu routing is stubbed — coming next.
+**v3 – Login Security & Role Detection**: Login now enforces a 3-attempt limit. After 3 failed tries, the account is blocked with an ACCESS DENIED message. On success, the user's role (admin/advisor/student) is detected and stored as a boolean flag. Role-based menu routing is stubbed — menus will be wired in upcoming versions.
