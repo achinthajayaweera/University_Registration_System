@@ -21,7 +21,7 @@ src/
     ├── Main.java              # Entry point
     ├── LoginPage.java         # Login UI and role routing
     ├── IDsPasswords.java      # User credentials store
-    ├── Student.java           # Student data model
+    ├── Student.java           # Student data model (fully expanded)
     └── Course.java            # Course data model
 ```
 
@@ -42,4 +42,4 @@ java -cp src finalProjectDuplicate.Main
 | 2409240001 | Khant      | Student |
 
 ## Current Status
-**v3 – Login Security & Role Detection**: Login now enforces a 3-attempt limit. After 3 failed tries, the account is blocked with an ACCESS DENIED message. On success, the user's role (admin/advisor/student) is detected and stored as a boolean flag. Role-based menu routing is stubbed — menus will be wired in upcoming versions.
+**v4 – Full Student Model**: `Student.java` now holds all fields needed across the system — `completedCourses`, `registeredCourses`, `failedCourses`, `freeElective`, `grade`, `termsCount`, and identity fields. Full constructor and all getters in place. This model will be used by StudentFunctions, AdvisorFunctions, and PrintProgress in upcoming versions.
