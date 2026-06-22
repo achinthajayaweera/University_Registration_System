@@ -22,7 +22,7 @@ src/
     ├── LoginPage.java         # Login UI and role routing
     ├── IDsPasswords.java      # User credentials store
     ├── Student.java           # Student data model (fully expanded)
-    └── Course.java            # Course data model
+    └── Course.java            # Course data model (all 4 constructors)
 ```
 
 ## How to Run
@@ -42,4 +42,4 @@ java -cp src finalProjectDuplicate.Main
 | 2409240001 | Khant      | Student |
 
 ## Current Status
-**v4 – Full Student Model**: `Student.java` now holds all fields needed across the system — `completedCourses`, `registeredCourses`, `failedCourses`, `freeElective`, `grade`, `termsCount`, and identity fields. Full constructor and all getters in place. This model will be used by StudentFunctions, AdvisorFunctions, and PrintProgress in upcoming versions.
+**v5 – Full Course Model**: `Course.java` now has all 4 constructors covering every use case in the system — curriculum listings, prerequisite mappings, equivalence mappings, and term schedule entries. All fields added (`prerequisite`, `equivalence`, `freeElective`, `section`, `timeSlot`, `seats`) with full getters and a `setSeats()` setter for admin seat editing.
