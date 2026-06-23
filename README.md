@@ -17,7 +17,8 @@ src/
     ├── Student.java           # Student data model
     ├── Course.java            # Course model (all 4 constructors)
     ├── TermSchedule.java      # Term schedule management
-    └── Curriculum.java        # Full course catalogue + prerequisites + equivalencies
+    ├── Curriculum.java        # Full course catalogue + prerequisites + equivalencies
+    └── AdminFunctions.java    # Admin menu and all admin operations
 ```
 
 ## How to Run
@@ -37,4 +38,4 @@ java -cp src finalProjectDuplicate.Main
 | 2409240001 | Khant      | Student |
 
 ## Current Status
-**v7 – Full Curriculum**: `Curriculum.java` introduced with the complete course catalogue — 52 General Courses, IT Basic Core, IT Major Requirements, all 4 IT tracks (SE, E-Commerce, Data Science, Network & Security), CS Basic Core, CS Major Requirements, all 3 CS tracks (SE, Cyber Security, AI), Internship, 39 prerequisite mappings, and 29 equivalency mappings. `printCurriculum()`, `newCourses()`, and `deleteCourses()` implemented.
+**v8 – Admin Functions**: `AdminFunctions.java` introduced with the full admin menu and all 6 operations — add course, remove course, set seat limits, open course section, close course section, and view system statistics. The `readTrack()` helper displays the 13-category track selector. The `selection()` dispatcher wires each menu option to the correct method. All operations delegate to `Curriculum` or `TermSchedule` as appropriate.
