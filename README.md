@@ -21,8 +21,9 @@ src/
     ├── Main.java              # Entry point
     ├── LoginPage.java         # Login UI and role routing
     ├── IDsPasswords.java      # User credentials store
-    ├── Student.java           # Student data model (fully expanded)
-    └── Course.java            # Course data model (all 4 constructors)
+    ├── Student.java           # Student data model
+    ├── Course.java            # Course data model (all 4 constructors)
+    └── TermSchedule.java      # Term schedule list and management
 ```
 
 ## How to Run
@@ -42,4 +43,4 @@ java -cp src finalProjectDuplicate.Main
 | 2409240001 | Khant      | Student |
 
 ## Current Status
-**v5 – Full Course Model**: `Course.java` now has all 4 constructors covering every use case in the system — curriculum listings, prerequisite mappings, equivalence mappings, and term schedule entries. All fields added (`prerequisite`, `equivalence`, `freeElective`, `section`, `timeSlot`, `seats`) with full getters and a `setSeats()` setter for admin seat editing.
+**v6 – Term Schedule**: `TermSchedule.java` introduced with the initial schedule of 6 course sections. Implements `printSchedule()` to display all open sections, `openCourse()` to add a new section, `closeCourse()` to remove a section, and `editSeats()` to update seat limits. `systemStatistics()` is stubbed — it depends on `StudentFunctions` which is coming in a later version.
