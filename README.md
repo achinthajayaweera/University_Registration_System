@@ -18,7 +18,9 @@ src/
     ├── Course.java            # Course model (all 4 constructors)
     ├── TermSchedule.java      # Term schedule management
     ├── Curriculum.java        # Full course catalogue + prerequisites + equivalencies
-    └── AdminFunctions.java    # Admin menu and all admin operations
+    ├── AdminFunctions.java    # Admin menu and all admin operations
+    ├── StudentFunctions.java  # Student data, menu and all student operations
+    └── PrintProgress.java     # Curriculum progress printer for students and advisors
 ```
 
 ## How to Run
@@ -38,4 +40,4 @@ java -cp src finalProjectDuplicate.Main
 | 2409240001 | Khant      | Student |
 
 ## Current Status
-**v8 – Admin Functions**: `AdminFunctions.java` introduced with the full admin menu and all 6 operations — add course, remove course, set seat limits, open course section, close course section, and view system statistics. The `readTrack()` helper displays the 13-category track selector. The `selection()` dispatcher wires each menu option to the correct method. All operations delegate to `Curriculum` or `TermSchedule` as appropriate.
+**v10 – Print Progress**: `PrintProgress.java` fully implemented. `printProgress(studentID, category)` counts completed and transferred courses per category and renders a visual progress bar with ✅/⏳ icons and 🔒 unmet prerequisite warnings per course. `printProgress(studentID, freeElective)` handles the free elective section. `checkMajorAndPrint(studentID)` gives advisors the full report across all sections. `checkMajorAndPrint(studentID, category)` gives students a filtered report for their chosen track only.
