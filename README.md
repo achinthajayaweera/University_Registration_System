@@ -7,23 +7,17 @@ A Java console-based university registration system that supports multiple user 
 - Java (Console Application)
 - OOP principles: encapsulation, class design, role-based access
 
-## Features (Planned)
-- Role-based login (Admin / Advisor / Student)
-- Course registration and withdrawal
-- Prerequisite and seat limit enforcement
-- Curriculum progress tracking
-- Graduation risk reporting
-
 ## Project Structure
 ```
 src/
 └── finalProjectDuplicate/
     ├── Main.java              # Entry point
-    ├── LoginPage.java         # Login UI and role routing
-    ├── IDsPasswords.java      # User credentials store
+    ├── LoginPage.java         # Login UI, 3-attempt lock, role detection
+    ├── IDsPasswords.java      # All 6 system users
     ├── Student.java           # Student data model
-    ├── Course.java            # Course data model (all 4 constructors)
-    └── TermSchedule.java      # Term schedule list and management
+    ├── Course.java            # Course model (all 4 constructors)
+    ├── TermSchedule.java      # Term schedule management
+    └── Curriculum.java        # Full course catalogue + prerequisites + equivalencies
 ```
 
 ## How to Run
@@ -43,4 +37,4 @@ java -cp src finalProjectDuplicate.Main
 | 2409240001 | Khant      | Student |
 
 ## Current Status
-**v6 – Term Schedule**: `TermSchedule.java` introduced with the initial schedule of 6 course sections. Implements `printSchedule()` to display all open sections, `openCourse()` to add a new section, `closeCourse()` to remove a section, and `editSeats()` to update seat limits. `systemStatistics()` is stubbed — it depends on `StudentFunctions` which is coming in a later version.
+**v7 – Full Curriculum**: `Curriculum.java` introduced with the complete course catalogue — 52 General Courses, IT Basic Core, IT Major Requirements, all 4 IT tracks (SE, E-Commerce, Data Science, Network & Security), CS Basic Core, CS Major Requirements, all 3 CS tracks (SE, Cyber Security, AI), Internship, 39 prerequisite mappings, and 29 equivalency mappings. `printCurriculum()`, `newCourses()`, and `deleteCourses()` implemented.
