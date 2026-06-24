@@ -1,4 +1,5 @@
 # University Registration System
+##Notes
 
 ## Project Overview
 A Java console-based university registration system that supports multiple user roles: Admin, Advisor, and Student. The system handles course registration, curriculum tracking, and academic progress reporting.
