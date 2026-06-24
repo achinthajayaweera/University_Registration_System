@@ -7,6 +7,11 @@ public class LoginPage {
     private static boolean admin   = false;
     private static boolean advisor = false;
     private static boolean student = false;
+    private static int option;
+
+    private static AdminFunctions   adminfunctions   = new AdminFunctions();
+    private static AdvisorFunctions advisorfunctions = new AdvisorFunctions();
+    private static StudentFunctions studentfunctions = new StudentFunctions();
 
     public Scanner sc = new Scanner(System.in);
     private String username = null;
@@ -25,13 +30,11 @@ public class LoginPage {
         IDsPasswords user = IDsPasswords.checkLogin(username, password);
 
         for (int attempt = 3; attempt >= 0; attempt--) {
-
             if (user != null) {
                 System.out.println("\nLOGIN SUCCESSFUL");
                 System.out.println("================\n");
                 System.out.println("Welcome " + user.getName() + "!");
 
-                // Set role flags
                 if (user.getRole().contains("admin")) {
                     admin = true;
                 } else if (user.getRole().contains("advisor")) {
@@ -61,19 +64,41 @@ public class LoginPage {
         }
     }
 
-    // Check role and display appropriate menu
+    // Check role and display appropriate menu in a loop
     public void checkRole() {
-        // TODO: menus not yet implemented — coming in next version
-        if (admin) {
-            System.out.println("\n[Admin menu coming soon]");
-        } else if (advisor) {
-            System.out.println("\n[Advisor menu coming soon]");
-        } else if (student) {
-            System.out.println("\n[Student menu coming soon]");
+
+        // Admin loop
+        while (admin) {
+            adminfunctions.menu();
+            System.out.print("\nYour selection is:");
+            option = sc.nextInt();
+            sc.nextLine();
+            adminfunctions.selection(option);
+            admin = returnMenu();
+        }
+
+        // Advisor loop
+        while (advisor) {
+            advisorfunctions.menu();
+            System.out.print("\nYour selection is:");
+            option = sc.nextInt();
+            sc.nextLine();
+            advisorfunctions.selection(option);
+            advisor = returnMenu();
+        }
+
+        // Student loop
+        while (student) {
+            studentfunctions.menu();
+            System.out.print("\nYour selection is:");
+            option = sc.nextInt();
+            sc.nextLine();
+            studentfunctions.selection(option, username);
+            student = returnMenu();
         }
     }
 
-    // Helper — ask user if they want to return to menu or exit
+    // Helper — ask user to continue or exit
     public boolean returnMenu() {
         System.out.print("\nExit (y/n): ");
         String exit = sc.next();

@@ -11,12 +11,12 @@ A Java console-based university registration system that supports multiple user 
 ```
 src/
 └── finalProjectDuplicate/
-    ├── Main.java              # Entry point
-    ├── LoginPage.java         # Login UI, 3-attempt lock, role detection
+    ├── Main.java              # Entry point — wired and complete
+    ├── LoginPage.java         # Login, 3-attempt lock, full role menu loops
     ├── IDsPasswords.java      # All 6 system users
     ├── Student.java           # Student data model
     ├── Course.java            # Course model (all 4 constructors)
-    ├── TermSchedule.java      # Term schedule management
+    ├── TermSchedule.java      # Term schedule + system statistics report
     ├── Curriculum.java        # Full course catalogue + prerequisites + equivalencies
     ├── AdminFunctions.java    # Admin menu and all admin operations
     ├── StudentFunctions.java  # Student data, menu and all student operations
@@ -41,4 +41,4 @@ java -cp src finalProjectDuplicate.Main
 | 2409240001 | Khant      | Student |
 
 ## Current Status
-**v11 – Advisor Functions**: `AdvisorFunctions.java` introduced with the complete advisor layer — `menu()`, `searchStudent()` (delegates to StudentFunctions), `viewProgress()` (delegates to PrintProgress for the full report), `registerCourse()` and `withdrawCourse()` (on behalf of a student), and `graduationRisks()` which calculates courses-per-term for every student and flags HIGH / MEDIUM / LOW risk. The `selection()` dispatcher wires all 5 menu options with input collection.
+**v12 – Fully Wired System**: All components connected end-to-end. `TermSchedule.systemStatistics()` fully implemented — counts registered students per course and displays total courses, total seats, and average seats. `LoginPage.checkRole()` now runs role-based menu loops for all three roles (admin/advisor/student), with `returnMenu()` controlling the exit flow. `Main.java` is the clean final entry point. The system is fully functional.
