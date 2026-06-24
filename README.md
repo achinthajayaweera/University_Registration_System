@@ -20,7 +20,8 @@ src/
     ├── Curriculum.java        # Full course catalogue + prerequisites + equivalencies
     ├── AdminFunctions.java    # Admin menu and all admin operations
     ├── StudentFunctions.java  # Student data, menu and all student operations
-    └── PrintProgress.java     # Curriculum progress printer for students and advisors
+    ├── PrintProgress.java     # Curriculum progress printer for students and advisors
+    └── AdvisorFunctions.java  # Advisor menu and all advisor operations
 ```
 
 ## How to Run
@@ -40,4 +41,4 @@ java -cp src finalProjectDuplicate.Main
 | 2409240001 | Khant      | Student |
 
 ## Current Status
-**v10 – Print Progress**: `PrintProgress.java` fully implemented. `printProgress(studentID, category)` counts completed and transferred courses per category and renders a visual progress bar with ✅/⏳ icons and 🔒 unmet prerequisite warnings per course. `printProgress(studentID, freeElective)` handles the free elective section. `checkMajorAndPrint(studentID)` gives advisors the full report across all sections. `checkMajorAndPrint(studentID, category)` gives students a filtered report for their chosen track only.
+**v11 – Advisor Functions**: `AdvisorFunctions.java` introduced with the complete advisor layer — `menu()`, `searchStudent()` (delegates to StudentFunctions), `viewProgress()` (delegates to PrintProgress for the full report), `registerCourse()` and `withdrawCourse()` (on behalf of a student), and `graduationRisks()` which calculates courses-per-term for every student and flags HIGH / MEDIUM / LOW risk. The `selection()` dispatcher wires all 5 menu options with input collection.
