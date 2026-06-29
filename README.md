@@ -12,17 +12,17 @@ A Java console-based university registration system that supports multiple user 
 ```
 src/
 └── finalProjectDuplicate/
-    ├── Main.java              # Entry point — wired and complete
+    ├── Main.java              # Entry point
     ├── LoginPage.java         # Login, 3-attempt lock, full role menu loops
     ├── IDsPasswords.java      # All 6 system users
     ├── Student.java           # Student data model
     ├── Course.java            # Course model (all 4 constructors)
     ├── TermSchedule.java      # Term schedule + system statistics report
     ├── Curriculum.java        # Full course catalogue + prerequisites + equivalencies
-    ├── AdminFunctions.java    # Admin menu and all admin operations
+    ├── AdminFunctions.java    # Admin menu, all operations + validated input loops
     ├── StudentFunctions.java  # Student data, menu and all student operations
     ├── PrintProgress.java     # Curriculum progress printer for students and advisors
-    └── AdvisorFunctions.java  # Advisor menu and all advisor operations
+    └── AdvisorFunctions.java  # Advisor menu, all operations + validated input loops
 ```
 
 ## How to Run
@@ -42,4 +42,4 @@ java -cp src finalProjectDuplicate.Main
 | 2409240001 | Khant      | Student |
 
 ## Current Status
-**v12 – Fully Wired System**: All components connected end-to-end. `TermSchedule.systemStatistics()` fully implemented — counts registered students per course and displays total courses, total seats, and average seats. `LoginPage.checkRole()` now runs role-based menu loops for all three roles (admin/advisor/student), with `returnMenu()` controlling the exit flow. `Main.java` is the clean final entry point. The system is fully functional.
+**v13 – Input Validation**: `AdminFunctions.selection()` and `AdvisorFunctions.selection()` now loop on invalid menu input instead of falling through silently. `AdminFunctions.readTrack()` similarly loops until a valid track number (1–13) is entered. All `nextLine()` buffer flushes aligned consistently to prevent input skipping bugs across all menu flows.

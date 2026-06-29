@@ -1,6 +1,7 @@
 package finalProjectDuplicate;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -11,10 +12,6 @@ public class StudentFunctions {
     private Course open;
 
     private static List<Student> student = new ArrayList<>(List.of(
-
-        /* Student(String id, String name, String major, double grade, int termsCount,
-                  List<String> freeElective, List<String> completedCourses,
-                  List<String> failedCourses, List<String> registeredCourses) */
 
         new Student(
             "2408050001",
@@ -80,12 +77,10 @@ public class StudentFunctions {
 
     ));
 
-    // Getter
     public static List<Student> getStudent() {
         return student;
     }
 
-    // Display Student Menu
     public void menu() {
         System.out.println(" -------------------------------");
         System.out.println("|          Student Menu         |");
@@ -99,7 +94,6 @@ public class StudentFunctions {
         System.out.println(" -------------------------------");
     }
 
-    // Print completed courses and student record
     public void printCompletedCourse(String studentID) {
         Student result = null;
         for (Student s : student) {
@@ -139,13 +133,11 @@ public class StudentFunctions {
         }
     }
 
-    // Show remaining courses via PrintProgress
     public void remainingCourse(String studentID, String category) {
         PrintProgress printProgress = new PrintProgress();
         printProgress.checkMajorAndPrint(studentID, category);
     }
 
-    // Check prerequisites for a course
     public void checkPrerequisite(String courseCode) {
         boolean courseFound = false;
         for (Course c : curriculum.getCourse()) {
@@ -163,7 +155,6 @@ public class StudentFunctions {
         }
     }
 
-    // Register a course
     public void registerCourse(String studentID, String courseCode, int section) {
         String code_section = courseCode + "-" + section;
         Student result = null;
@@ -247,7 +238,6 @@ public class StudentFunctions {
         viewRegistration(studentID);
     }
 
-    // Drop (withdraw) a course
     public void withdrawCourse(String studentID, String courseCode, int section) {
         String code_section = courseCode + "-" + section;
         boolean studentFound = false;
@@ -274,7 +264,6 @@ public class StudentFunctions {
         }
     }
 
-    // View current registration status
     public void viewRegistration(String studentID) {
         for (Student s : student) {
             if (s.getId().equals(studentID)) {
@@ -283,13 +272,13 @@ public class StudentFunctions {
                 System.out.println("--------+---------+-----------");
                 String timeSlot = null;
                 for (String r : s.getRegisteredCourses()) {
-                    String[] parts  = r.split("-");
-                    String course   = parts[0];
-                    String section  = parts[1];
+                    String[] parts = r.split("-");
+                    String course  = parts[0];
+                    String sec     = parts[1];
                     for (Course c : TermSchedule.getSchedule()) {
                         if (c.getCode().equals(course)) {
                             timeSlot = c.getTimeSlot();
-                            System.out.println(course + "  |   " + section + "     | " + timeSlot);
+                            System.out.println(course + "  |   " + sec + "     | " + timeSlot);
                         }
                     }
                 }
@@ -301,50 +290,54 @@ public class StudentFunctions {
         }
     }
 
-    // Handle student menu selection
+    // Handle student menu selection — with input mismatch protection
     public void selection(int option, String studentID) {
-        if (option == 1) {
-            printCompletedCourse(studentID);
-        } else if (option == 2) {
-            String category = readTrack(studentID);
-            remainingCourse(studentID, category);
-        } else if (option == 3) {
-            System.out.println("\n===============================");
-            System.out.println("      Check Prerequisites     ");
-            System.out.println("===============================");
-            System.out.println("Enter Course Code : ");
-            String courseCode = studentInput.nextLine();
-            checkPrerequisite(courseCode);
-        } else if (option == 4) {
-            System.out.println("\n===============================");
-            System.out.println("           Add Course         ");
-            System.out.println("===============================");
-            System.out.println("Course Code : ");
-            String courseCode = studentInput.nextLine();
-            System.out.println("Section : ");
-            int section = studentInput.nextInt();
+        try {
+            if (option == 1) {
+                printCompletedCourse(studentID);
+            } else if (option == 2) {
+                String category = readTrack(studentID);
+                remainingCourse(studentID, category);
+            } else if (option == 3) {
+                System.out.println("\n===============================");
+                System.out.println("      Check Prerequisites     ");
+                System.out.println("===============================");
+                System.out.print("Enter Course Code : ");
+                String courseCode = studentInput.nextLine();
+                checkPrerequisite(courseCode);
+            } else if (option == 4) {
+                System.out.println("\n===============================");
+                System.out.println("           Add Course         ");
+                System.out.println("===============================");
+                System.out.print("Course Code : ");
+                String courseCode = studentInput.nextLine();
+                System.out.print("Section     : ");
+                int section = studentInput.nextInt();
+                studentInput.nextLine();
+                registerCourse(studentID, courseCode, section);
+            } else if (option == 5) {
+                System.out.println("\n===============================");
+                System.out.println("           Drop Course         ");
+                System.out.println("===============================");
+                System.out.print("Course Code : ");
+                String courseCode = studentInput.nextLine();
+                System.out.print("Section     : ");
+                int section = studentInput.nextInt();
+                studentInput.nextLine();
+                withdrawCourse(studentID, courseCode, section);
+            } else if (option == 6) {
+                viewRegistration(studentID);
+            } else {
+                System.out.println("\n❌ Invalid choice. Please try again!\n");
+                System.out.print("\nYour selection is:");
+                option = studentInput.nextInt();
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("\n❌ Invalid input. Please enter a valid number for section.\n");
             studentInput.nextLine();
-            registerCourse(studentID, courseCode, section);
-        } else if (option == 5) {
-            System.out.println("\n===============================");
-            System.out.println("           Drop Course         ");
-            System.out.println("===============================");
-            System.out.println("Course Code : ");
-            String courseCode = studentInput.nextLine();
-            System.out.println("Section : ");
-            int section = studentInput.nextInt();
-            studentInput.nextLine();
-            withdrawCourse(studentID, courseCode, section);
-        } else if (option == 6) {
-            viewRegistration(studentID);
-        } else {
-            System.out.println("\n❌ Invalid choice. Please try again!\n");
-            System.out.print("\nYour selection is:");
-            option = studentInput.nextInt();
         }
     }
 
-    // Find course name from curriculum
     public String findCourseName(String code) {
         for (Course course : curriculum.getCourse()) {
             if (course.getCode().equals(code)) {
@@ -354,7 +347,6 @@ public class StudentFunctions {
         return "(Unknown Course)";
     }
 
-    // Calculate total current credits
     public int currentCredit(String studentID) {
         int courseCredits = 0;
         int internCredits = 0;
@@ -373,7 +365,6 @@ public class StudentFunctions {
         return courseCredits + internCredits;
     }
 
-    // Track selector — shows options based on student's major
     public String readTrack(String studentID) {
         String major = null;
         for (Student s : student) {

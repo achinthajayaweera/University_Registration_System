@@ -19,7 +19,7 @@ public class AdvisorFunctions {
         System.out.println(" -------------------------------");
     }
 
-    // Search student by ID — prints full student record
+    // Search student by ID
     public void searchStudent(String studentID) {
         studentRecord.printCompletedCourse(studentID);
     }
@@ -40,7 +40,7 @@ public class AdvisorFunctions {
         studentRecord.withdrawCourse(studentID, courseCode, section);
     }
 
-    // Graduation risk report — calculated from courses per term
+    // Graduation risk report
     public void graduationRisks() {
         System.out.println("\n==================================================================");
         System.out.println("                     GRADUATION RISKS REPORT                     ");
@@ -49,30 +49,33 @@ public class AdvisorFunctions {
         System.out.println("-----------+--------------------+--------------------+------------");
         for (Student s : studentRecord.getStudent()) {
             int totalCourses = (s.getCompletedCourses().size() + s.getFreeElective().size());
-            int perTerm = totalCourses / s.getTermsCount();
+            int perTerm      = totalCourses / s.getTermsCount();
             String risk;
-            if (perTerm < 2) {
-                risk = "HIGH";
-            } else if (perTerm < 4) {
-                risk = "MEDIUM";
-            } else {
-                risk = "LOW";
-            }
-            System.out.println(s.getId() + " | " + s.getName() +
-                    " | " + perTerm + " courses per term | " + risk);
+            if (perTerm < 2)      risk = "HIGH";
+            else if (perTerm < 4) risk = "MEDIUM";
+            else                  risk = "LOW";
+            System.out.println(s.getId() + " | " + s.getName()
+                    + " | " + perTerm + " courses per term | " + risk);
         }
         System.out.println("==================================================================");
     }
 
-    // Handle advisor menu selection
+    // Handle advisor menu selection — loops until valid input
     public void selection(int option) {
         Scanner advisorInput = new Scanner(System.in);
+
+        while (option < 1 || option > 5) {
+            System.out.println("\n❌ Invalid choice. Please select between 1 and 5.\n");
+            System.out.print("Your selection is: ");
+            option = advisorInput.nextInt();
+            advisorInput.nextLine();
+        }
 
         if (option == 1) {
             System.out.println("\n==================================");
             System.out.println("     Enter Student ID To Search     ");
             System.out.println("==================================");
-            System.out.println("Student ID : ");
+            System.out.print("Student ID : ");
             String studentID = advisorInput.nextLine();
             searchStudent(studentID);
 
@@ -80,7 +83,7 @@ public class AdvisorFunctions {
             System.out.println("\n===============================");
             System.out.println("     View Curriculum Progress     ");
             System.out.println("===============================");
-            System.out.println("Student ID : ");
+            System.out.print("Student ID : ");
             String studentID = advisorInput.nextLine();
             viewProgress(studentID);
 
@@ -88,33 +91,32 @@ public class AdvisorFunctions {
             System.out.println("\n===============================");
             System.out.println("     Assign Course To Student     ");
             System.out.println("===============================");
-            System.out.print("Student ID : ");
+            System.out.print("Student ID  : ");
             String studentID = advisorInput.nextLine();
-            System.out.print("Course code : ");
+            System.out.print("Course Code : ");
             String courseCode = advisorInput.next();
-            System.out.print("Section : ");
+            advisorInput.nextLine();
+            System.out.print("Section     : ");
             int section = advisorInput.nextInt();
+            advisorInput.nextLine();
             registerCourse(studentID, courseCode, section);
 
         } else if (option == 4) {
             System.out.println("\n===================================");
             System.out.println("     Withdraw Course For Student     ");
             System.out.println("===================================");
-            System.out.print("Student ID : ");
+            System.out.print("Student ID  : ");
             String studentID = advisorInput.nextLine();
-            System.out.print("Course code : ");
+            System.out.print("Course Code : ");
             String courseCode = advisorInput.next();
-            System.out.print("Section : ");
+            advisorInput.nextLine();
+            System.out.print("Section     : ");
             int section = advisorInput.nextInt();
+            advisorInput.nextLine();
             withdrawCourse(studentID, courseCode, section);
 
         } else if (option == 5) {
             graduationRisks();
-
-        } else {
-            System.out.println("\n❌ Invalid choice. Please try again!\n");
-            System.out.print("\nYour selection is:");
-            option = advisorInput.nextInt();
         }
     }
 

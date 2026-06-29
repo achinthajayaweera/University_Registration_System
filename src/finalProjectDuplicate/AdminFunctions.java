@@ -58,9 +58,17 @@ public class AdminFunctions {
         termSchedule.systemStatistics();
     }
 
-    // Handle admin menu selection
+    // Handle admin menu selection — loops until valid input
     public void selection(int option) {
         Scanner adminInput = new Scanner(System.in);
+
+        // Loop until a valid option is entered
+        while (option < 1 || option > 6) {
+            System.out.println("\n❌ Invalid choice. Please select between 1 and 6.\n");
+            System.out.print("Your selection is: ");
+            option = adminInput.nextInt();
+            adminInput.nextLine();
+        }
 
         if (option == 1) {
             System.out.println("\n===== Add Course =====\n");
@@ -68,10 +76,10 @@ public class AdminFunctions {
             System.out.println("\n===============================");
             System.out.println("     Enter Course To Add     ");
             System.out.println("===============================");
-            System.out.println("Course Code : ");
+            System.out.print("Course Code : ");
             courseCode = adminInput.next();
             adminInput.nextLine();
-            System.out.println("Course Name : ");
+            System.out.print("Course Name : ");
             courseName = adminInput.nextLine();
             addCourses(category, courseCode, courseName);
 
@@ -83,6 +91,7 @@ public class AdminFunctions {
             System.out.println("===============================");
             System.out.print("Course Code : ");
             courseCode = adminInput.next();
+            adminInput.nextLine();
             removeCourses(category, courseCode, courseName);
 
         } else if (option == 3) {
@@ -114,6 +123,7 @@ public class AdminFunctions {
             timeSlot = adminInput.nextLine();
             System.out.print("Seat Limit  : ");
             seat = adminInput.nextInt();
+            adminInput.nextLine();
             openCourse(courseCode, section, timeSlot, seat);
 
         } else if (option == 5) {
@@ -122,17 +132,14 @@ public class AdminFunctions {
             System.out.println("===============================");
             System.out.print("Course Code : ");
             courseCode = adminInput.next();
+            adminInput.nextLine();
             System.out.print("Section     : ");
             section = adminInput.nextInt();
+            adminInput.nextLine();
             closeCourse(courseCode, section);
 
         } else if (option == 6) {
             viewReport();
-
-        } else {
-            System.out.println("\n❌ Invalid choice. Please try again!\n");
-            System.out.print("\nYour selection is:");
-            option = adminInput.nextInt();
         }
     }
 
@@ -156,8 +163,14 @@ public class AdminFunctions {
         System.out.println("| 12  | CS Artificial Intelligence Track     |");
         System.out.println("| 13  | Equivalency                          |");
         System.out.println(" --------------------------------------------\n");
-        System.out.print("Your selection is:");
+        System.out.print("Your selection is: ");
         type = adminInput.nextInt();
+
+        while (type < 1 || type > 13) {
+            System.out.println("\n❌ Invalid choice. Please select between 1 and 13.\n");
+            System.out.print("Your selection is: ");
+            type = adminInput.nextInt();
+        }
 
         switch (type) {
             case 1:  category = "General Courses"; break;
@@ -173,12 +186,6 @@ public class AdminFunctions {
             case 11: category = "CS Cyber Security Track"; break;
             case 12: category = "CS Artificial Intelligence Track"; break;
             case 13: category = "Equivalency"; break;
-        }
-
-        while (type < 1 || type > 13) {
-            System.out.println("\n❌ Invalid choice. Please try again!\n");
-            System.out.print("Your selection is:");
-            type = adminInput.nextInt();
         }
 
         return category;
