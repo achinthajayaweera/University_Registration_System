@@ -1,5 +1,6 @@
 package finalProjectDuplicate;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class AdminFunctions {
@@ -61,6 +62,7 @@ public class AdminFunctions {
     // Handle admin menu selection — loops until valid input
     public void selection(int option) {
         Scanner adminInput = new Scanner(System.in);
+        try {
 
         // Loop until a valid option is entered
         while (option < 1 || option > 6) {
@@ -140,6 +142,10 @@ public class AdminFunctions {
 
         } else if (option == 6) {
             viewReport();
+        }
+        } catch (InputMismatchException e) {
+            System.out.println("\n❌ Invalid input type entered. Please try again.\n");
+            adminInput.nextLine();
         }
     }
 

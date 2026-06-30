@@ -293,6 +293,13 @@ public class StudentFunctions {
     // Handle student menu selection — with input mismatch protection
     public void selection(int option, String studentID) {
         try {
+            while (option < 1 || option > 6) {
+                System.out.println("\n❌ Invalid choice. Please select between 1 and 6.\n");
+                System.out.print("Your selection is: ");
+                option = studentInput.nextInt();
+                studentInput.nextLine();
+            }
+
             if (option == 1) {
                 printCompletedCourse(studentID);
             } else if (option == 2) {
@@ -327,10 +334,6 @@ public class StudentFunctions {
                 withdrawCourse(studentID, courseCode, section);
             } else if (option == 6) {
                 viewRegistration(studentID);
-            } else {
-                System.out.println("\n❌ Invalid choice. Please try again!\n");
-                System.out.print("\nYour selection is:");
-                option = studentInput.nextInt();
             }
         } catch (InputMismatchException e) {
             System.out.println("\n❌ Invalid input. Please enter a valid number for section.\n");

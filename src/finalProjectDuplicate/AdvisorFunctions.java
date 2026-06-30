@@ -1,5 +1,6 @@
 package finalProjectDuplicate;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class AdvisorFunctions {
@@ -63,6 +64,7 @@ public class AdvisorFunctions {
     // Handle advisor menu selection — loops until valid input
     public void selection(int option) {
         Scanner advisorInput = new Scanner(System.in);
+        try {
 
         while (option < 1 || option > 5) {
             System.out.println("\n❌ Invalid choice. Please select between 1 and 5.\n");
@@ -117,6 +119,10 @@ public class AdvisorFunctions {
 
         } else if (option == 5) {
             graduationRisks();
+        }
+        } catch (InputMismatchException e) {
+            System.out.println("\n❌ Invalid input type entered. Please try again.\n");
+            advisorInput.nextLine();
         }
     }
 
