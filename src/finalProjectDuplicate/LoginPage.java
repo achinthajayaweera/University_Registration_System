@@ -19,10 +19,10 @@ public class LoginPage {
 
     // Login page — 3 attempts before account is blocked
     public void verify() {
-        System.out.println("=================================================");
-        System.out.println("   🎓 Welcome to Stamford Registration System  ");
-        System.out.println("=================================================");
-        System.out.print("> Username: ");
+        System.out.println("╔═══════════════════════════════════════════════════╗");
+        System.out.println("║     Welcome to Stamford Registration System 🎓    ║");
+        System.out.println("╚═══════════════════════════════════════════════════╝");
+        System.out.print("\n> Username: ");
         username = sc.next();
         System.out.print("> Password: ");
         password = sc.next();
@@ -31,9 +31,10 @@ public class LoginPage {
 
         for (int attempt = 3; attempt >= 0; attempt--) {
             if (user != null) {
-                System.out.println("\nLOGIN SUCCESSFUL");
-                System.out.println("================\n");
-                System.out.println("Welcome " + user.getName() + "!");
+                System.out.println("\n╔══════════════════════════╗");
+                System.out.println("║     LOGIN SUCCESSFUL     ║");
+                System.out.println("╚══════════════════════════╝");
+                System.out.println("  Welcome, " + user.getName() + "!\n");
 
                 if (user.getRole().contains("admin")) {
                     admin = true;
@@ -46,14 +47,14 @@ public class LoginPage {
 
             } else {
                 if (attempt == 0) {
-                    System.out.println("\n████████ ACCESS DENIED ████████");
-                    System.out.println("Your account has been BLOCKED");
-                    System.out.println("Contact system administrator");
-                    System.out.println("██████████████████████████████████\n");
+                    System.out.println("\n████████████████████████████████████");
+                    System.out.println("          ACCESS DENIED              ");
+                    System.out.println("  Your account has been BLOCKED.     ");
+                    System.out.println("  Contact system administrator.       ");
+                    System.out.println("████████████████████████████████████\n");
                 } else {
-                    System.out.println("\n❌ Login failed");
-                    System.out.println("Attempts left: " + attempt);
-
+                    System.out.println("\n❌ Incorrect username or password.");
+                    System.out.println("   Attempts remaining: " + attempt);
                     System.out.print("\n> Username: ");
                     username = sc.next();
                     System.out.print("> Password: ");
@@ -64,13 +65,13 @@ public class LoginPage {
         }
     }
 
-    // Check role and display appropriate menu in a loop
+    // Check role and run appropriate menu loop
     public void checkRole() {
 
         // Admin loop
         while (admin) {
             adminfunctions.menu();
-            System.out.print("\nYour selection is:");
+            System.out.print("\nYour selection is: ");
             option = sc.nextInt();
             sc.nextLine();
             adminfunctions.selection(option);
@@ -80,7 +81,7 @@ public class LoginPage {
         // Advisor loop
         while (advisor) {
             advisorfunctions.menu();
-            System.out.print("\nYour selection is:");
+            System.out.print("\nYour selection is: ");
             option = sc.nextInt();
             sc.nextLine();
             advisorfunctions.selection(option);
@@ -90,7 +91,7 @@ public class LoginPage {
         // Student loop
         while (student) {
             studentfunctions.menu();
-            System.out.print("\nYour selection is:");
+            System.out.print("\nYour selection is: ");
             option = sc.nextInt();
             sc.nextLine();
             studentfunctions.selection(option, username);
@@ -98,19 +99,19 @@ public class LoginPage {
         }
     }
 
-    // Helper — ask user to continue or exit
+    // Ask user to continue or exit
     public boolean returnMenu() {
         System.out.print("\nExit (y/n): ");
         String exit = sc.next();
 
         while (!exit.equals("y") && !exit.equals("n")) {
-            System.out.println("\n❌ Invalid choice. Please try again!\n");
+            System.out.println("\n❌ Please enter 'y' to exit or 'n' to continue.");
             System.out.print("Exit (y/n): ");
             exit = sc.next();
         }
 
         if (exit.equals("y")) {
-            System.out.println("\nSee you next time!");
+            System.out.println("\nSee you next time! 👋\n");
             return false;
         }
         return true;
