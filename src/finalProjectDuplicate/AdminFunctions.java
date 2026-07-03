@@ -17,16 +17,16 @@ public class AdminFunctions {
 
     // Display Admin Menu
     public void menu() {
-        System.out.println(" -----------------------------");
-        System.out.println("|         Admin Menu          |");
-        System.out.println(" -----------------------------");
-        System.out.println("| 1 | Add courses             |");
-        System.out.println("| 2 | Remove courses          |");
-        System.out.println("| 3 | Set courses seat limits |");
-        System.out.println("| 4 | Open courses            |");
-        System.out.println("| 5 | Close courses           |");
-        System.out.println("| 6 | View system statistics  |");
-        System.out.println(" -----------------------------");
+        System.out.println("\n╔═════════════════════════════════╗");
+        System.out.println(  "║           Admin Menu            ║");
+        System.out.println(  "╠═════════════════════════════════╣");
+        System.out.println(  "║ 1 │ Add courses                 ║");
+        System.out.println(  "║ 2 │ Remove courses              ║");
+        System.out.println(  "║ 3 │ Set courses seat limits     ║");
+        System.out.println(  "║ 4 │ Open courses                ║");
+        System.out.println(  "║ 5 │ Close courses               ║");
+        System.out.println(  "║ 6 │ View system statistics      ║");
+        System.out.println(  "╚═════════════════════════════════╝");
     }
 
     // Add new course to curriculum

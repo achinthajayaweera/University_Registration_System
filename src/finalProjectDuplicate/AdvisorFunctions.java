@@ -9,15 +9,15 @@ public class AdvisorFunctions {
 
     // Display Advisor Menu
     public void menu() {
-        System.out.println(" -------------------------------");
-        System.out.println("|          Advisor Menu         |");
-        System.out.println(" -------------------------------");
-        System.out.println("| 1 | Search student            |");
-        System.out.println("| 2 | View curriculum progress  |");
-        System.out.println("| 3 | Register course           |");
-        System.out.println("| 4 | Withdrawal course         |");
-        System.out.println("| 5 | View graduation risks     |");
-        System.out.println(" -------------------------------");
+        System.out.println("\n╔═════════════════════════════════╗");
+        System.out.println(  "║          Advisor Menu           ║");
+        System.out.println(  "╠═════════════════════════════════╣");
+        System.out.println(  "║ 1 │ Search student              ║");
+        System.out.println(  "║ 2 │ View curriculum progress    ║");
+        System.out.println(  "║ 3 │ Register course             ║");
+        System.out.println(  "║ 4 │ Withdrawal course           ║");
+        System.out.println(  "║ 5 │ View graduation risks       ║");
+        System.out.println(  "╚═════════════════════════════════╝");
     }
 
     // Search student by ID

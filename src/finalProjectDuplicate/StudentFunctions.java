@@ -82,16 +82,16 @@ public class StudentFunctions {
     }
 
     public void menu() {
-        System.out.println(" -------------------------------");
-        System.out.println("|          Student Menu         |");
-        System.out.println(" -------------------------------");
-        System.out.println("| 1 | View completed courses    |");
-        System.out.println("| 2 | View remaining courses    |");
-        System.out.println("| 3 | Check prerequisites       |");
-        System.out.println("| 4 | Add course                |");
-        System.out.println("| 5 | Drop course               |");
-        System.out.println("| 6 | View registration status  |");
-        System.out.println(" -------------------------------");
+        System.out.println("\n╔═════════════════════════════════╗");
+        System.out.println(  "║          Student Menu           ║");
+        System.out.println(  "╠═════════════════════════════════╣");
+        System.out.println(  "║ 1 │ View completed courses      ║");
+        System.out.println(  "║ 2 │ View remaining courses      ║");
+        System.out.println(  "║ 3 │ Check prerequisites         ║");
+        System.out.println(  "║ 4 │ Add course                  ║");
+        System.out.println(  "║ 5 │ Drop course                 ║");
+        System.out.println(  "║ 6 │ View registration status    ║");
+        System.out.println(  "╚═════════════════════════════════╝");
     }
 
     public void printCompletedCourse(String studentID) {
@@ -105,31 +105,33 @@ public class StudentFunctions {
         if (result == null) {
             System.out.println("\n❌ Student not found.\n");
         } else {
-            System.out.println("\n==================================================");
-            System.out.println("                 STUDENT RECORD                   ");
-            System.out.println("==================================================");
-            System.out.println("ID                 : " + result.getId());
-            System.out.println("Name               : " + result.getName());
-            System.out.println("Major              : " + result.getMajor());
-            System.out.println("Terms Count        : " + result.getTermsCount());
-            System.out.println("Current Credits    : " + currentCredit(studentID));
-            System.out.println("GPA                : " + result.getGrade());
-            System.out.println("Courses Completed  : " +
+            System.out.println("\n╔══════════════════════════════════════════════════════╗");
+            System.out.println(  "║                   STUDENT RECORD                    ║");
+            System.out.println(  "╠══════════════════════════════════════════════════════╣");
+            System.out.printf(   "║  %-20s : %-29s║%n", "ID",               result.getId());
+            System.out.printf(   "║  %-20s : %-29s║%n", "Name",             result.getName());
+            System.out.printf(   "║  %-20s : %-29s║%n", "Major",            result.getMajor());
+            System.out.printf(   "║  %-20s : %-29s║%n", "Terms Count",      result.getTermsCount());
+            System.out.printf(   "║  %-20s : %-29s║%n", "Current Credits",  currentCredit(studentID));
+            System.out.printf(   "║  %-20s : %-29s║%n", "GPA",              result.getGrade());
+            System.out.printf(   "║  %-20s : %-29s║%n", "Courses Completed",
                     (result.getCompletedCourses().size() + result.getFreeElective().size()));
-            System.out.println("--------------------------------------------------");
+            System.out.println(  "╠══════════════════════════════════════════════════════╣");
+            System.out.println(  "║  Completed Courses                                   ║");
+            System.out.println(  "╠══════════════════════════════════════════════════════╣");
             for (String code : result.getCompletedCourses()) {
-                System.out.println(code + " : " + findCourseName(code));
+                System.out.printf("║  %-8s : %-41s║%n", code, findCourseName(code));
             }
             for (String code : result.getFreeElective()) {
-                System.out.println(code + " : " + findCourseName(code));
+                System.out.printf("║  %-8s : %-41s║%n", code, findCourseName(code));
             }
-            System.out.println("--------------------------------------------------");
+            System.out.println(  "╠══════════════════════════════════════════════════════╣");
             if (result.getRegisteredCourses().isEmpty()) {
-                System.out.println("Registered Courses : NONE");
+                System.out.println("║  Registered Courses : NONE                           ║");
             } else {
-                System.out.println("Registered Courses : " + result.getRegisteredCourses());
+                System.out.printf("║  Registered : %-38s║%n", result.getRegisteredCourses());
             }
-            System.out.println("==================================================");
+            System.out.println(  "╚══════════════════════════════════════════════════════╝");
         }
     }
 
@@ -267,25 +269,26 @@ public class StudentFunctions {
     public void viewRegistration(String studentID) {
         for (Student s : student) {
             if (s.getId().equals(studentID)) {
-                System.out.println("\n===== COURSE REGISTERED =====");
-                System.out.println("Course  | Section | Time Slot");
-                System.out.println("--------+---------+-----------");
-                String timeSlot = null;
+                System.out.println("\n╔═══════════╦═════════╦═══════════════════════════════════╗");
+                System.out.println(  "║  Course   ║ Section ║ Time Slot                         ║");
+                System.out.println(  "╠═══════════╬═════════╬═══════════════════════════════════╣");
+                boolean hasAny = false;
                 for (String r : s.getRegisteredCourses()) {
                     String[] parts = r.split("-");
                     String course  = parts[0];
                     String sec     = parts[1];
                     for (Course c : TermSchedule.getSchedule()) {
-                        if (c.getCode().equals(course)) {
-                            timeSlot = c.getTimeSlot();
-                            System.out.println(course + "  |   " + sec + "     | " + timeSlot);
+                        if (c.getCode().equals(course) && String.valueOf(c.getSection()).equals(sec)) {
+                            System.out.printf("║ %-9s ║    %-4s ║ %-33s ║%n",
+                                    course, sec, c.getTimeSlot());
+                            hasAny = true;
                         }
                     }
                 }
-                if (timeSlot == null) {
-                    System.out.println("            NONE      ");
+                if (!hasAny) {
+                    System.out.println("║                        NONE                              ║");
                 }
-                System.out.println("--------+---------+-----------");
+                System.out.println("╚═══════════╩═════════╩═══════════════════════════════════╝");
             }
         }
     }

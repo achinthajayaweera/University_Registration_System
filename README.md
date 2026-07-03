@@ -18,10 +18,10 @@ src/
     ├── Course.java            # Course model (all 4 constructors)
     ├── TermSchedule.java      # Term schedule with aligned table display
     ├── Curriculum.java        # Full course catalogue + prerequisites + equivalencies
-    ├── AdminFunctions.java    # Admin menu and all admin operations
-    ├── StudentFunctions.java  # Student data, menu and all student operations
+    ├── AdminFunctions.java    # Admin menu (box-drawing) and all admin operations
+    ├── StudentFunctions.java  # Student menu (box-drawing), record display, registration table
     ├── PrintProgress.java     # Curriculum progress printer for students and advisors
-    └── AdvisorFunctions.java  # Advisor menu and all advisor operations
+    └── AdvisorFunctions.java  # Advisor menu (box-drawing) and all advisor operations
 ```
 
 ## How to Run
@@ -41,4 +41,4 @@ java -cp src finalProjectDuplicate.Main
 | 2409240001 | Khant      | Student |
 
 ## Current Status
-**v15 – UI Polish**: `TermSchedule.printSchedule()` and `systemStatistics()` now use aligned `╔═╗` box-drawing tables with `printf` for clean column formatting. `closeCourse()` and `editSeats()` now give ✅/❌ feedback. `LoginPage` login banner, success message, and access denied block all updated to boxed style. `returnMenu()` goodbye message improved.
+**v16 – Consistent UI Across All Menus**: All three role menus (Admin, Advisor, Student) now use matching `╔═╗` box-drawing borders. `StudentFunctions.printCompletedCourse()` uses `printf` for aligned field display. `viewRegistration()` upgraded to a clean box table that correctly matches section numbers and only shows NONE when truly empty.
