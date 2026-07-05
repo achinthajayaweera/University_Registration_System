@@ -43,22 +43,22 @@ public class AdvisorFunctions {
 
     // Graduation risk report
     public void graduationRisks() {
-        System.out.println("\n==================================================================");
-        System.out.println("                     GRADUATION RISKS REPORT                     ");
-        System.out.println("==================================================================");
-        System.out.println("Student ID | Name               | Progress           | Risk Level");
-        System.out.println("-----------+--------------------+--------------------+------------");
+        System.out.println("\n╔══════════════════════════════════════════════════════════════════════╗");
+        System.out.println(  "║                     GRADUATION RISKS REPORT                         ║");
+        System.out.println(  "╠════════════════╦══════════════════════╦══════════════╦═════════════╣");
+        System.out.println(  "║ Student ID     ║ Name                 ║ Courses/Term ║ Risk Level  ║");
+        System.out.println(  "╠════════════════╬══════════════════════╬══════════════╬═════════════╣");
         for (Student s : studentRecord.getStudent()) {
             int totalCourses = (s.getCompletedCourses().size() + s.getFreeElective().size());
             int perTerm      = totalCourses / s.getTermsCount();
             String risk;
-            if (perTerm < 2)      risk = "HIGH";
-            else if (perTerm < 4) risk = "MEDIUM";
-            else                  risk = "LOW";
-            System.out.println(s.getId() + " | " + s.getName()
-                    + " | " + perTerm + " courses per term | " + risk);
+            if (perTerm < 2)      risk = "⚠ HIGH";
+            else if (perTerm < 4) risk = "~ MEDIUM";
+            else                  risk = "✓ LOW";
+            System.out.printf("║ %-14s ║ %-20s ║      %-7d ║ %-11s ║%n",
+                    s.getId(), s.getName(), perTerm, risk);
         }
-        System.out.println("==================================================================");
+        System.out.println("╚════════════════╩══════════════════════╩══════════════╩═════════════╝");
     }
 
     // Handle advisor menu selection — loops until valid input

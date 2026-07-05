@@ -18,10 +18,10 @@ src/
     ├── Course.java            # Course model (all 4 constructors)
     ├── TermSchedule.java      # Term schedule with aligned table display
     ├── Curriculum.java        # Full course catalogue + prerequisites + equivalencies
-    ├── AdminFunctions.java    # Admin menu (box-drawing) and all admin operations
-    ├── StudentFunctions.java  # Student menu (box-drawing), record display, registration table
-    ├── PrintProgress.java     # Curriculum progress printer for students and advisors
-    └── AdvisorFunctions.java  # Advisor menu (box-drawing) and all advisor operations
+    ├── AdminFunctions.java    # Admin menu and all admin operations
+    ├── StudentFunctions.java  # Student menu, record display, registration table
+    ├── PrintProgress.java     # Progress report with boxed header and progress bars
+    └── AdvisorFunctions.java  # Advisor menu, graduation risk table
 ```
 
 ## How to Run
@@ -41,4 +41,4 @@ java -cp src finalProjectDuplicate.Main
 | 2409240001 | Khant      | Student |
 
 ## Current Status
-**v16 – Consistent UI Across All Menus**: All three role menus (Admin, Advisor, Student) now use matching `╔═╗` box-drawing borders. `StudentFunctions.printCompletedCourse()` uses `printf` for aligned field display. `viewRegistration()` upgraded to a clean box table that correctly matches section numbers and only shows NONE when truly empty.
+**v17 – Report Display Polish**: `AdvisorFunctions.graduationRisks()` now renders a clean `╔═╗` box table with ⚠ HIGH / ~ MEDIUM / ✓ LOW risk indicators. Both `PrintProgress.checkMajorAndPrint()` overloads now display a boxed student summary header with `printf`-aligned fields before listing course progress. Null-safety guard added to the advisor-facing overload.

@@ -150,13 +150,21 @@ public class PrintProgress {
             }
         }
 
-        System.out.println("\n🎓 Progress Report");
-        System.out.println("========================================");
-        System.out.println("Student ID       : " + result.getId());
-        System.out.println("Student Name     : " + result.getName());
-        System.out.println("Course Completed : " +
+        if (result == null) {
+            System.out.println("\n❌ Student not found.\n");
+            return;
+        }
+
+        System.out.println("\n╔══════════════════════════════════════════════════╗");
+        System.out.println(  "║              🎓 CURRICULUM PROGRESS REPORT       ║");
+        System.out.println(  "╠══════════════════════════════════════════════════╣");
+        System.out.printf(   "║  %-20s : %-25s║%n", "Student ID",       result.getId());
+        System.out.printf(   "║  %-20s : %-25s║%n", "Student Name",     result.getName());
+        System.out.printf(   "║  %-20s : %-25s║%n", "Major",            result.getMajor());
+        System.out.printf(   "║  %-20s : %-25s║%n", "Courses Completed",
                 (result.getCompletedCourses().size() + result.getFreeElective().size()));
-        System.out.println("Current Credits  : " + studentRecord.currentCredit(studentID));
+        System.out.printf(   "║  %-20s : %-25s║%n", "Current Credits",  studentRecord.currentCredit(studentID));
+        System.out.println(  "╚══════════════════════════════════════════════════╝");
 
         if (result.getMajor().equals("Computer Science")) {
             printProgress(studentID, "General Courses");
@@ -197,13 +205,16 @@ public class PrintProgress {
             return;
         }
 
-        System.out.println("\n🎓 Progress Report");
-        System.out.println("========================================");
-        System.out.println("Student ID       : " + result.getId());
-        System.out.println("Student Name     : " + result.getName());
-        System.out.println("Course Completed : " +
+        System.out.println("\n╔══════════════════════════════════════════════════╗");
+        System.out.println(  "║              🎓 CURRICULUM PROGRESS REPORT       ║");
+        System.out.println(  "╠══════════════════════════════════════════════════╣");
+        System.out.printf(   "║  %-20s : %-25s║%n", "Student ID",       result.getId());
+        System.out.printf(   "║  %-20s : %-25s║%n", "Student Name",     result.getName());
+        System.out.printf(   "║  %-20s : %-25s║%n", "Major",            result.getMajor());
+        System.out.printf(   "║  %-20s : %-25s║%n", "Courses Completed",
                 (result.getCompletedCourses().size() + result.getFreeElective().size()));
-        System.out.println("Current Credits  : " + studentRecord.currentCredit(studentID));
+        System.out.printf(   "║  %-20s : %-25s║%n", "Current Credits",  studentRecord.currentCredit(studentID));
+        System.out.println(  "╚══════════════════════════════════════════════════╝");
 
         if (result.getMajor().equals("Computer Science")) {
             printProgress(studentID, "General Courses");
