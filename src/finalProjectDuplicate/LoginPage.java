@@ -2,6 +2,11 @@ package finalProjectDuplicate;
 
 import java.util.Scanner;
 
+/**
+ * Handles user authentication and role-based menu routing.
+ * Enforces a 3-attempt limit before blocking access.
+ * On successful login, routes to the Admin, Advisor, or Student menu loop.
+ */
 public class LoginPage {
 
     private static boolean admin   = false;

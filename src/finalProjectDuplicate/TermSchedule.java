@@ -3,6 +3,11 @@ package finalProjectDuplicate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Manages the current term's open course sections.
+ * Supports opening/closing sections, editing seat limits,
+ * and generating system-wide registration statistics.
+ */
 public class TermSchedule {
 
     // Available courses for the new term

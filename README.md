@@ -12,16 +12,16 @@ A Java console-based university registration system that supports multiple user 
 src/
 └── finalProjectDuplicate/
     ├── Main.java              # Entry point
-    ├── LoginPage.java         # Login, 3-attempt lock, boxed UI banners
+    ├── LoginPage.java         # Login, 3-attempt lock, role menu routing
     ├── IDsPasswords.java      # All 6 system users
     ├── Student.java           # Student data model
     ├── Course.java            # Course model (all 4 constructors)
-    ├── TermSchedule.java      # Term schedule with aligned table display
+    ├── TermSchedule.java      # Term schedule management and statistics
     ├── Curriculum.java        # Full course catalogue + prerequisites + equivalencies
-    ├── AdminFunctions.java    # Admin menu and all admin operations
-    ├── StudentFunctions.java  # Student menu, record display, registration table
-    ├── PrintProgress.java     # Progress report with boxed header and progress bars
-    └── AdvisorFunctions.java  # Advisor menu, graduation risk table
+    ├── AdminFunctions.java    # Admin operations
+    ├── StudentFunctions.java  # Student operations and registration logic
+    ├── PrintProgress.java     # Curriculum progress reports
+    └── AdvisorFunctions.java  # Advisor operations and graduation risk reports
 ```
 
 ## How to Run
@@ -41,4 +41,4 @@ java -cp src finalProjectDuplicate.Main
 | 2409240001 | Khant      | Student |
 
 ## Current Status
-**v17 – Report Display Polish**: `AdvisorFunctions.graduationRisks()` now renders a clean `╔═╗` box table with ⚠ HIGH / ~ MEDIUM / ✓ LOW risk indicators. Both `PrintProgress.checkMajorAndPrint()` overloads now display a boxed student summary header with `printf`-aligned fields before listing course progress. Null-safety guard added to the advisor-facing overload.
+**v18 – JavaDoc Documentation**: All 11 classes now have JavaDoc class-level comments describing their responsibility, key behaviours, and relationships to other classes. This completes the documentation layer across the entire codebase.

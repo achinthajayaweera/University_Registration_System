@@ -3,6 +3,11 @@ package finalProjectDuplicate;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Provides all administrator operations:
+ * adding/removing curriculum courses, opening/closing term sections,
+ * editing seat limits, and viewing system-wide statistics.
+ */
 public class AdminFunctions {
 
     private static TermSchedule termSchedule = new TermSchedule();

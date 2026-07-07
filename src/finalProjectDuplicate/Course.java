@@ -1,5 +1,11 @@
 package finalProjectDuplicate;
 
+/**
+ * Represents a course in the system.
+ * Four constructors cover the four roles a course plays:
+ * curriculum listing, prerequisite mapping, equivalency mapping,
+ * and term schedule entry.
+ */
 public class Course {
 
     private String code;

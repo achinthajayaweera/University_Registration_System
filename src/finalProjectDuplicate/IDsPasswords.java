@@ -1,5 +1,9 @@
 package finalProjectDuplicate;
 
+/**
+ * Stores all system user credentials (admin, advisors, students).
+ * Provides static login verification via {@link #checkLogin(String, String)}.
+ */
 public class IDsPasswords {
 
     private String username;

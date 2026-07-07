@@ -2,6 +2,10 @@ package finalProjectDuplicate;
 
 import java.util.List;
 
+/**
+ * Represents a student in the registration system.
+ * Holds identity information, academic progress, and course lists.
+ */
 public class Student {
 
     private List<String> freeElective;

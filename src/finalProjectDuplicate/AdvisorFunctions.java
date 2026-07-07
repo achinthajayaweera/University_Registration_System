@@ -3,6 +3,11 @@ package finalProjectDuplicate;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Provides all academic advisor operations:
+ * searching students, viewing curriculum progress, managing course
+ * registration on behalf of students, and generating graduation risk reports.
+ */
 public class AdvisorFunctions {
 
     private static StudentFunctions studentRecord = new StudentFunctions();

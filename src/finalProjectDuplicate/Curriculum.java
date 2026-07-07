@@ -3,6 +3,12 @@ package finalProjectDuplicate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Holds the complete university course catalogue.
+ * Contains General Courses, IT and CS core/major/track courses,
+ * prerequisite mappings, equivalency mappings, and internship entry.
+ * Provides methods to add, remove, and display courses by category.
+ */
 public class Curriculum {
 
     public static final int TOTAL_CREDITS  = 160;

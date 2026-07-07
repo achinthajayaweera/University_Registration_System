@@ -3,6 +3,11 @@ package finalProjectDuplicate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Generates curriculum progress reports for students and advisors.
+ * Resolves course equivalencies, computes completion percentages,
+ * renders visual progress bars, and flags unmet prerequisites per course.
+ */
 public class PrintProgress {
 
     private Curriculum curriculum = new Curriculum();

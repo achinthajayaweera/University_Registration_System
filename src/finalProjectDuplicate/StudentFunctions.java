@@ -5,6 +5,12 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Manages all student records and student-facing operations.
+ * Handles course registration with full validation (prerequisites,
+ * seat limits, time conflicts, duplicate checks), course withdrawal,
+ * progress display, and credit calculation.
+ */
 public class StudentFunctions {
 
     private Scanner studentInput = new Scanner(System.in);
