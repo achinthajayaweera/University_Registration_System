@@ -40,5 +40,13 @@ java -cp src finalProjectDuplicate.Main
 | 2409110003 | TinTun     | Student |
 | 2409240001 | Khant      | Student |
 
-## Current Status
-**v18 – JavaDoc Documentation**: All 11 classes now have JavaDoc class-level comments describing their responsibility, key behaviours, and relationships to other classes. This completes the documentation layer across the entire codebase.
+## Features
+- 🔐 Role-based login with 3-attempt lockout (Admin / Advisor / Student)
+- 📋 Course registration with prerequisite, seat limit, time conflict and duplicate checks
+- 📊 Visual curriculum progress reports with `█░` progress bars
+- ⚠ Graduation risk analysis report for advisors
+- 🗓 Term schedule management — open, close, and edit course sections
+- 📚 Full course catalogue with IT and CS tracks, equivalency and prerequisite mappings
+
+## License
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
