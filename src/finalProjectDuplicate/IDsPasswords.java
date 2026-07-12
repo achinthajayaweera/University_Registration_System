@@ -26,7 +26,12 @@ public class IDsPasswords {
     private static final IDsPasswords user5 = new IDsPasswords("2409110003","TinTun",    "student", "Tin");
     private static final IDsPasswords user6 = new IDsPasswords("2409240001","Khant",     "student", "Khant");
 
-    // Loop through all users and return a match, or null if no match
+    /**
+     * Checks the provided credentials against all registered users.
+     * @param username the entered username
+     * @param password the entered password
+     * @return the matching {@link IDsPasswords} user, or {@code null} if no match
+     */
     public static IDsPasswords checkLogin(String username, String password) {
         IDsPasswords[] users = { user1, user2, user3, user4, user5, user6 };
         for (IDsPasswords user : users) {

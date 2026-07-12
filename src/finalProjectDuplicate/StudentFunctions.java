@@ -87,6 +87,7 @@ public class StudentFunctions {
         return student;
     }
 
+    /** Displays the student role menu options. */
     public void menu() {
         System.out.println("\n╔═════════════════════════════════╗");
         System.out.println(  "║          Student Menu           ║");
@@ -100,6 +101,11 @@ public class StudentFunctions {
         System.out.println(  "╚═════════════════════════════════╝");
     }
 
+    /**
+     * Prints the full student academic record including GPA,
+     * credits, completed courses, and currently registered courses.
+     * @param studentID the student's login ID
+     */
     public void printCompletedCourse(String studentID) {
         Student result = null;
         for (Student s : student) {
@@ -141,11 +147,17 @@ public class StudentFunctions {
         }
     }
 
+    /** Delegates to PrintProgress to display remaining course progress for the chosen track. */
     public void remainingCourse(String studentID, String category) {
         PrintProgress printProgress = new PrintProgress();
         printProgress.checkMajorAndPrint(studentID, category);
     }
 
+    /**
+     * Looks up and prints the prerequisites for a given course code.
+     * Prints "No prerequisites required" if none are found.
+     * @param courseCode the course to check
+     */
     public void checkPrerequisite(String courseCode) {
         boolean courseFound = false;
         for (Course c : curriculum.getCourse()) {
@@ -163,6 +175,14 @@ public class StudentFunctions {
         }
     }
 
+    /**
+     * Registers a student for a course section after validating:
+     * completion status, duplicate registration, INTERN credit requirement,
+     * prerequisites, max course load (4), time conflicts, and seat availability.
+     * @param studentID  the student's login ID
+     * @param courseCode the course code to register
+     * @param section    the section number
+     */
     public void registerCourse(String studentID, String courseCode, int section) {
         String code_section = courseCode + "-" + section;
         Student result = null;
@@ -246,6 +266,12 @@ public class StudentFunctions {
         viewRegistration(studentID);
     }
 
+    /**
+     * Drops a course section for a student and restores the seat to the schedule.
+     * @param studentID  the student's login ID
+     * @param courseCode the course code to drop
+     * @param section    the section number
+     */
     public void withdrawCourse(String studentID, String courseCode, int section) {
         String code_section = courseCode + "-" + section;
         boolean studentFound = false;
@@ -272,6 +298,11 @@ public class StudentFunctions {
         }
     }
 
+    /**
+     * Displays the student's currently registered courses in a formatted table
+     * showing course code, section, and time slot.
+     * @param studentID the student's login ID
+     */
     public void viewRegistration(String studentID) {
         for (Student s : student) {
             if (s.getId().equals(studentID)) {
@@ -350,6 +381,11 @@ public class StudentFunctions {
         }
     }
 
+    /**
+     * Looks up the display name of a course from the curriculum by code.
+     * @param code the course code
+     * @return the course name, or "(Unknown Course)" if not found
+     */
     public String findCourseName(String code) {
         for (Course course : curriculum.getCourse()) {
             if (course.getCode().equals(code)) {
@@ -359,6 +395,13 @@ public class StudentFunctions {
         return "(Unknown Course)";
     }
 
+    /**
+     * Calculates total earned credits for a student.
+     * Regular courses are worth {@link Curriculum#COURSE_CREDITS} each;
+     * internship is worth {@link Curriculum#INTERN_CREDITS}.
+     * @param studentID the student's login ID
+     * @return total credits earned
+     */
     public int currentCredit(String studentID) {
         int courseCredits = 0;
         int internCredits = 0;

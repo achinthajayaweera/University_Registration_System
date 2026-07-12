@@ -27,7 +27,7 @@ public class TermSchedule {
         return schedule;
     }
 
-    // Display term schedule with aligned columns
+    /** Prints all open course sections in a formatted box table. */
     public void printSchedule() {
         System.out.println("\n╔═══════════╦═════════╦═══════════════════════════════════╦═══════╗");
         System.out.println(  "║ Course    ║ Section ║ Time Slot                         ║ Seats ║");
@@ -75,7 +75,10 @@ public class TermSchedule {
         printSchedule();
     }
 
-    // System statistics report
+    /**
+     * Prints system-wide statistics: total open courses, total seats,
+     * average seats per course, and per-course registration counts.
+     */
     public void systemStatistics() {
         System.out.println("\n╔══════════════════════════════════════════════════════════════╗");
         System.out.println(  "║                      SYSTEM STATISTICS                      ║");

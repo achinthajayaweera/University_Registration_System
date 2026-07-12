@@ -267,13 +267,19 @@ public class Curriculum {
         System.out.println(" -----------------------------------------------------------------------------------------\n");
     }
 
-    // Add a new course to the curriculum
+    /**
+     * Adds a new course to the catalogue under the given category,
+     * then prints the updated catalogue for that category.
+     */
     public void newCourses(String category, String code, String name) {
         course.add(new Course(category, code, name));
         printCurriculum(category);
     }
 
-    // Remove a course from the curriculum
+    /**
+     * Removes a course from the catalogue by category and code,
+     * then prints the updated catalogue for that category.
+     */
     public void deleteCourses(String category, String code, String name) {
         course.removeIf(c -> (c.getCategory().equals(category) && c.getCode().equals(code)));
         printCurriculum(category);
