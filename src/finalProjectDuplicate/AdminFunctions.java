@@ -20,7 +20,7 @@ public class AdminFunctions {
     private static int    seat;
     private static String category;
 
-    // Display Admin Menu
+    /** Displays the admin role menu options. */
     public void menu() {
         System.out.println("\n╔═════════════════════════════════╗");
         System.out.println(  "║           Admin Menu            ║");
@@ -34,37 +34,66 @@ public class AdminFunctions {
         System.out.println(  "╚═════════════════════════════════╝");
     }
 
-    // Add new course to curriculum
+    /**
+     * Adds a new course to the curriculum catalogue.
+     * @param category the track/category to add the course under
+     * @param code the course code
+     * @param name the course display name
+     */
     public void addCourses(String category, String code, String name) {
         curriculum.newCourses(category, code, name);
     }
 
-    // Remove course from curriculum
+    /**
+     * Removes a course from the curriculum catalogue.
+     * @param category the track/category the course belongs to
+     * @param code the course code to remove
+     * @param name the course display name
+     */
     public void removeCourses(String category, String code, String name) {
         curriculum.deleteCourses(category, code, name);
     }
 
-    // Edit seat limit for a scheduled course
+    /**
+     * Updates the seat limit for an open course section.
+     * @param code    the course code
+     * @param section the section number
+     * @param seats   the new seat limit
+     */
     public void editSeats(String code, int section, int seats) {
         termSchedule.editSeats(code, section, seats);
     }
 
-    // Open a new course section in the term schedule
+    /**
+     * Opens a new course section in the current term schedule.
+     * @param code     the course code
+     * @param section  the section number
+     * @param timeSlot the time slot string
+     * @param seats    the initial seat limit
+     */
     public void openCourse(String code, int section, String timeSlot, int seats) {
         termSchedule.openCourse(code, section, timeSlot, seats);
     }
 
-    // Close (remove) a course section from the term schedule
+    /**
+     * Closes (removes) a course section from the current term schedule.
+     * @param code    the course code
+     * @param section the section number to remove
+     */
     public void closeCourse(String code, int section) {
         termSchedule.closeCourse(code, section);
     }
 
-    // View system statistics report
+    /** Delegates to {@link TermSchedule#systemStatistics()} to print the full report. */
     public void viewReport() {
         termSchedule.systemStatistics();
     }
 
-    // Handle admin menu selection — loops until valid input
+    /**
+     * Handles admin menu input, validates the option range (1–6),
+     * and dispatches to the appropriate operation.
+     * @param option the menu option entered by the user
+     */
     public void selection(int option) {
         Scanner adminInput = new Scanner(System.in);
         try {
@@ -154,7 +183,11 @@ public class AdminFunctions {
         }
     }
 
-    // Helper — display track/category menu and return selected category string
+    /**
+     * Displays the 13-category track selector and returns the selected category string.
+     * Loops until a valid selection (1–13) is entered.
+     * @return the category string matching the admin's selection
+     */
     public String readTrack() {
         Scanner adminInput = new Scanner(System.in);
         System.out.println(" --------------------------------------------");

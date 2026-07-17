@@ -12,7 +12,7 @@ public class AdvisorFunctions {
 
     private static StudentFunctions studentRecord = new StudentFunctions();
 
-    // Display Advisor Menu
+    /** Displays the advisor role menu options. */
     public void menu() {
         System.out.println("\n╔═════════════════════════════════╗");
         System.out.println(  "║          Advisor Menu           ║");
@@ -25,28 +25,48 @@ public class AdvisorFunctions {
         System.out.println(  "╚═════════════════════════════════╝");
     }
 
-    // Search student by ID
+    /**
+     * Searches for a student by ID and prints their full academic record.
+     * @param studentID the student's login ID
+     */
     public void searchStudent(String studentID) {
         studentRecord.printCompletedCourse(studentID);
     }
 
-    // View full curriculum progress for a student
+    /**
+     * Prints the full curriculum progress report for a student across all sections.
+     * @param studentID the student's login ID
+     */
     public void viewProgress(String studentID) {
         PrintProgress printProgress = new PrintProgress();
         printProgress.checkMajorAndPrint(studentID);
     }
 
-    // Register a course on behalf of a student
+    /**
+     * Registers a course on behalf of a student — delegates to StudentFunctions.
+     * @param studentID  the student's login ID
+     * @param courseCode the course code to register
+     * @param section    the section number
+     */
     public void registerCourse(String studentID, String courseCode, int section) {
         studentRecord.registerCourse(studentID, courseCode, section);
     }
 
-    // Withdraw a course on behalf of a student
+    /**
+     * Withdraws a course on behalf of a student — delegates to StudentFunctions.
+     * @param studentID  the student's login ID
+     * @param courseCode the course code to withdraw
+     * @param section    the section number
+     */
     public void withdrawCourse(String studentID, String courseCode, int section) {
         studentRecord.withdrawCourse(studentID, courseCode, section);
     }
 
-    // Graduation risk report
+    /**
+     * Prints the graduation risk report for all students.
+     * Risk is calculated from courses completed per term:
+     * fewer than 2 = HIGH, fewer than 4 = MEDIUM, 4 or more = LOW.
+     */
     public void graduationRisks() {
         System.out.println("\n╔══════════════════════════════════════════════════════════════════════╗");
         System.out.println(  "║                     GRADUATION RISKS REPORT                         ║");

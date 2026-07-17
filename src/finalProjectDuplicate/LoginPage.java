@@ -22,7 +22,11 @@ public class LoginPage {
     private String username = null;
     private String password = null;
 
-    // Login page — 3 attempts before account is blocked
+    /**
+     * Displays the login banner and prompts for credentials.
+     * Allows up to 3 attempts before printing ACCESS DENIED and blocking entry.
+     * On success, sets the appropriate role flag (admin/advisor/student).
+     */
     public void verify() {
         System.out.println("╔═══════════════════════════════════════════════════╗");
         System.out.println("║     Welcome to Stamford Registration System 🎓    ║");
@@ -71,6 +75,10 @@ public class LoginPage {
     }
 
     // Check role and run appropriate menu loop
+    /**
+     * Reads the logged-in user's role flag and runs the appropriate
+     * menu loop (admin, advisor, or student) until the user exits.
+     */
     public void checkRole() {
 
         // Admin loop
@@ -104,7 +112,11 @@ public class LoginPage {
         }
     }
 
-    // Ask user to continue or exit
+    /**
+     * Prompts the user to exit or return to the menu.
+     * Loops until a valid 'y' or 'n' is entered.
+     * @return {@code true} to continue the menu loop, {@code false} to exit
+     */
     public boolean returnMenu() {
         System.out.print("\nExit (y/n): ");
         String exit = sc.next();
