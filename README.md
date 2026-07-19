@@ -7,7 +7,54 @@ A Java console-based university registration system that supports multiple user 
 - Java (Console Application)
 - OOP principles: encapsulation, class design, role-based access
 
+---
+
+## System Architecture
+
+```
+Main
+ └── LoginPage
+      ├── IDsPasswords        (credential verification)
+      ├── AdminFunctions
+      │    ├── Curriculum      (add / remove courses)
+      │    └── TermSchedule    (open / close / edit seats / statistics)
+      ├── AdvisorFunctions
+      │    ├── StudentFunctions (search, register, withdraw on behalf)
+      │    └── PrintProgress   (full progress report)
+      └── StudentFunctions
+           ├── Curriculum      (prerequisite lookups)
+           ├── TermSchedule    (seat checks, time conflict checks)
+           └── PrintProgress   (filtered progress report)
+
+Data Models:
+  Student   — id, name, major, grade, termsCount,
+              completedCourses, registeredCourses,
+              failedCourses, freeElective
+  Course    — code, name, category, prerequisite[],
+              equivalence, section, timeSlot, seats
+```
+
+---
+
+## Login Flow
+
+```
+Start
+  │
+  ▼
+Enter username + password
+  │
+  ├── Match found? ──YES──► Set role flag ──► Role menu loop
+  │                                               │
+  ├── No match, attempts left? ──► Re-prompt      └── Exit (y) or continue (n)
+  │
+  └── 0 attempts left ──► ACCESS DENIED
+```
+
+---
+
 ## Project Structure
+
 ```
 src/
 └── finalProjectDuplicate/
@@ -24,13 +71,19 @@ src/
     └── AdvisorFunctions.java  # Advisor operations and graduation risk reports
 ```
 
+---
+
 ## How to Run
+
 ```bash
 javac src/finalProjectDuplicate/*.java
 java -cp src finalProjectDuplicate.Main
 ```
 
+---
+
 ## Test Credentials
+
 | Username   | Password   | Role    |
 |------------|------------|---------|
 | admin1     | admin1a    | Admin   |
@@ -40,7 +93,10 @@ java -cp src finalProjectDuplicate.Main
 | 2409110003 | TinTun     | Student |
 | 2409240001 | Khant      | Student |
 
+---
+
 ## Features
+
 - 🔐 Role-based login with 3-attempt lockout (Admin / Advisor / Student)
 - 📋 Course registration with prerequisite, seat limit, time conflict and duplicate checks
 - 📊 Visual curriculum progress reports with `█░` progress bars
@@ -48,5 +104,12 @@ java -cp src finalProjectDuplicate.Main
 - 🗓 Term schedule management — open, close, and edit course sections
 - 📚 Full course catalogue with IT and CS tracks, equivalency and prerequisite mappings
 
+---
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for setup instructions and code conventions.
+
 ## License
+
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
