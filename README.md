@@ -106,9 +106,10 @@ java -cp src finalProjectDuplicate.Main
 
 ---
 
-## Contributing
+## Documentation
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for setup instructions and code conventions.
+- [CONTRIBUTING.md](CONTRIBUTING.md) — setup instructions and code conventions
+- [docs/SYSTEM_DESIGN.md](docs/SYSTEM_DESIGN.md) — architecture decisions, validation chain, credit calculation and known limitations
 
 ## License
 
