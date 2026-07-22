@@ -1,11 +1,33 @@
 # University Registration System
 
-## Project Overview
-A Java console-based university registration system that supports multiple user roles: Admin, Advisor, and Student. The system handles course registration, curriculum tracking, and academic progress reporting.
+![Java](https://img.shields.io/badge/Java-11%2B-orange?logo=java)
+![License](https://img.shields.io/badge/License-MIT-blue)
+![Status](https://img.shields.io/badge/Status-Complete-brightgreen)
 
-## Tech Stack
-- Java (Console Application)
-- OOP principles: encapsulation, class design, role-based access
+A role-based console application for university course registration built in Java. Supports three user roles — **Admin**, **Advisor**, and **Student** — each with a dedicated menu and a distinct set of operations across course management, registration, and academic progress tracking.
+
+---
+
+## Demo
+
+![System Demo](demo1.gif)
+
+---
+
+## Features
+
+| Role | Capabilities |
+|---|---|
+| 🔑 **Admin** | Add/remove curriculum courses, open/close term sections, edit seat limits, view system statistics |
+| 👩‍🏫 **Advisor** | Search students, view full progress reports, register/withdraw courses on behalf of students, run graduation risk analysis |
+| 🎓 **Student** | View completed courses, check remaining curriculum, look up prerequisites, register/drop courses, view registration status |
+
+**System-wide:**
+- 🔐 3-attempt login lockout with role detection
+- 📊 Visual `█░` progress bars with ✅/⏳/🔒 course status indicators
+- ✅ 10-step registration validation (prerequisites, seat limits, time conflicts, course load, INTERN credit gate)
+- ⚠ Graduation risk report (HIGH / MEDIUM / LOW based on courses per term)
+- 📚 Full IT and CS course catalogues with prerequisite and equivalency mappings
 
 ---
 
@@ -36,47 +58,46 @@ Data Models:
 
 ---
 
-## Login Flow
-
-```
-Start
-  │
-  ▼
-Enter username + password
-  │
-  ├── Match found? ──YES──► Set role flag ──► Role menu loop
-  │                                               │
-  ├── No match, attempts left? ──► Re-prompt      └── Exit (y) or continue (n)
-  │
-  └── 0 attempts left ──► ACCESS DENIED
-```
-
----
-
 ## Project Structure
 
 ```
-src/
-└── finalProjectDuplicate/
-    ├── Main.java              # Entry point
-    ├── LoginPage.java         # Login, 3-attempt lock, role menu routing
-    ├── IDsPasswords.java      # All 6 system users
-    ├── Student.java           # Student data model
-    ├── Course.java            # Course model (all 4 constructors)
-    ├── TermSchedule.java      # Term schedule management and statistics
-    ├── Curriculum.java        # Full course catalogue + prerequisites + equivalencies
-    ├── AdminFunctions.java    # Admin operations
-    ├── StudentFunctions.java  # Student operations and registration logic
-    ├── PrintProgress.java     # Curriculum progress reports
-    └── AdvisorFunctions.java  # Advisor operations and graduation risk reports
+University_Registration_System/
+├── src/
+│   └── finalProjectDuplicate/
+│       ├── Main.java              # Entry point
+│       ├── LoginPage.java         # Login, 3-attempt lock, role menu routing
+│       ├── IDsPasswords.java      # All 6 system users
+│       ├── Student.java           # Student data model
+│       ├── Course.java            # Course model (4 constructors)
+│       ├── TermSchedule.java      # Term schedule management and statistics
+│       ├── Curriculum.java        # Full course catalogue
+│       ├── AdminFunctions.java    # Admin operations
+│       ├── AdvisorFunctions.java  # Advisor operations
+│       ├── StudentFunctions.java  # Student operations and registration logic
+│       └── PrintProgress.java     # Curriculum progress reports
+├── docs/
+│   ├── SYSTEM_DESIGN.md           # Architecture decisions and design notes
+│   └── USER_GUIDE.md              # Step-by-step guide for all three roles
+├── CONTRIBUTING.md
+├── LICENSE
+└── .gitignore
 ```
 
 ---
 
 ## How to Run
 
+**Prerequisites:** Java JDK 11 or higher
+
 ```bash
+# Clone the repository
+git clone https://github.com/achinthajayaweera/University_Registration_System.git
+cd University_Registration_System
+
+# Compile
 javac src/finalProjectDuplicate/*.java
+
+# Run
 java -cp src finalProjectDuplicate.Main
 ```
 
@@ -95,22 +116,13 @@ java -cp src finalProjectDuplicate.Main
 
 ---
 
-## Features
-
-- 🔐 Role-based login with 3-attempt lockout (Admin / Advisor / Student)
-- 📋 Course registration with prerequisite, seat limit, time conflict and duplicate checks
-- 📊 Visual curriculum progress reports with `█░` progress bars
-- ⚠ Graduation risk analysis report for advisors
-- 🗓 Term schedule management — open, close, and edit course sections
-- 📚 Full course catalogue with IT and CS tracks, equivalency and prerequisite mappings
-
----
-
 ## Documentation
 
-- [CONTRIBUTING.md](CONTRIBUTING.md) — setup instructions and code conventions
+- [docs/USER_GUIDE.md](docs/USER_GUIDE.md) — step-by-step guide for all three roles
 - [docs/SYSTEM_DESIGN.md](docs/SYSTEM_DESIGN.md) — architecture decisions, validation chain, credit calculation and known limitations
-- [docs/USER_GUIDE.md](docs/USER_GUIDE.md) — step-by-step guide for all three roles (Admin, Advisor, Student)
+- [CONTRIBUTING.md](CONTRIBUTING.md) — setup instructions and code conventions
+
+---
 
 ## License
 
