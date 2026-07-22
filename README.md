@@ -110,6 +110,7 @@ java -cp src finalProjectDuplicate.Main
 
 - [CONTRIBUTING.md](CONTRIBUTING.md) — setup instructions and code conventions
 - [docs/SYSTEM_DESIGN.md](docs/SYSTEM_DESIGN.md) — architecture decisions, validation chain, credit calculation and known limitations
+- [docs/USER_GUIDE.md](docs/USER_GUIDE.md) — step-by-step guide for all three roles (Admin, Advisor, Student)
 
 ## License
 
