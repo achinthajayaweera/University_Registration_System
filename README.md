@@ -8,7 +8,7 @@ A role-based console application for university course registration built in Jav
 
 ---
 
-## Demo
+## Demoo
 
 ![System Demo](demo1.gif)
 
