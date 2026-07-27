@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Stamford University — Registration System</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1a1f3c;--navy2:#252b4a;--navy3:#2e3560;
+  --indigo:#5b5fc7;--indigo2:#4b4fb0;
+  --white:#ffffff;--canvas:#f4f5fb;--border:#e5e7f0;
+  --text:#1a1f3c;--text2:#6b7280;--text3:#9ca3af;
+  --card:#ffffff;
+  --c1:#5b5fc7;--c1b:#eef0fc;
+  --c2:#0ea87e;--c2b:#e6f9f4;
+  --c3:#f59e0b;--c3b:#fef3dc;
+  --c4:#ef4444;--c4b:#fee2e2;
+  --c5:#8b5cf6;--c5b:#f3effe;
+  --shadow:0 2px 12px rgba(26,31,60,0.08);
+  --shadow2:0 4px 24px rgba(26,31,60,0.12);
+}
+body{font-family:'Inter',sans-serif;background:var(--canvas);color:var(--text);min-height:100vh;display:flex;font-size:14px}
+
+/* ─── LOGIN ─────────────────────────────────── */
+#login-screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--navy) 0%,var(--navy3) 100%);z-index:200;transition:opacity .45s ease}
+#login-screen.hide{opacity:0;pointer-events:none}
+.login-wrap{display:flex;width:820px;background:var(--white);border-radius:24px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.35);animation:slideUp .6s cubic-bezier(.16,1,.3,1) both}
+@keyframes slideUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.login-left{flex:1;background:linear-gradient(160deg,var(--navy) 0%,var(--indigo) 100%);padding:48px;display:flex;flex-direction:column;justify-content:space-between}
+.ll-logo{width:52px;height:52px;background:rgba(255,255,255,.15);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:40px}
+.ll-title{font-size:26px;font-weight:700;color:#fff;margin-bottom:10px;line-height:1.25}
+.ll-sub{font-size:13px;color:rgba(255,255,255,.55);line-height:1.6;max-width:220px}
+.ll-dots{display:flex;gap:8px;margin-top:auto}
+.ll-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2)}
+.ll-dot.active{background:rgba(255,255,255,.8);width:24px;border-radius:4px}
+.login-right{width:380px;padding:48px;display:flex;flex-direction:column;justify-content:center}
+.lr-title{font-size:22px;font-weight:700;margin-bottom:4px}
+.lr-sub{font-size:13px;color:var(--text2);margin-bottom:32px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.field input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s,box-shadow .2s;background:#fafafa}
+.field input:focus{border-color:var(--indigo);box-shadow:0 0 0 3px rgba(91,95,199,.1);background:#fff}
+.login-btn{width:100%;padding:12px;background:var(--indigo);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;margin-top:8px;transition:background .2s,transform .15s}
+.login-btn:hover{background:var(--indigo2);transform:translateY(-1px)}
+.login-err{background:#fee2e2;border:1px solid #fca5a5;color:#dc2626;border-radius:8px;padding:9px 12px;font-size:12px;margin-top:10px;display:none}
+.login-err.show{display:block;animation:shake .3s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.hint-box{background:#f8f9ff;border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:20px}
+.hint-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);margin-bottom:8px}
+.hint-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:5px;min-width:58px;text-align:center}
+.ba{background:#eef0fc;color:var(--indigo2)}
+.bv{background:#e6f9f4;color:#065f46}
+.bs{background:#fef3dc;color:#92400e}
+.hint-cred{font-size:11px;color:var(--text2);font-family:monospace}
+
+/* ─── APP ───────────────────────────────────── */
+#app{display:none;width:100%;min-height:100vh}
+#app.show{display:flex;opacity:1}
+
+/* ─── SIDEBAR ───────────────────────────────── */
+#sidebar{width:220px;min-height:100vh;background:var(--navy);display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:50;transform:translateX(-220px);transition:transform .4s cubic-bezier(.16,1,.3,1)}
+#sidebar.open{transform:translateX(0)}
+.sb-logo{padding:22px 18px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sb-icon{width:36px;height:36px;background:var(--indigo);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.sb-brand{font-size:12px;font-weight:700;color:#fff;line-height:1.3}
+.sb-brand span{display:block;font-size:10px;font-weight:400;color:rgba(255,255,255,.4);margin-top:1px}
+.sb-user{margin:12px 10px;background:rgba(255,255,255,.05);border-radius:10px;padding:10px;display:flex;align-items:center;gap:8px}
+.sb-avatar{width:34px;height:34px;border-radius:50%;background:var(--indigo);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.sb-uname{font-size:12px;font-weight:600;color:#fff}
+.sb-urole{font-size:10px;color:rgba(255,255,255,.4);margin-top:1px}
+.sb-nav{flex:1;padding:6px 10px;overflow-y:auto}
+.sb-label{font-size:9px;font-weight:600;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.08em;padding:12px 8px 5px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;cursor:pointer;margin-bottom:1px;color:rgba(255,255,255,.45);font-size:12px;font-weight:500;border:none;background:none;width:100%;text-align:left;transition:all .15s}
+.nav-item i{font-size:16px;flex-shrink:0}
+.nav-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.85)}
+.nav-item.active{background:rgba(91,95,199,.3);color:#fff}
+.nav-item.active i{color:var(--indigo)}
+.sb-footer{padding:10px;border-top:1px solid rgba(255,255,255,.06)}
+.logout-btn{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;cursor:pointer;color:#f87171;font-size:12px;font-weight:500;border:none;background:none;width:100%;text-align:left;transition:background .15s}
+.logout-btn:hover{background:rgba(239,68,68,.1)}
+
+/* ─── MAIN ──────────────────────────────────── */
+#main{margin-left:220px;flex:1;min-height:100vh;display:flex;flex-direction:column;opacity:0;transform:translateX(16px);transition:all .4s cubic-bezier(.16,1,.3,1)}
+#main.ready{opacity:1;transform:translateX(0)}
+
+/* ─── TOPBAR ────────────────────────────────── */
+.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.tb-left{display:flex;align-items:center;gap:12px}
+.tb-title{font-size:18px;font-weight:700;color:var(--text)}
+.tb-right{display:flex;align-items:center;gap:10px}
+.tb-search{display:flex;align-items:center;gap:8px;background:var(--canvas);border:1px solid var(--border);border-radius:8px;padding:6px 12px;width:200px}
+.tb-search i{color:var(--text3);font-size:16px}
+.tb-search input{border:none;background:none;outline:none;font-size:13px;color:var(--text);font-family:inherit;width:100%}
+.tb-search input::placeholder{color:var(--text3)}
+.role-pill{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600}
+.rp-admin{background:#eef0fc;color:var(--indigo2)}
+.rp-advisor{background:#e6f9f4;color:#065f46}
+.rp-student{background:#fef3dc;color:#92400e}
+.icon-btn{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);background:#fff;cursor:pointer;color:var(--text2);font-size:16px;transition:background .15s;position:relative}
+.icon-btn:hover{background:var(--canvas)}
+.notif-dot{position:absolute;top:6px;right:6px;width:6px;height:6px;border-radius:50%;background:#ef4444}
+
+/* ─── CONTENT ───────────────────────────────── */
+.content{padding:24px;flex:1}
+
+/* ─── STAT CARDS ────────────────────────────── */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-card{border-radius:14px;padding:20px;color:#fff;position:relative;overflow:hidden;cursor:default;transition:transform .2s}
+.stat-card:hover{transform:translateY(-2px)}
+.stat-card::after{content:'';position:absolute;bottom:-20px;right:-20px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.12)}
+.sc-label{font-size:11px;font-weight:500;opacity:.8;margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em}
+.sc-val{font-size:32px;font-weight:800;line-height:1;margin-bottom:4px}
+.sc-sub{font-size:11px;opacity:.7}
+.sc-icon{position:absolute;top:18px;right:18px;font-size:26px;opacity:.35}
+.sc1{background:linear-gradient(135deg,#5b5fc7,#7c7fe8)}
+.sc2{background:linear-gradient(135deg,#0ea87e,#2bc49a)}
+.sc3{background:linear-gradient(135deg,#f59e0b,#fbbf24)}
+.sc4{background:linear-gradient(135deg,#ef4444,#f87171)}
+
+/* ─── ROW LAYOUT ────────────────────────────── */
+.row{display:grid;gap:16px;margin-bottom:24px}
+.row-70-30{grid-template-columns:1fr 280px}
+.row-3col{grid-template-columns:repeat(3,1fr)}
+
+/* ─── CARD ──────────────────────────────────── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow)}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.card-title{font-size:14px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:7px}
+.card-title i{font-size:16px;color:var(--indigo)}
+.card-link{font-size:12px;color:var(--indigo);cursor:pointer;font-weight:500}
+.card-link:hover{text-decoration:underline}
+
+/* ─── CHART AREA ────────────────────────────── */
+.chart-wrap{position:relative;height:220px}
+
+/* ─── QUICK ACTIONS ─────────────────────────── */
+.qa-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.qa-item{display:flex;align-items:center;gap:10px;padding:11px 12px;border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .15s}
+.qa-item:hover{border-color:var(--indigo);background:#f8f9ff;transform:translateY(-1px)}
+.qa-dot{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.qa-text{font-size:12px;font-weight:600;color:var(--text)}
+.qa-sub{font-size:11px;color:var(--text2);margin-top:1px}
+
+/* ─── ACTIVITY ──────────────────────────────── */
+.act-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.act-item:last-child{border-bottom:none}
+.act-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:1px}
+.act-msg{font-size:12px;color:var(--text);line-height:1.5;font-weight:500}
+.act-time{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* ─── SCHEDULE TABLE ────────────────────────── */
+.sched-table{width:100%;border-collapse:collapse}
+.sched-table th{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);padding:6px 10px;text-align:left;border-bottom:1px solid var(--border)}
+.sched-table td{padding:10px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text)}
+.sched-table tr:last-child td{border-bottom:none}
+.sched-table tr:hover td{background:#f8f9ff}
+.seat-bar{display:flex;align-items:center;gap:7px}
+.seat-track{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.seat-fill{height:100%;border-radius:3px}
+.tag{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600}
+
+/* ─── PROGRESS BAR ──────────────────────────── */
+.prog-row{margin-bottom:14px}
+.prog-top{display:flex;justify-content:space-between;margin-bottom:5px}
+.prog-label{font-size:12px;font-weight:500;color:var(--text)}
+.prog-pct{font-size:12px;font-weight:600;color:var(--indigo)}
+.prog-track{height:8px;background:var(--canvas);border-radius:4px;overflow:hidden;border:1px solid var(--border)}
+.prog-fill{height:100%;border-radius:4px;transition:width .6s cubic-bezier(.16,1,.3,1)}
+
+/* ─── STUDENT CARD ──────────────────────────── */
+.stu-card{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px;cursor:pointer;transition:all .15s}
+.stu-card:hover{border-color:var(--indigo);background:#f8f9ff}
+.stu-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0}
+.stu-name{font-size:13px;font-weight:600;color:var(--text)}
+.stu-id{font-size:11px;color:var(--text2);margin-top:1px}
+.stu-gpa{margin-left:auto;font-size:12px;font-weight:700;color:var(--c2)}
+
+/* ─── RISK BADGE ────────────────────────────── */
+.risk-high{background:#fee2e2;color:#dc2626}
+.risk-med{background:#fef3dc;color:#d97706}
+.risk-low{background:#e6f9f4;color:#065f46}
+
+/* ─── VIEW SYSTEM ───────────────────────────── */
+.view{display:none}
+.view.active{display:block;animation:fadeIn .3s ease both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── MODAL ──────────────────────────────────── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(26,31,60,.4);z-index:100;align-items:center;justify-content:center}
+.modal-bg.show{display:flex}
+.modal{background:#fff;border-radius:16px;padding:28px;width:440px;box-shadow:var(--shadow2);animation:slideUp .3s cubic-bezier(.16,1,.3,1) both}
+.modal-title{font-size:16px;font-weight:700;margin-bottom:4px}
+.modal-sub{font-size:12px;color:var(--text2);margin-bottom:20px}
+.modal-field{margin-bottom:14px}
+.modal-field label{display:block;font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.modal-field input,.modal-field select{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;outline:none;transition:border-color .2s}
+.modal-field input:focus,.modal-field select:focus{border-color:var(--indigo)}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+.btn{padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .15s}
+.btn-primary{background:var(--indigo);color:#fff;border:none}
+.btn-primary:hover{background:var(--indigo2)}
+.btn-ghost{background:none;border:1.5px solid var(--border);color:var(--text2)}
+.btn-ghost:hover{background:var(--canvas)}
+.toast{position:fixed;bottom:28px;right:28px;background:var(--navy);color:#fff;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:500;z-index:300;display:none;align-items:center;gap:8px;box-shadow:var(--shadow2)}
+.toast.show{display:flex;animation:slideUp .3s ease both}
+</style>
+</head>
+<body>
+
+<!-- ─── LOGIN ────────────────────────────────── -->
+<div id="login-screen">
+  <div class="login-wrap">
+    <div class="login-left">
+      <div>
+        <div class="ll-logo">🎓</div>
+        <div class="ll-title">Stamford University Registration System</div>
+        <div class="ll-sub">Manage courses, track progress, and register students — all in one place.</div>
+      </div>
+      <div class="ll-dots">
+        <div class="ll-dot active"></div>
+        <div class="ll-dot"></div>
+        <div class="ll-dot"></div>
+      </div>
+    </div>
+    <div class="login-right">
+      <div class="lr-title">Sign in</div>
+      <div class="lr-sub">Enter your credentials to continue</div>
+      <div class="field"><label>Username</label><input type="text" id="username" placeholder="e.g. admin1" autocomplete="off"/></div>
+      <div class="field"><label>Password</label><input type="password" id="password" placeholder="Your password"/></div>
+      <button class="login-btn" onclick="doLogin()">Sign in to Dashboard</button>
+      <div class="login-err" id="login-err">Incorrect username or password.</div>
+      <div class="hint-box">
+        <div class="hint-title">Test credentials</div>
+        <div class="hint-row"><span class="badge ba">Admin</span><span class="hint-cred">admin1 / admin1a</span></div>
+        <div class="hint-row"><span class="badge bv">Advisor</span><span class="hint-cred">advisor1 / advisor1a</span></div>
+        <div class="hint-row"><span class="badge bs">Student</span><span class="hint-cred">2408050001 / JakeLee</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── APP ──────────────────────────────────── -->
+<div id="app">
+  <div id="sidebar">
+    <div class="sb-logo">
+      <div class="sb-icon">🎓</div>
+      <div class="sb-brand">Stamford Uni <span>Registration System</span></div>
+    </div>
+    <div class="sb-user">
+      <div class="sb-avatar" id="sb-av">?</div>
+      <div><div class="sb-uname" id="sb-name">—</div><div class="sb-urole" id="sb-role">—</div></div>
+    </div>
+    <div class="sb-nav" id="sb-nav"></div>
+    <div class="sb-footer">
+      <button class="logout-btn" onclick="doLogout()"><i class="ti ti-logout"></i> Sign out</button>
+    </div>
+  </div>
+
+  <div id="main">
+    <div class="topbar">
+      <div class="tb-left">
+        <div class="tb-title" id="tb-title">Dashboard</div>
+      </div>
+      <div class="tb-right">
+        <div class="tb-search"><i class="ti ti-search"></i><input type="text" placeholder="Search..."/></div>
+        <div class="icon-btn"><i class="ti ti-bell"></i><div class="notif-dot"></div></div>
+        <div class="icon-btn"><i class="ti ti-settings"></i></div>
+        <span class="role-pill" id="role-pill">—</span>
+      </div>
+    </div>
+    <div class="content" id="content"></div>
+  </div>
+</div>
+
+<!-- ─── MODAL ────────────────────────────────── -->
+<div class="modal-bg" id="modal-bg" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal">
+    <div class="modal-title" id="modal-title">Action</div>
+    <div class="modal-sub" id="modal-sub"></div>
+    <div id="modal-body"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" id="modal-ok" onclick="submitModal()">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── TOAST ────────────────────────────────── -->
+<div class="toast" id="toast"><i class="ti ti-check"></i><span id="toast-msg"></span></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// ─── DATA ────────────────────────────────────
+const USERS=[
+  {u:'admin1',p:'admin1a',role:'admin',name:'David'},
+  {u:'advisor1',p:'advisor1a',role:'advisor',name:'Victoria'},
+  {u:'advisor2',p:'advisor2a',role:'advisor',name:'Hellen'},
+  {u:'2408050001',p:'JakeLee',role:'student',name:'Jake Lee',id:'2408050001',major:'Computer Science',gpa:3.7,terms:4,credits:68},
+  {u:'2409110003',p:'TinTun',role:'student',name:'Tin Tun Aung',id:'2409110003',major:'Computer Science',gpa:4.0,terms:4,credits:68},
+  {u:'2409240001',p:'Khant',role:'student',name:'Khant Hpone',id:'2409240001',major:'Computer Science',gpa:4.0,terms:4,credits:72},
+];
+
+let schedule=[
+  {code:'ITE222',sec:3,time:'Mon/Thu 08:30-10:30',seats:22,total:25,open:true},
+  {code:'ITE420',sec:1,time:'Mon/Thu 14:30-16:30',seats:18,total:25,open:true},
+  {code:'ITE479',sec:3,time:'Mon/Thu 10:30-12:30',seats:25,total:25,open:true},
+  {code:'ART101',sec:3,time:'Mon/Thu 10:30-12:30',seats:20,total:25,open:true},
+  {code:'ART102',sec:3,time:'Mon/Thu 10:30-12:30',seats:14,total:25,open:false},
+  {code:'INTERN',sec:3,time:'Mon/Thu 10:30-12:30',seats:10,total:25,open:true},
+];
+
+const students=[
+  {id:'2408050001',name:'Jake Lee',major:'CS',gpa:3.7,terms:4,done:17,risk:'LOW',avatar:'#5b5fc7'},
+  {id:'2409110003',name:'Tin Tun Aung',major:'CS',gpa:4.0,terms:4,done:16,risk:'LOW',avatar:'#0ea87e'},
+  {id:'2409240001',name:'Khant Hpone',major:'CS',gpa:4.0,terms:4,done:17,risk:'LOW',avatar:'#f59e0b'},
+  {id:'test',name:'Test Student',major:'IT',gpa:4.0,terms:4,done:2,risk:'HIGH',avatar:'#ef4444'},
+];
+
+const NAVS={
+  admin:[
+    {icon:'ti-layout-dashboard',label:'Dashboard',view:'dashboard'},
+    {icon:'ti-books',label:'Curriculum',view:'curriculum'},
+    {icon:'ti-calendar',label:'Term Schedule',view:'schedule'},
+    {icon:'ti-chart-bar',label:'Statistics',view:'stats'},
+  ],
+  advisor:[
+    {icon:'ti-layout-dashboard',label:'Dashboard',view:'dashboard'},
+    {icon:'ti-users',label:'Students',view:'students'},
+    {icon:'ti-chart-line',label:'Progress Reports',view:'progress'},
+    {icon:'ti-alert-triangle',label:'Graduation Risks',view:'risks'},
+  ],
+  student:[
+    {icon:'ti-layout-dashboard',label:'Dashboard',view:'dashboard'},
+    {icon:'ti-check',label:'Completed Courses',view:'completed'},
+    {icon:'ti-plus',label:'Register Course',view:'register'},
+    {icon:'ti-calendar',label:'My Schedule',view:'myschedule'},
+  ],
+};
+
+// ─── STATE ───────────────────────────────────
+let me=null,attempts=0,currentView='dashboard',modalAction=null;
+
+// ─── LOGIN ───────────────────────────────────
+function doLogin(){
+  const u=document.getElementById('username').value.trim();
+  const p=document.getElementById('password').value.trim();
+  const user=USERS.find(x=>x.u===u&&x.p===p);
+  const err=document.getElementById('login-err');
+  if(user){me=user;attempts=0;document.getElementById('login-screen').classList.add('hide');setTimeout(launchApp,400);}
+  else{
+    attempts++;err.classList.add('show');
+    const left=3-attempts;
+    if(left<=0){err.textContent='Account locked — too many failed attempts.';document.querySelector('.login-btn').disabled=true;document.querySelector('.login-btn').style.opacity='.4';}
+    else err.textContent=`Incorrect credentials. ${left} attempt${left>1?'s':''} remaining.`;
+  }
+}
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('login-screen').style.opacity!=='0')doLogin();});
+
+// ─── LAUNCH ──────────────────────────────────
+function launchApp(){
+  const app=document.getElementById('app');
+  const sb=document.getElementById('sidebar');
+  const main=document.getElementById('main');
+  app.classList.add('show');app.style.display='flex';
+  setTimeout(()=>{sb.classList.add('open');setTimeout(()=>main.classList.add('ready'),150);},50);
+  document.getElementById('sb-av').textContent=me.name[0];
+  document.getElementById('sb-name').textContent=me.name;
+  document.getElementById('sb-role').textContent=me.role.charAt(0).toUpperCase()+me.role.slice(1);
+  const rp=document.getElementById('role-pill');
+  rp.textContent=me.role.charAt(0).toUpperCase()+me.role.slice(1);
+  rp.className='role-pill rp-'+me.role;
+  buildNav();showView('dashboard');
+}
+
+// ─── NAV ─────────────────────────────────────
+function buildNav(){
+  const nav=document.getElementById('sb-nav');
+  nav.innerHTML='<div class="sb-label">Main Menu</div>';
+  (NAVS[me.role]||[]).forEach((item,i)=>{
+    const btn=document.createElement('button');
+    btn.className='nav-item'+(i===0?' active':'');
+    btn.innerHTML=`<i class="ti ${item.icon}" aria-hidden="true"></i>${item.label}`;
+    btn.onclick=()=>{
+      document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');showView(item.view);
+    };
+    nav.appendChild(btn);
+  });
+}
+
+// ─── VIEWS ───────────────────────────────────
+function showView(v){
+  currentView=v;
+  document.getElementById('tb-title').textContent=
+    v==='dashboard'?'Dashboard':
+    v==='schedule'||v==='myschedule'?'Term Schedule':
+    v==='stats'?'System Statistics':
+    v==='students'?'Student Directory':
+    v==='progress'?'Progress Reports':
+    v==='risks'?'Graduation Risks':
+    v==='register'?'Register Course':
+    v==='completed'?'Completed Courses':
+    v==='curriculum'?'Curriculum Management':'Dashboard';
+  const c=document.getElementById('content');
+  if(v==='dashboard') renderDashboard(c);
+  else if(v==='schedule'||v==='myschedule') renderSchedule(c);
+  else if(v==='stats') renderStats(c);
+  else if(v==='students') renderStudents(c);
+  else if(v==='risks') renderRisks(c);
+  else if(v==='register') renderRegister(c);
+  else if(v==='completed') renderCompleted(c);
+  else c.innerHTML=`<div class="card" style="text-align:center;padding:60px 20px"><i class="ti ti-tools" style="font-size:42px;color:var(--indigo);opacity:.4"></i><div style="font-size:15px;font-weight:600;margin-top:12px;color:var(--text)">Coming soon</div><div style="font-size:12px;color:var(--text2);margin-top:6px">This section will be ready in the next version.</div></div>`;
+}
+
+// ─── DASHBOARD ───────────────────────────────
+let chartInst=null;
+function renderDashboard(c){
+  const r=me.role;
+  const stats={
+    admin:[['Courses Open','6','ti-books','sc1'],['Total Seats','150','ti-armchair','sc2'],['Registered','4','ti-users','sc3'],['Fill Rate','72%','ti-chart-pie','sc4']],
+    advisor:[['Students','4','ti-users','sc1'],['At Risk','1','ti-alert-triangle','sc4'],['On Track','3','ti-circle-check','sc2'],['Open Sections','5','ti-calendar','sc3']],
+    student:[['Completed','17','ti-check','sc2'],['Credits','68','ti-award','sc1'],['GPA','3.7','ti-star','sc3'],['Terms Done','4','ti-calendar','sc4']],
+  }[r];
+
+  const h=new Date().getHours();
+  const greeting=h<12?'Good morning':'h<17?'Good afternoon':'Good evening';
+
+  const activities=[
+    {icon:'📚',msg:'<b>ITE222</b> — section 3 now has 22/25 seats filled',time:'2 hours ago',bg:'#eef0fc'},
+    {icon:'👤',msg:'New student <b>Khant Hpone</b> registered for ITE479',time:'4 hours ago',bg:'#e6f9f4'},
+    {icon:'⚠️',msg:'Student <b>test</b> flagged as graduation risk',time:'Yesterday',bg:'#fee2e2'},
+    {icon:'✅',msg:'Advisor <b>Victoria</b> approved 3 course registrations',time:'Yesterday',bg:'#fef3dc'},
+  ];
+
+  c.innerHTML=`
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+    <div>
+      <div style="font-size:20px;font-weight:700">${greeting}, ${me.name}! 👋</div>
+      <div style="font-size:12px;color:var(--text2);margin-top:3px">${new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}</div>
+    </div>
+  </div>
+  <div class="stat-grid">
+    ${stats.map(([lbl,val,icon,cls])=>`
+    <div class="stat-card ${cls}">
+      <div class="sc-label">${lbl}</div>
+      <div class="sc-val">${val}</div>
+      <i class="ti ${icon} sc-icon" aria-hidden="true"></i>
+    </div>`).join('')}
+  </div>
+  <div class="row row-70-30">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title"><i class="ti ti-chart-line" aria-hidden="true"></i>Registration Activity</div>
+        <span class="card-link">This month</span>
+      </div>
+      <div class="chart-wrap"><canvas id="main-chart" role="img" aria-label="Line chart showing registration activity over weeks">Registration activity chart.</canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-title"><i class="ti ti-clock" aria-hidden="true"></i>Recent Activity</div></div>
+      ${activities.map(a=>`
+      <div class="act-item">
+        <div class="act-dot" style="background:${a.bg}">${a.icon}</div>
+        <div><div class="act-msg">${a.msg}</div><div class="act-time">${a.time}</div></div>
+      </div>`).join('')}
+    </div>
+  </div>
+  <div class="row row-3col">
+    ${r==='admin'?adminQuickActions():r==='advisor'?advisorQuickActions():studentQuickActions()}
+  </div>`;
+
+  setTimeout(()=>{
+    if(chartInst)chartInst.destroy();
+    const ctx=document.getElementById('main-chart');
+    if(!ctx)return;
+    chartInst=new Chart(ctx,{
+      type:'line',
+      data:{
+        labels:['Week 1','Week 2','Week 3','Week 4','Week 5','Week 6','Week 7','Week 8'],
+        datasets:[
+          {label:'Registrations',data:[4,7,5,12,9,15,11,18],borderColor:'#5b5fc7',backgroundColor:'rgba(91,95,199,.08)',tension:.4,fill:true,pointBackgroundColor:'#5b5fc7',pointRadius:4,pointHoverRadius:6},
+          {label:'Withdrawals',data:[1,2,1,3,2,2,1,3],borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.05)',tension:.4,fill:true,pointBackgroundColor:'#ef4444',pointRadius:4,pointHoverRadius:6,borderDash:[5,3]},
+        ]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'rgba(0,0,0,.04)'},ticks:{font:{size:11},color:'#9ca3af'}},x:{grid:{display:false},ticks:{font:{size:11},color:'#9ca3af'}}}}
+    });
+  },100);
+}
+
+function adminQuickActions(){return`
+  <div class="card">
+    <div class="card-head"><div class="card-title"><i class="ti ti-bolt" aria-hidden="true"></i>Curriculum</div></div>
+    <div class="qa-grid">
+      <div class="qa-item" onclick="openModal('addCourse')"><div class="qa-dot" style="background:#eef0fc"><i class="ti ti-plus" style="color:var(--indigo)"></i></div><div><div class="qa-text">Add course</div></div></div>
+      <div class="qa-item" onclick="showView('curriculum')"><div class="qa-dot" style="background:#e6f9f4"><i class="ti ti-books" style="color:#0ea87e"></i></div><div><div class="qa-text">View catalogue</div></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-title"><i class="ti ti-calendar" aria-hidden="true"></i>Schedule</div></div>
+    <div class="qa-grid">
+      <div class="qa-item" onclick="openModal('openSection')"><div class="qa-dot" style="background:#fef3dc"><i class="ti ti-calendar-plus" style="color:#f59e0b"></i></div><div><div class="qa-text">Open section</div></div></div>
+      <div class="qa-item" onclick="showView('schedule')"><div class="qa-dot" style="background:#fee2e2"><i class="ti ti-table" style="color:#ef4444"></i></div><div><div class="qa-text">View schedule</div></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-title"><i class="ti ti-chart-bar" aria-hidden="true"></i>Reports</div></div>
+    <div class="qa-grid">
+      <div class="qa-item" onclick="showView('stats')"><div class="qa-dot" style="background:#f3effe"><i class="ti ti-chart-pie" style="color:#8b5cf6"></i></div><div><div class="qa-text">Statistics</div></div></div>
+      <div class="qa-item"><div class="qa-dot" style="background:#e6f9f4"><i class="ti ti-download" style="color:#0ea87e"></i></div><div><div class="qa-text">Export data</div></div></div>
+    </div>
+  </div>`;}
+
+function advisorQuickActions(){return`
+  <div class="card">
+    <div class="card-head"><div class="card-title"><i class="ti ti-users" aria-hidden="true"></i>Students</div></div>
+    <div class="qa-grid">
+      <div class="qa-item" onclick="showView('students')"><div class="qa-dot" style="background:#eef0fc"><i class="ti ti-search" style="color:var(--indigo)"></i></div><div><div class="qa-text">Search student</div></div></div>
+      <div class="qa-item" onclick="showView('risks')"><div class="qa-dot" style="background:#fee2e2"><i class="ti ti-alert-triangle" style="color:#ef4444"></i></div><div><div class="qa-text">Risk report</div></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-title"><i class="ti ti-calendar" aria-hidden="true"></i>Courses</div></div>
+    <div class="qa-grid">
+      <div class="qa-item" onclick="openModal('advRegister')"><div class="qa-dot" style="background:#e6f9f4"><i class="ti ti-plus" style="color:#0ea87e"></i></div><div><div class="qa-text">Register course</div></div></div>
+      <div class="qa-item" onclick="openModal('advWithdraw')"><div class="qa-dot" style="background:#fef3dc"><i class="ti ti-minus" style="color:#f59e0b"></i></div><div><div class="qa-text">Withdraw course</div></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-title"><i class="ti ti-chart-line" aria-hidden="true"></i>Progress</div></div>
+    <div class="qa-grid">
+      <div class="qa-item" onclick="showView('progress')"><div class="qa-dot" style="background:#f3effe"><i class="ti ti-progress" style="color:#8b5cf6"></i></div><div><div class="qa-text">View progress</div></div></div>
+      <div class="qa-item" onclick="showView('risks')"><div class="qa-dot" style="background:#eef0fc"><i class="ti ti-chart-bar" style="color:var(--indigo)"></i></div><div><div class="qa-text">Graduation risk</div></div></div>
+    </div>
+  </div>`;}
+
+function studentQuickActions(){return`
+  <div class="card">
+    <div class="card-head"><div class="card-title"><i class="ti ti-plus" aria-hidden="true"></i>Registration</div></div>
+    <div class="qa-grid">
+      <div class="qa-item" onclick="showView('register')"><div class="qa-dot" style="background:#eef0fc"><i class="ti ti-plus" style="color:var(--indigo)"></i></div><div><div class="qa-text">Add course</div></div></div>
+      <div class="qa-item" onclick="openModal('dropCourse')"><div class="qa-dot" style="background:#fee2e2"><i class="ti ti-minus" style="color:#ef4444"></i></div><div><div class="qa-text">Drop course</div></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-title"><i class="ti ti-chart-line" aria-hidden="true"></i>My Progress</div></div>
+    <div>
+      ${[['General Courses','72%','#5b5fc7'],['CS Core','80%','#0ea87e'],['Major Requirements','60%','#f59e0b']].map(([l,p,c])=>`
+      <div class="prog-row">
+        <div class="prog-top"><span class="prog-label">${l}</span><span class="prog-pct" style="color:${c}">${p}</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:${p};background:${c}"></div></div>
+      </div>`).join('')}
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-title"><i class="ti ti-calendar" aria-hidden="true"></i>Quick links</div></div>
+    <div class="qa-grid">
+      <div class="qa-item" onclick="showView('completed')"><div class="qa-dot" style="background:#e6f9f4"><i class="ti ti-check" style="color:#0ea87e"></i></div><div><div class="qa-text">Completed</div></div></div>
+      <div class="qa-item" onclick="showView('myschedule')"><div class="qa-dot" style="background:#fef3dc"><i class="ti ti-calendar" style="color:#f59e0b"></i></div><div><div class="qa-text">My schedule</div></div></div>
+    </div>
+  </div>`;}
+
+// ─── SCHEDULE VIEW ───────────────────────────
+function renderSchedule(c){
+  const totalTaken=schedule.reduce((a,s)=>a+(s.total-s.seats),0);
+  c.innerHTML=`
+  <div style="display:flex;gap:14px;margin-bottom:20px">
+    <div class="stat-card sc1" style="flex:1;padding:16px"><div class="sc-label">Total Sections</div><div class="sc-val">${schedule.length}</div><i class="ti ti-books sc-icon"></i></div>
+    <div class="stat-card sc2" style="flex:1;padding:16px"><div class="sc-label">Total Seats</div><div class="sc-val">${schedule.reduce((a,s)=>a+s.total,0)}</div><i class="ti ti-armchair sc-icon"></i></div>
+    <div class="stat-card sc3" style="flex:1;padding:16px"><div class="sc-label">Seats Taken</div><div class="sc-val">${totalTaken}</div><i class="ti ti-user sc-icon"></i></div>
+    <div class="stat-card sc4" style="flex:1;padding:16px"><div class="sc-label">Fill Rate</div><div class="sc-val">${Math.round(totalTaken/schedule.reduce((a,s)=>a+s.total,0)*100)}%</div><i class="ti ti-chart-pie sc-icon"></i></div>
+  </div>
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title"><i class="ti ti-calendar" aria-hidden="true"></i>Current Term Schedule</div>
+      ${me.role==='admin'?`<button class="btn btn-primary" onclick="openModal('openSection')" style="padding:7px 14px;font-size:12px"><i class="ti ti-plus" style="font-size:13px;margin-right:4px"></i>Open Section</button>`:''}
+    </div>
+    <table class="sched-table">
+      <tr><th>Course</th><th>Section</th><th>Time Slot</th><th>Seats Available</th><th>Status</th>${me.role==='admin'?'<th>Actions</th>':''}</tr>
+      ${schedule.map((s,i)=>{
+        const taken=s.total-s.seats;const pct=Math.round(taken/s.total*100);
+        const fillColor=pct>=80?'#ef4444':pct>=50?'#f59e0b':'#0ea87e';
+        return`<tr>
+          <td><b>${s.code}</b></td>
+          <td>${s.sec}</td>
+          <td style="color:var(--text2)">${s.time}</td>
+          <td><div class="seat-bar"><span style="font-size:12px;font-weight:600;min-width:30px">${s.seats}</span><div class="seat-track"><div class="seat-fill" style="width:${pct}%;background:${fillColor}"></div></div><span style="font-size:11px;color:var(--text2)">${pct}%</span></div></td>
+          <td><span class="tag ${s.open?'risk-low':'risk-high'}">${s.open?'Open':'Closed'}</span></td>
+          ${me.role==='admin'?`<td style="display:flex;gap:6px;padding:10px">
+            <button class="btn btn-ghost" onclick="openModal('editSeats',${i})" style="padding:5px 10px;font-size:11px">Edit seats</button>
+            <button class="btn" onclick="toggleSection(${i})" style="padding:5px 10px;font-size:11px;background:${s.open?'#fee2e2':'#e6f9f4'};color:${s.open?'#dc2626':'#065f46'};border:none">${s.open?'Close':'Open'}</button>
+          </td>`:''}
+        </tr>`;
+      }).join('')}
+    </table>
+  </div>`;
+}
+
+function toggleSection(i){
+  schedule[i].open=!schedule[i].open;
+  showToast(`Section ${schedule[i].code}-${schedule[i].sec} ${schedule[i].open?'opened':'closed'}`);
+  renderSchedule(document.getElementById('content'));
+}
+
+// ─── STATS VIEW ──────────────────────────────
+function renderStats(c){
+  c.innerHTML=`
+  <div class="row row-70-30">
+    <div class="card">
+      <div class="card-head"><div class="card-title"><i class="ti ti-chart-bar" aria-hidden="true"></i>Seats taken per course</div></div>
+      <div class="chart-wrap" style="height:260px"><canvas id="bar-chart" role="img" aria-label="Bar chart of seats taken per course">Seats taken per course.</canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-title"><i class="ti ti-chart-pie" aria-hidden="true"></i>Fill rate</div></div>
+      <div class="chart-wrap"><canvas id="donut-chart" role="img" aria-label="Donut chart showing fill rate">Fill rate: 72% filled.</canvas></div>
+      <div style="text-align:center;margin-top:12px"><div style="font-size:28px;font-weight:800;color:var(--indigo)">72%</div><div style="font-size:12px;color:var(--text2)">Average fill rate</div></div>
+    </div>
+  </div>`;
+  setTimeout(()=>{
+    new Chart(document.getElementById('bar-chart'),{type:'bar',data:{labels:schedule.map(s=>s.code),datasets:[{label:'Taken',data:schedule.map(s=>s.total-s.seats),backgroundColor:'#5b5fc7',borderRadius:6},{label:'Available',data:schedule.map(s=>s.seats),backgroundColor:'#e5e7f0',borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:11},color:'#9ca3af'}},y:{stacked:true,grid:{color:'rgba(0,0,0,.04)'},ticks:{font:{size:11},color:'#9ca3af'}}}}});
+    new Chart(document.getElementById('donut-chart'),{type:'doughnut',data:{labels:['Filled','Available'],datasets:[{data:[72,28],backgroundColor:['#5b5fc7','#e5e7f0'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'70%',plugins:{legend:{display:false}}}});
+  },100);
+}
+
+// ─── STUDENTS VIEW ───────────────────────────
+function renderStudents(c){
+  c.innerHTML=`<div class="card">
+    <div class="card-head"><div class="card-title"><i class="ti ti-users" aria-hidden="true"></i>Student Directory</div></div>
+    ${students.map(s=>`
+    <div class="stu-card">
+      <div class="stu-avatar" style="background:${s.avatar}">${s.name[0]}</div>
+      <div><div class="stu-name">${s.name}</div><div class="stu-id">${s.id} · ${s.major} · ${s.terms} terms</div></div>
+      <div class="stu-gpa">${s.gpa} GPA</div>
+      <span class="tag risk-${s.risk.toLowerCase()}" style="margin-left:10px">${s.risk}</span>
+    </div>`).join('')}
+  </div>`;
+}
+
+// ─── RISKS VIEW ──────────────────────────────
+function renderRisks(c){
+  c.innerHTML=`
+  <div style="display:flex;gap:14px;margin-bottom:20px">
+    <div class="stat-card sc2" style="flex:1;padding:16px"><div class="sc-label">Low Risk</div><div class="sc-val">${students.filter(s=>s.risk==='LOW').length}</div></div>
+    <div class="stat-card sc3" style="flex:1;padding:16px"><div class="sc-label">Medium Risk</div><div class="sc-val">${students.filter(s=>s.risk==='MEDIUM').length}</div></div>
+    <div class="stat-card sc4" style="flex:1;padding:16px"><div class="sc-label">High Risk</div><div class="sc-val">${students.filter(s=>s.risk==='HIGH').length}</div></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-title"><i class="ti ti-alert-triangle" aria-hidden="true"></i>Graduation Risk Report</div></div>
+    <table class="sched-table">
+      <tr><th>Student</th><th>ID</th><th>Courses Done</th><th>Per Term</th><th>Risk Level</th></tr>
+      ${students.map(s=>`<tr>
+        <td><div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:50%;background:${s.avatar};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff">${s.name[0]}</div><b>${s.name}</b></div></td>
+        <td style="color:var(--text2)">${s.id}</td>
+        <td>${s.done}</td>
+        <td>${Math.round(s.done/s.terms*10)/10}/term</td>
+        <td><span class="tag risk-${s.risk.toLowerCase()}">${s.risk==='HIGH'?'⚠ HIGH':s.risk==='MEDIUM'?'~ MEDIUM':'✓ LOW'}</span></td>
+      </tr>`).join('')}
+    </table>
+  </div>`;
+}
+
+// ─── REGISTER VIEW ───────────────────────────
+function renderRegister(c){
+  c.innerHTML=`<div class="card">
+    <div class="card-head"><div class="card-title"><i class="ti ti-calendar-plus" aria-hidden="true"></i>Available Sections</div><span style="font-size:12px;color:var(--text2)">Click a section to register</span></div>
+    <table class="sched-table">
+      <tr><th>Course</th><th>Section</th><th>Time Slot</th><th>Seats</th><th>Status</th><th></th></tr>
+      ${schedule.filter(s=>s.open).map((s,i)=>`<tr>
+        <td><b>${s.code}</b></td><td>${s.sec}</td><td style="color:var(--text2)">${s.time}</td>
+        <td>${s.seats}</td>
+        <td><span class="tag risk-${s.seats>5?'low':s.seats>0?'med':'high'}">${s.seats>5?'Available':s.seats>0?'Limited':'Full'}</span></td>
+        <td><button class="btn btn-primary" onclick="registerCourse(${i})" style="padding:6px 14px;font-size:12px" ${s.seats<=0?'disabled':''}>Register</button></td>
+      </tr>`).join('')}
+    </table>
+  </div>`;
+}
+
+function registerCourse(i){
+  if(schedule[i].seats<=0){showToast('No seats available!');return;}
+  schedule[i].seats--;
+  showToast(`Registered for ${schedule[i].code} section ${schedule[i].sec}`);
+  renderRegister(document.getElementById('content'));
+}
+
+// ─── COMPLETED VIEW ──────────────────────────
+function renderCompleted(c){
+  const stu=students.find(s=>s.id===me.id)||students[0];
+  const done=['ENG101','ENG102','ENG103','MIS103','PSY102','MAT101','BSC103','BSC102','BSC321','BSC479','CSC240','CSC221','CSC222','CSC441','CSC442','CSC475','ITE231'];
+  c.innerHTML=`
+  <div style="display:flex;gap:14px;margin-bottom:20px">
+    <div class="stat-card sc1" style="flex:1;padding:16px"><div class="sc-label">Completed</div><div class="sc-val">${done.length}</div></div>
+    <div class="stat-card sc2" style="flex:1;padding:16px"><div class="sc-label">Credits</div><div class="sc-val">68</div></div>
+    <div class="stat-card sc3" style="flex:1;padding:16px"><div class="sc-label">GPA</div><div class="sc-val">3.7</div></div>
+    <div class="stat-card sc4" style="flex:1;padding:16px"><div class="sc-label">Remaining</div><div class="sc-val">~23</div></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-title"><i class="ti ti-check" aria-hidden="true"></i>Completed Courses</div></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+      ${done.map(code=>`<div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px">
+        <i class="ti ti-circle-check" style="color:#0ea87e;font-size:15px" aria-hidden="true"></i>
+        <span style="font-size:12px;font-weight:600">${code}</span>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+// ─── MODAL ───────────────────────────────────
+let modalCtx=null;
+function openModal(action,ctx=null){
+  modalCtx=ctx;modalAction=action;
+  const titles={addCourse:'Add course',openSection:'Open course section',editSeats:'Edit seat limit',advRegister:'Register course for student',advWithdraw:'Withdraw course for student',dropCourse:'Drop course'};
+  const subs={addCourse:'Add a new course to the curriculum',openSection:'Open a new section in the term schedule',editSeats:'Update the seat limit for this section',advRegister:'Register a course on behalf of a student',advWithdraw:'Withdraw a course on behalf of a student',dropCourse:'Drop a registered course'};
+  document.getElementById('modal-title').textContent=titles[action]||action;
+  document.getElementById('modal-sub').textContent=subs[action]||'';
+  const bodies={
+    addCourse:`<div class="modal-field"><label>Category</label><select><option>IT Major Requirements</option><option>CS Major Requirements</option><option>General Courses</option><option>IT Basic Core</option></select></div><div class="modal-field"><label>Course Code</label><input type="text" placeholder="e.g. ITE999"/></div><div class="modal-field"><label>Course Name</label><input type="text" placeholder="e.g. Advanced Software Engineering"/></div>`,
+    openSection:`<div class="modal-field"><label>Course Code</label><input type="text" placeholder="e.g. CSC351"/></div><div class="modal-field"><label>Section Number</label><input type="number" placeholder="e.g. 1" min="1"/></div><div class="modal-field"><label>Time Slot</label><input type="text" placeholder="e.g. Tue/Fri 10:30-12:30"/></div><div class="modal-field"><label>Seat Limit</label><input type="number" placeholder="e.g. 25" min="1"/></div>`,
+    editSeats:ctx!==null?`<div class="modal-field"><label>Course</label><input type="text" value="${schedule[ctx].code} - Section ${schedule[ctx].sec}" readonly style="background:#f5f5f5"/></div><div class="modal-field"><label>New Seat Limit</label><input type="number" id="new-seats" value="${schedule[ctx].total}" min="1"/></div>`:'',
+    advRegister:`<div class="modal-field"><label>Student ID</label><select>${students.map(s=>`<option value="${s.id}">${s.name} (${s.id})</option>`).join('')}</select></div><div class="modal-field"><label>Course Code</label><input type="text" placeholder="e.g. ITE222"/></div><div class="modal-field"><label>Section</label><input type="number" placeholder="e.g. 3"/></div>`,
+    advWithdraw:`<div class="modal-field"><label>Student ID</label><select>${students.map(s=>`<option value="${s.id}">${s.name} (${s.id})</option>`).join('')}</select></div><div class="modal-field"><label>Course Code</label><input type="text" placeholder="e.g. ITE222"/></div><div class="modal-field"><label>Section</label><input type="number" placeholder="e.g. 3"/></div>`,
+    dropCourse:`<div class="modal-field"><label>Course Code</label><input type="text" placeholder="e.g. ITE222"/></div><div class="modal-field"><label>Section</label><input type="number" placeholder="e.g. 3"/></div>`,
+  };
+  document.getElementById('modal-body').innerHTML=bodies[action]||'';
+  document.getElementById('modal-bg').classList.add('show');
+}
+
+function closeModal(){document.getElementById('modal-bg').classList.remove('show');}
+
+function submitModal(){
+  if(modalAction==='openSection'){
+    const code=document.querySelector('#modal-body input').value;
+    if(code){schedule.push({code,sec:1,time:'TBD',seats:25,total:25,open:true});showToast(`Section ${code}-1 opened`);}
+  }else if(modalAction==='editSeats'&&modalCtx!==null){
+    const ns=parseInt(document.getElementById('new-seats').value)||25;
+    schedule[modalCtx].seats=ns;schedule[modalCtx].total=ns;showToast('Seat limit updated');
+  }else if(modalAction==='addCourse'){
+    showToast('Course added to curriculum');
+  }else if(modalAction==='advRegister'||modalAction==='dropCourse'){
+    showToast('Course registration updated');
+  }else if(modalAction==='advWithdraw'){
+    showToast('Course withdrawn successfully');
+  }
+  closeModal();
+  if(currentView==='schedule')renderSchedule(document.getElementById('content'));
+}
+
+// ─── TOAST ───────────────────────────────────
+let toastTimer=null;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-msg').textContent=msg;
+  t.classList.add('show');
+  if(toastTimer)clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ─── LOGOUT ──────────────────────────────────
+function doLogout(){
+  me=null;attempts=0;
+  document.getElementById('login-screen').classList.remove('hide');
+  const app=document.getElementById('app');
+  app.classList.remove('show');app.style.display='none';
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('main').classList.remove('ready');
+  document.getElementById('username').value='';
+  document.getElementById('password').value='';
+  document.getElementById('login-err').classList.remove('show');
+  document.querySelector('.login-btn').disabled=false;
+  document.querySelector('.login-btn').style.opacity='1';
+  setTimeout(()=>{app.style.display='';},100);
+}
+</script>
+</body>
+</html>
