@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Stamford University — Registration System</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+:root{
+  --navy:#1a1f3c;--navy2:#252b4a;--navy3:#2e3560;
+  --indigo:#5b5fc7;--indigo2:#4b4fb0;--indigo3:#eef0fc;--indigo4:#dde0f9;
+  --white:#ffffff;--canvas:#f4f5fb;--border:#e5e7f0;
+  --text:#1a1f3c;--text2:#6b7280;--text3:#9ca3af;--card:#ffffff;
+  --c1:#5b5fc7;--c2:#0ea87e;--c3:#f59e0b;--c4:#ef4444;--c5:#8b5cf6;
+  --shadow:0 2px 12px rgba(26,31,60,.07);--shadow2:0 8px 32px rgba(26,31,60,.12);
+  --sb-bg:#1a1f3c;
+  --radius:14px;--radius-sm:9px;
+}
+[data-theme="dark"]{
+  --white:#1e2333;--canvas:#161b2e;--border:#2a3050;
+  --text:#e2e8f0;--text2:#8892a4;--text3:#4b5675;--card:#1e2333;
+  --indigo3:#1e2140;--indigo4:#252b4a;
+  --shadow:0 2px 12px rgba(0,0,0,.25);--shadow2:0 8px 32px rgba(0,0,0,.4);
+}
+body{font-family:'Inter',sans-serif;background:var(--canvas);color:var(--text);min-height:100vh;display:flex;font-size:14px;transition:background .25s,color .25s}
+
+/* ── PAGE TRANSITION BAR ─────────────────────── */
+#progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--indigo),#818cf8,var(--c2));z-index:9999;width:0;transition:width .3s ease;border-radius:0 2px 2px 0;box-shadow:0 0 8px rgba(91,95,199,.5)}
+
+/* ── LANDING PAGE ────────────────────────────── */
+#landing{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;overflow-y:auto;background:#0f1428}
+#landing.hide{display:none}
+
+.land-nav{position:sticky;top:0;background:rgba(15,20,40,.85);backdrop-filter:blur(12px);padding:16px 48px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06);z-index:10}
+.land-logo{display:flex;align-items:center;gap:10px}
+.land-logo-icon{width:36px;height:36px;background:var(--indigo);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.land-logo-text{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:#fff}
+.land-logo-text span{color:#818cf8}
+.land-nav-btn{padding:8px 20px;background:var(--indigo);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
+.land-nav-btn:hover{background:var(--indigo2);transform:translateY(-1px)}
+
+.land-hero{flex:1;display:flex;align-items:center;justify-content:center;padding:80px 48px;position:relative;overflow:hidden}
+.land-hero::before{content:'';position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(91,95,199,.12) 0%,transparent 70%);top:-100px;right:-100px;animation:heroOrb 12s ease-in-out infinite alternate}
+.land-hero::after{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(14,168,126,.08) 0%,transparent 70%);bottom:-80px;left:-80px;animation:heroOrb 15s ease-in-out infinite alternate-reverse}
+@keyframes heroOrb{from{transform:translate(0,0) scale(1)}to{transform:translate(40px,30px) scale(1.1)}}
+
+.land-hero-content{max-width:600px;text-align:center;position:relative;z-index:1}
+.land-eyebrow{display:inline-flex;align-items:center;gap:6px;background:rgba(91,95,199,.15);border:1px solid rgba(91,95,199,.3);color:#818cf8;padding:5px 14px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:24px;animation:fadeUp .6s ease both}
+.land-title{font-family:'Space Grotesk',sans-serif;font-size:52px;font-weight:700;color:#fff;line-height:1.1;margin-bottom:20px;animation:fadeUp .6s .1s ease both}
+.land-title em{font-style:normal;background:linear-gradient(135deg,#818cf8,#0ea87e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.land-sub{font-size:16px;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:36px;animation:fadeUp .6s .2s ease both}
+.land-cta-row{display:flex;gap:12px;justify-content:center;animation:fadeUp .6s .3s ease both}
+.land-cta{padding:13px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;font-family:inherit;border:none}
+.land-cta-primary{background:linear-gradient(135deg,var(--indigo),#7c7fe8);color:#fff;box-shadow:0 4px 20px rgba(91,95,199,.4)}
+.land-cta-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(91,95,199,.5)}
+.land-cta-ghost{background:rgba(255,255,255,.06);color:#fff;border:1px solid rgba(255,255,255,.12)}
+.land-cta-ghost:hover{background:rgba(255,255,255,.1)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+.land-stats{display:flex;gap:32px;justify-content:center;margin-top:48px;animation:fadeUp .6s .4s ease both}
+.land-stat{text-align:center}
+.land-stat-val{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;color:#fff}
+.land-stat-lbl{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+
+.land-features{background:rgba(255,255,255,.02);border-top:1px solid rgba(255,255,255,.06);padding:64px 48px}
+.land-feat-title{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;color:#fff;text-align:center;margin-bottom:40px}
+.land-feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:900px;margin:0 auto}
+.land-feat-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:24px;transition:all .2s}
+.land-feat-card:hover{background:rgba(91,95,199,.1);border-color:rgba(91,95,199,.3);transform:translateY(-3px)}
+.land-feat-icon{width:44px;height:44px;border-radius:12px;background:rgba(91,95,199,.15);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:14px}
+.land-feat-name{font-size:14px;font-weight:700;color:#fff;margin-bottom:6px}
+.land-feat-desc{font-size:12px;color:rgba(255,255,255,.4);line-height:1.6}
+
+.land-footer{text-align:center;padding:24px;border-top:1px solid rgba(255,255,255,.06);font-size:12px;color:rgba(255,255,255,.25)}
+
+/* ── LOGIN ───────────────────────────────────── */
+#login-screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0f1428 0%,#1a1f3c 60%,#2e3560 100%);z-index:200;transition:opacity .5s ease,transform .5s ease}
+#login-screen.hide{opacity:0;pointer-events:none;transform:scale(1.02)}
+.login-wrap{display:flex;width:860px;max-width:95vw;background:var(--white);border-radius:24px;overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,.5);animation:slideUp .65s cubic-bezier(.16,1,.3,1) both}
+@keyframes slideUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.login-left{flex:1;background:linear-gradient(160deg,#1a1f3c 0%,#5b5fc7 100%);padding:52px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.login-left::before{content:'';position:absolute;inset:0;opacity:.04;background-image:radial-gradient(circle at 1px 1px,#fff 1px,transparent 0);background-size:24px 24px}
+.ll-back{font-size:11px;color:rgba(255,255,255,.4);cursor:pointer;display:flex;align-items:center;gap:5px;margin-bottom:32px;transition:color .2s}
+.ll-back:hover{color:rgba(255,255,255,.7)}
+.ll-logo{width:54px;height:54px;background:rgba(255,255,255,.12);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:20px;border:1px solid rgba(255,255,255,.1)}
+.ll-title{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:#fff;margin-bottom:10px;line-height:1.2}
+.ll-sub{font-size:13px;color:rgba(255,255,255,.45);line-height:1.7;max-width:220px}
+.ll-features{margin-top:28px;display:flex;flex-direction:column;gap:8px}
+.ll-feat{display:flex;align-items:center;gap:10px;font-size:12px;color:rgba(255,255,255,.55)}
+.ll-feat-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.4);flex-shrink:0}
+.login-right{width:380px;padding:52px;display:flex;flex-direction:column;justify-content:center}
+.lr-welcome{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--indigo);margin-bottom:6px}
+.lr-title{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;margin-bottom:4px;color:var(--text)}
+.lr-sub{font-size:12px;color:var(--text2);margin-bottom:24px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px}
+.field-wrap{position:relative}
+.field input{width:100%;padding:11px 38px 11px 13px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:13px;font-family:inherit;outline:none;transition:border-color .2s,box-shadow .2s;background:var(--canvas);color:var(--text)}
+.field input:focus{border-color:var(--indigo);box-shadow:0 0 0 3px rgba(91,95,199,.1);background:var(--white)}
+.fi{position:absolute;right:11px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:15px;cursor:pointer;transition:color .2s}
+.fi:hover{color:var(--indigo)}
+.login-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--indigo),var(--indigo2));color:#fff;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;margin-top:8px;transition:opacity .2s,transform .15s,box-shadow .2s;box-shadow:0 4px 16px rgba(91,95,199,.3);position:relative;overflow:hidden}
+.login-btn::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,0);transition:background .2s}
+.login-btn:hover::after{background:rgba(255,255,255,.06)}
+.login-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(91,95,199,.4)}
+.login-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.login-err{background:#fee2e2;border:1px solid #fca5a5;color:#dc2626;border-radius:8px;padding:9px 12px;font-size:12px;margin-top:10px;display:none;align-items:center;gap:7px;font-weight:500}
+.login-err.show{display:flex;animation:shake .35s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.hint-box{background:var(--canvas);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin-top:18px}
+.hint-title{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text2);margin-bottom:8px}
+.hint-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.badge{font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px;min-width:54px;text-align:center}
+.ba{background:#eef0fc;color:var(--indigo2)}.bv{background:#e6f9f4;color:#065f46}.bs{background:#fef3dc;color:#92400e}
+.hint-cred{font-size:11px;color:var(--text2);font-family:monospace}
+
+/* ── APP ─────────────────────────────────────── */
+#app{display:none;width:100%;min-height:100vh}
+#app.show{display:flex}
+
+/* ── SIDEBAR ─────────────────────────────────── */
+#sidebar{width:220px;min-height:100vh;background:var(--sb-bg);display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:50;transform:translateX(-220px);transition:transform .4s cubic-bezier(.16,1,.3,1)}
+#sidebar.open{transform:translateX(0)}
+.sb-logo{padding:18px 16px 12px;display:flex;align-items:center;gap:9px;border-bottom:1px solid rgba(255,255,255,.05)}
+.sb-icon{width:32px;height:32px;background:var(--indigo);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.sb-brand{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;color:#fff;line-height:1.3}
+.sb-brand span{display:block;font-size:9px;font-weight:400;color:rgba(255,255,255,.3);margin-top:1px;font-family:'Inter',sans-serif}
+.sb-user{margin:10px 8px;background:rgba(255,255,255,.04);border-radius:10px;padding:10px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:background .2s;border:1px solid rgba(255,255,255,.04)}
+.sb-user:hover{background:rgba(255,255,255,.07)}
+.sb-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0;position:relative}
+.online-dot{position:absolute;bottom:0;right:0;width:7px;height:7px;border-radius:50%;background:#0ea87e;border:2px solid var(--sb-bg)}
+.sb-uname{font-size:11px;font-weight:600;color:#fff;line-height:1.3}
+.sb-urole{font-size:9px;color:rgba(255,255,255,.3);margin-top:1px;text-transform:uppercase;letter-spacing:.05em}
+.sb-nav{flex:1;padding:4px 8px;overflow-y:auto}
+.sb-section{font-size:8px;font-weight:700;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:.12em;padding:10px 8px 4px}
+.nav-item{display:flex;align-items:center;gap:8px;padding:8px 9px;border-radius:7px;cursor:pointer;margin-bottom:1px;color:rgba(255,255,255,.4);font-size:11px;font-weight:500;border:none;background:none;width:100%;text-align:left;transition:all .15s;position:relative}
+.nav-item i{font-size:15px;flex-shrink:0}
+.nav-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.8)}
+.nav-item.active{background:rgba(91,95,199,.25);color:#fff}
+.nav-item.active i{color:#818cf8}
+.nav-item.active::before{content:'';position:absolute;left:0;top:20%;bottom:20%;width:3px;background:var(--indigo);border-radius:0 2px 2px 0}
+.nav-badge{margin-left:auto;background:var(--c4);color:#fff;font-size:8px;font-weight:700;padding:1px 5px;border-radius:3px;min-width:16px;text-align:center}
+.sb-footer{padding:8px;border-top:1px solid rgba(255,255,255,.05)}
+.sb-icon-row{display:flex;gap:4px;margin-bottom:6px}
+.sb-tool-btn{flex:1;display:flex;align-items:center;justify-content:center;padding:7px;border-radius:6px;cursor:pointer;color:rgba(255,255,255,.3);border:1px solid rgba(255,255,255,.05);background:none;font-size:13px;transition:all .15s}
+.sb-tool-btn:hover{background:rgba(255,255,255,.07);color:#fff}
+.logout-btn{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:7px;cursor:pointer;color:#f87171;font-size:11px;font-weight:500;border:none;background:none;width:100%;text-align:left;transition:background .15s}
+.logout-btn:hover{background:rgba(239,68,68,.08)}
+#sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:49;backdrop-filter:blur(2px)}
+#sb-overlay.show{display:block}
+
+/* ── MAIN ────────────────────────────────────── */
+#main{margin-left:220px;flex:1;min-height:100vh;display:flex;flex-direction:column;opacity:0;transform:translateX(12px);transition:all .4s cubic-bezier(.16,1,.3,1)}
+#main.ready{opacity:1;transform:translateX(0)}
+.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:0 22px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;transition:background .25s,border-color .25s}
+.tb-left{display:flex;align-items:center;gap:10px}
+.hamburger{display:none;background:none;border:none;cursor:pointer;color:var(--text);font-size:18px;padding:4px}
+.breadcrumb{display:flex;align-items:center;gap:5px}
+.bc-sep,.bc-home{font-size:11px;color:var(--text3)}.bc-home{cursor:pointer}.bc-home:hover{color:var(--indigo)}
+.bc-current{font-size:11px;font-weight:700;color:var(--text)}
+.tb-right{display:flex;align-items:center;gap:7px}
+.tb-search{display:flex;align-items:center;gap:6px;background:var(--canvas);border:1.5px solid var(--border);border-radius:7px;padding:5px 11px;width:180px;transition:border-color .2s,width .3s ease}
+.tb-search:focus-within{border-color:var(--indigo);width:220px}
+.tb-search i{color:var(--text3);font-size:13px;flex-shrink:0}
+.tb-search input{border:none;background:none;outline:none;font-size:12px;color:var(--text);font-family:inherit;width:100%}
+.tb-search input::placeholder{color:var(--text3)}
+.icon-btn{width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--border);background:var(--white);cursor:pointer;color:var(--text2);font-size:15px;transition:all .15s;position:relative}
+.icon-btn:hover{background:var(--canvas);border-color:var(--indigo);color:var(--indigo)}
+.notif-dot{position:absolute;top:4px;right:4px;width:7px;height:7px;border-radius:50%;background:var(--c4);border:2px solid var(--white)}
+.role-pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.03em}
+.rp-admin{background:#eef0fc;color:var(--indigo2)}.rp-advisor{background:#e6f9f4;color:#065f46}.rp-student{background:#fef3dc;color:#92400e}
+.content{padding:22px;flex:1}
+
+/* ── STAT CARDS ──────────────────────────────── */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat-card{border-radius:var(--radius);padding:18px;color:#fff;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s}
+.stat-card:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.15)}
+.stat-card::after{content:'';position:absolute;bottom:-18px;right:-18px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.08)}
+.sc-label{font-size:9px;font-weight:700;opacity:.7;margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em}
+.sc-val{font-family:'Space Grotesk',sans-serif;font-size:30px;font-weight:700;line-height:1;margin-bottom:2px}
+.sc-sub{font-size:9px;opacity:.6}
+.sc-icon{position:absolute;top:14px;right:14px;font-size:22px;opacity:.22}
+.sc1{background:linear-gradient(135deg,#5b5fc7,#7c7fe8)}
+.sc2{background:linear-gradient(135deg,#0ea87e,#2bc49a)}
+.sc3{background:linear-gradient(135deg,#f59e0b,#fbbf24)}
+.sc4{background:linear-gradient(135deg,#ef4444,#f87171)}
+
+/* ── LAYOUT ──────────────────────────────────── */
+.row{display:grid;gap:14px;margin-bottom:18px}
+.row-70-30{grid-template-columns:1fr 270px}
+.row-3col{grid-template-columns:repeat(3,1fr)}
+.row-2col{grid-template-columns:1fr 1fr}
+
+/* ── CARD ────────────────────────────────────── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);transition:background .25s,border-color .25s}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.card-title{font-size:13px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:6px}
+.card-title i{font-size:15px;color:var(--indigo)}
+
+/* ── CHART ───────────────────────────────────── */
+.chart-wrap{position:relative;height:190px}
+
+/* ── CREDIT ARC (signature element) ─────────── */
+.credit-arc-wrap{display:flex;flex-direction:column;align-items:center;padding:8px 0}
+.credit-arc-svg{overflow:visible}
+.arc-track{fill:none;stroke:var(--border);stroke-width:10;stroke-linecap:round}
+.arc-fill{fill:none;stroke:url(#arcGrad);stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1.2s cubic-bezier(.16,1,.3,1)}
+.arc-center-val{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;fill:var(--text);text-anchor:middle}
+.arc-center-lbl{font-size:10px;fill:var(--text2);text-anchor:middle}
+.arc-legend{display:flex;gap:18px;margin-top:10px}
+.arc-leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)}
+.arc-leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* ── TABLE ───────────────────────────────────── */
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text2);padding:7px 11px;text-align:left;border-bottom:1px solid var(--border);background:var(--canvas)}
+.data-table td{padding:10px 11px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text);vertical-align:middle;transition:background .12s}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tbody tr:hover td{background:var(--indigo3)}
+
+/* ── SEAT BAR ────────────────────────────────── */
+.seat-bar{display:flex;align-items:center;gap:6px}
+.seat-track{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;min-width:50px}
+.seat-fill{height:100%;border-radius:2px;transition:width .5s cubic-bezier(.16,1,.3,1)}
+
+/* ── TAGS ────────────────────────────────────── */
+.tag{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:.02em}
+.tag-green{background:#dcfce7;color:#15803d}.tag-red{background:#fee2e2;color:#dc2626}.tag-amber{background:#fef9c3;color:#a16207}.tag-blue{background:#eef0fc;color:var(--indigo2)}
+
+/* ── QA GRID ─────────────────────────────────── */
+.qa-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
+.qa-item{display:flex;align-items:center;gap:8px;padding:9px 10px;border:1.5px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all .18s;background:var(--card)}
+.qa-item:hover{border-color:var(--indigo);background:var(--indigo3);transform:translateY(-1px)}
+.qa-dot{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.qa-text{font-size:11px;font-weight:600;color:var(--text)}
+
+/* ── STUDENT CARD ────────────────────────────── */
+.stu-card{display:flex;align-items:center;gap:9px;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);margin-bottom:7px;cursor:pointer;transition:all .18s;background:var(--card)}
+.stu-card:hover{border-color:var(--indigo);background:var(--indigo3);transform:translateY(-1px)}
+.stu-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.stu-name{font-size:12px;font-weight:700;color:var(--text)}
+.stu-meta{font-size:10px;color:var(--text2);margin-top:1px}
+.stu-gpa{margin-left:auto;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:var(--c2)}
+
+/* ── ACTIVITY ────────────────────────────────── */
+.act-item{display:flex;align-items:flex-start;gap:9px;padding:8px 0;border-bottom:1px solid var(--border)}
+.act-item:last-child{border-bottom:none}
+.act-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.act-msg{font-size:11px;color:var(--text);line-height:1.5;font-weight:500}
+.act-time{font-size:10px;color:var(--text3);margin-top:2px}
+
+/* ── PROGRESS ────────────────────────────────── */
+.prog-section{margin-bottom:20px}
+.prog-section-title{font-size:11px;font-weight:700;color:var(--text);margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between}
+
+/* ── PREREQ TAG ──────────────────────────────── */
+.prereq-tag{display:inline-flex;align-items:center;background:var(--indigo3);color:var(--indigo2);padding:1px 6px;border-radius:4px;font-size:9px;font-weight:700;margin:1px;font-family:monospace}
+
+/* ── NOTIF PANEL ─────────────────────────────── */
+#notif-panel{position:fixed;top:58px;right:14px;width:290px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow2);z-index:200;display:none}
+#notif-panel.show{display:block;animation:dropIn .2s cubic-bezier(.16,1,.3,1) both}
+@keyframes dropIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.notif-head{padding:12px 14px 8px;font-size:12px;font-weight:700;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;color:var(--text)}
+.notif-item{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;gap:9px;cursor:pointer;transition:background .12s}
+.notif-item:hover{background:var(--canvas)}
+.notif-item:last-child{border-bottom:none}
+.notif-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.notif-msg{font-size:11px;color:var(--text);line-height:1.4;font-weight:500}
+.notif-time{font-size:9px;color:var(--text3);margin-top:2px}
+.notif-unread{width:6px;height:6px;border-radius:50%;background:var(--indigo);flex-shrink:0;margin-top:4px}
+
+/* ── MODAL ───────────────────────────────────── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-bg.show{display:flex}
+.modal{background:var(--card);border-radius:18px;padding:26px;width:460px;max-width:95vw;box-shadow:var(--shadow2);animation:modalIn .3s cubic-bezier(.16,1,.3,1) both;max-height:90vh;overflow-y:auto;border:1px solid var(--border)}
+@keyframes modalIn{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.modal-title{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;margin-bottom:2px;color:var(--text)}
+.modal-sub{font-size:11px;color:var(--text2);margin-bottom:18px}
+.modal-field{margin-bottom:12px}
+.modal-field label{display:block;font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.modal-field input,.modal-field select{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:13px;font-family:inherit;outline:none;transition:border-color .2s;background:var(--canvas);color:var(--text)}
+.modal-field input:focus,.modal-field select:focus{border-color:var(--indigo);background:var(--white)}
+.modal-result{padding:9px 12px;border-radius:7px;font-size:11px;margin-top:8px;display:none;font-weight:600}
+.modal-result.success{display:block;background:#dcfce7;border:1px solid #86efac;color:#15803d}
+.modal-result.error{display:block;background:#fee2e2;border:1px solid #fca5a5;color:#dc2626}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
+.btn{padding:8px 16px;border-radius:var(--radius-sm);font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:5px;border:none}
+.btn-primary{background:linear-gradient(135deg,var(--indigo),var(--indigo2));color:#fff;box-shadow:0 2px 8px rgba(91,95,199,.25)}
+.btn-primary:hover{opacity:.9;transform:translateY(-1px)}
+.btn-ghost{background:none;border:1.5px solid var(--border);color:var(--text2)}
+.btn-ghost:hover{background:var(--canvas)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important}
+
+/* ── TOAST ───────────────────────────────────── */
+.toast{position:fixed;bottom:22px;right:22px;padding:11px 16px;border-radius:10px;font-size:12px;font-weight:600;z-index:300;display:none;align-items:center;gap:8px;box-shadow:var(--shadow2);min-width:190px}
+.toast.show{display:flex;animation:toastIn .3s cubic-bezier(.16,1,.3,1) both}
+@keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.toast-ok{background:var(--navy);color:#fff}
+.toast-err{background:#ef4444;color:#fff;bottom:64px}
+
+/* ── PRINT / TRANSCRIPT ──────────────────────── */
+.print-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow)}
+@media print{
+  #sidebar,#notif-panel,.topbar,.btn,#landing,.toast{display:none!important}
+  #main{margin-left:0}
+  .content{padding:0}
+  body{background:#fff}
+}
+
+/* ── EMPTY STATE ─────────────────────────────── */
+.empty{text-align:center;padding:48px 20px;color:var(--text2)}
+.empty i{font-size:40px;opacity:.2;display:block;margin-bottom:10px;color:var(--indigo)}
+.empty h3{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}
+.empty p{font-size:11px}
+
+/* ── VIEW ANIM ───────────────────────────────── */
+.view-content{animation:fadeIn .22s ease both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── RESPONSIVE ──────────────────────────────── */
+@media(max-width:768px){
+  #sidebar{width:240px;transform:translateX(-240px)}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  .hamburger{display:block}
+  .stat-grid{grid-template-columns:repeat(2,1fr)}
+  .row-70-30,.row-3col,.row-2col{grid-template-columns:1fr}
+  .login-wrap{flex-direction:column;width:95vw;max-height:95vh;overflow-y:auto}
+  .login-left{padding:28px}
+  .login-right{width:100%;padding:28px}
+  .ll-features,.land-feat-grid{display:none}
+  .land-title{font-size:32px}
+  .land-hero{padding:48px 24px}
+  .land-features{padding:40px 24px}
+  .land-nav{padding:14px 24px}
+}
+</style>
+</head>
+<body>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar"></div>
+
+<!-- LANDING PAGE -->
+<div id="landing">
+  <nav class="land-nav">
+    <div class="land-logo">
+      <div class="land-logo-icon">🎓</div>
+      <div class="land-logo-text">Stamford <span>University</span></div>
+    </div>
+    <button class="land-nav-btn" onclick="goToLogin()">Sign in →</button>
+  </nav>
+  <div class="land-hero">
+    <div class="land-hero-content">
+      <div class="land-eyebrow">🎓 Academic Year 2024–2025</div>
+      <h1 class="land-title">Your academic journey,<br><em>fully in control</em></h1>
+      <p class="land-sub">Register courses, track curriculum progress, and manage your academic record — all in one place. Built for students, advisors, and administrators.</p>
+      <div class="land-cta-row">
+        <button class="land-cta land-cta-primary" onclick="goToLogin()">Sign in to the system</button>
+        <button class="land-cta land-cta-ghost" onclick="scrollToFeatures()">See features ↓</button>
+      </div>
+      <div class="land-stats">
+        <div class="land-stat"><div class="land-stat-val">160</div><div class="land-stat-lbl">Credits to graduate</div></div>
+        <div class="land-stat"><div class="land-stat-val">3</div><div class="land-stat-lbl">User roles</div></div>
+        <div class="land-stat"><div class="land-stat-val">40+</div><div class="land-stat-lbl">IT & CS courses</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="land-features" id="land-features">
+    <div class="land-feat-title">Everything you need</div>
+    <div class="land-feat-grid">
+      <div class="land-feat-card"><div class="land-feat-icon">🔐</div><div class="land-feat-name">Role-based access</div><div class="land-feat-desc">Separate dashboards for Admin, Advisor, and Student. Each role sees exactly what they need.</div></div>
+      <div class="land-feat-card"><div class="land-feat-icon">✅</div><div class="land-feat-name">Smart registration</div><div class="land-feat-desc">10-step validation checks prerequisites, seat limits, time conflicts, and course load automatically.</div></div>
+      <div class="land-feat-card"><div class="land-feat-icon">📊</div><div class="land-feat-name">Live progress tracking</div><div class="land-feat-desc">Visual curriculum progress with animated bars and per-course ✅/⏳ status for every section.</div></div>
+      <div class="land-feat-card"><div class="land-feat-icon">⚠️</div><div class="land-feat-name">Graduation risk analysis</div><div class="land-feat-desc">Advisors get a risk report flagging students who are behind their expected pace to graduate.</div></div>
+      <div class="land-feat-card"><div class="land-feat-icon">🌙</div><div class="land-feat-name">Dark mode & shortcuts</div><div class="land-feat-desc">Full dark mode, keyboard shortcuts, mobile-responsive sidebar, and notification panel.</div></div>
+      <div class="land-feat-card"><div class="land-feat-icon">🖨️</div><div class="land-feat-name">Printable transcript</div><div class="land-feat-desc">Students can print a formatted academic transcript directly from the browser.</div></div>
+    </div>
+  </div>
+  <div class="land-footer">© 2025 Stamford University — Registration System · Built with HTML, CSS & JavaScript</div>
+</div>
+
+<!-- LOGIN -->
+<div id="login-screen" style="display:none">
+  <div class="login-wrap">
+    <div class="login-left">
+      <div>
+        <div class="ll-back" onclick="backToLanding()"><i class="ti ti-arrow-left" style="font-size:12px"></i> Back to home</div>
+        <div class="ll-logo">🎓</div>
+        <div class="ll-title">Sign in to Stamford Registration</div>
+        <div class="ll-sub">Access your courses, track your progress, and manage registrations.</div>
+        <div class="ll-features">
+          <div class="ll-feat"><div class="ll-feat-dot"></div>Role-based secure access</div>
+          <div class="ll-feat"><div class="ll-feat-dot"></div>Live course registration</div>
+          <div class="ll-feat"><div class="ll-feat-dot"></div>Curriculum progress reports</div>
+          <div class="ll-feat"><div class="ll-feat-dot"></div>Graduation risk analysis</div>
+        </div>
+      </div>
+    </div>
+    <div class="login-right">
+      <div class="lr-welcome">Welcome back</div>
+      <div class="lr-title">Sign in</div>
+      <div class="lr-sub">Enter your credentials to continue</div>
+      <div class="field"><label>Username</label><div class="field-wrap"><input type="text" id="username" placeholder="e.g. admin1" autocomplete="off"/><i class="ti ti-user fi"></i></div></div>
+      <div class="field"><label>Password</label><div class="field-wrap"><input type="password" id="password" placeholder="Your password"/><i class="ti ti-eye fi" onclick="togglePwd()"></i></div></div>
+      <button class="login-btn" id="login-btn" onclick="doLogin()">Sign in to Dashboard</button>
+      <div class="login-err" id="login-err"><i class="ti ti-alert-circle"></i><span id="err-msg">Incorrect credentials.</span></div>
+      <div class="hint-box">
+        <div class="hint-title">Test credentials</div>
+        <div class="hint-row"><span class="badge ba">Admin</span><span class="hint-cred">admin1 / admin1a</span></div>
+        <div class="hint-row"><span class="badge bv">Advisor</span><span class="hint-cred">advisor1 / advisor1a</span></div>
+        <div class="hint-row"><span class="badge bs">Student</span><span class="hint-cred">2408050001 / JakeLee</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div id="sb-overlay" onclick="closeSidebar()"></div>
+  <div id="sidebar">
+    <div class="sb-logo">
+      <div class="sb-icon">🎓</div>
+      <div class="sb-brand">Stamford Uni<span>Registration System</span></div>
+    </div>
+    <div class="sb-user">
+      <div class="sb-avatar" id="sb-av">?<div class="online-dot"></div></div>
+      <div><div class="sb-uname" id="sb-name">—</div><div class="sb-urole" id="sb-role">—</div></div>
+    </div>
+    <div class="sb-nav" id="sb-nav"></div>
+    <div class="sb-footer">
+      <div class="sb-icon-row">
+        <button class="sb-tool-btn" onclick="toggleDark()" title="Dark mode (D)"><i class="ti ti-moon" id="dark-icon"></i></button>
+        <button class="sb-tool-btn" onclick="showView('transcript')" title="Transcript"><i class="ti ti-file-text"></i></button>
+        <button class="sb-tool-btn" onclick="showView('help')" title="Help (?)"><i class="ti ti-help"></i></button>
+      </div>
+      <button class="logout-btn" onclick="doLogout()"><i class="ti ti-logout"></i>Sign out</button>
+    </div>
+  </div>
+  <div id="main">
+    <div class="topbar">
+      <div class="tb-left">
+        <button class="hamburger" onclick="openSidebar()"><i class="ti ti-menu-2"></i></button>
+        <div class="breadcrumb"><span class="bc-home" onclick="showView('dashboard')">Home</span><span class="bc-sep">/</span><span class="bc-current" id="tb-title">Dashboard</span></div>
+      </div>
+      <div class="tb-right">
+        <div class="tb-search"><i class="ti ti-search"></i><input type="text" placeholder="Search... (Ctrl+K)" id="search-input" onkeyup="handleSearch(this.value)"/></div>
+        <div class="icon-btn" onclick="toggleNotif()"><i class="ti ti-bell"></i><div class="notif-dot" id="notif-dot" style="display:none"></div></div>
+        <div class="icon-btn" onclick="toggleDark()"><i class="ti ti-moon" id="dark-icon2"></i></div>
+        <span class="role-pill" id="role-pill">—</span>
+      </div>
+    </div>
+    <div class="content" id="content"></div>
+  </div>
+</div>
+
+<!-- NOTIF PANEL -->
+<div id="notif-panel">
+  <div class="notif-head"><span>Notifications</span><span style="font-size:10px;color:var(--indigo);cursor:pointer;font-weight:600" onclick="clearNotifs()">Clear all</span></div>
+  <div id="notif-list"></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modal-bg" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-title" id="modal-title"></div>
+    <div class="modal-sub" id="modal-sub"></div>
+    <div id="modal-body"></div>
+    <div class="modal-result" id="modal-result"></div>
+    <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="submitModal()">Confirm</button></div>
+  </div>
+</div>
+
+<!-- TOASTS -->
+<div class="toast toast-ok" id="toast-ok"><i class="ti ti-check"></i><span id="tok-msg"></span></div>
+<div class="toast toast-err" id="toast-err"><i class="ti ti-x"></i><span id="terr-msg"></span></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────────
+const USERS=[
+  {u:'admin1',p:'admin1a',role:'admin',name:'David'},
+  {u:'advisor1',p:'advisor1a',role:'advisor',name:'Victoria'},
+  {u:'advisor2',p:'advisor2a',role:'advisor',name:'Hellen'},
+  {u:'2408050001',p:'JakeLee',role:'student',name:'Jake Lee',id:'2408050001',major:'Computer Science',gpa:3.7,terms:4},
+  {u:'2409110003',p:'TinTun',role:'student',name:'Tin Tun Aung',id:'2409110003',major:'Computer Science',gpa:4.0,terms:4},
+  {u:'2409240001',p:'Khant',role:'student',name:'Khant Hpone',id:'2409240001',major:'Computer Science',gpa:4.0,terms:4},
+];
+let schedule=[
+  {code:'ITE222',sec:3,time:'Mon/Thu 08:30-10:30',seats:22,total:25,open:true},
+  {code:'ITE420',sec:1,time:'Mon/Thu 14:30-16:30',seats:18,total:25,open:true},
+  {code:'ITE479',sec:3,time:'Mon/Thu 10:30-12:30',seats:25,total:25,open:true},
+  {code:'ART101',sec:3,time:'Mon/Thu 10:30-12:30',seats:20,total:25,open:true},
+  {code:'ART102',sec:3,time:'Tue/Fri 09:00-11:00',seats:14,total:25,open:true},
+  {code:'INTERN',sec:3,time:'Mon/Thu 10:30-12:30',seats:10,total:25,open:true},
+  {code:'CSC351',sec:1,time:'Tue/Fri 13:00-15:00',seats:15,total:25,open:true},
+  {code:'CSC442',sec:2,time:'Wed/Sat 08:00-10:00',seats:8,total:25,open:false},
+];
+const PREREQS={'ITE222':['ITE221'],'ITE420':['ITE475'],'ITE479':['BSC479'],'CSC351':['BSC224'],'CSC442':['CSC441'],'INTERN':['CREDITS_148']};
+const CURRICULUM_CS={'General Courses':{total:10,courses:['ENG101','ENG102','ENG103','MIS103','PSY102','MAT101','STA101','BSC210','ART101','SOC101']},'CS Basic Core':{total:10,courses:['BSC101','BSC102','BSC103','BSC104','BSC120','BSC210','BSC224','BSC254','BSC321','BSC479']},'CS Major Requirements':{total:10,courses:['CSC221','CSC222','CSC231','CSC233','CSC240','CSC331','CSC420','CSC441','CSC442','CSC475']},'CS SE Track':{total:6,courses:['CSC220','CSC343','CSC365','CSC367','CSC368','CSC369']},'Free Elective':{total:2,courses:[]},'Internship':{total:1,courses:['INTERN']}};
+const STUDENTS={
+  '2408050001':{name:'Jake Lee',major:'Computer Science',gpa:3.7,terms:4,completed:['ENG101','ENG102','ENG103','MIS103','PSY102','MAT101','BSC103','BSC102','BSC321','BSC479','CSC240','CSC221','CSC222','CSC441','CSC442','CSC475','ITE231'],freeElective:['ITE420','ITE231'],registered:[],avatar:'#5b5fc7',risk:'LOW'},
+  '2409110003':{name:'Tin Tun Aung',major:'Computer Science',gpa:4.0,terms:4,completed:['ENG101','ENG102','ENG103','MIS103','PSY102','MAT101','BSC103','BSC102','BSC321','BSC479','CSC240','CSC221','CSC222','CSC441','CSC442','CSC475'],freeElective:['ITE231'],registered:[],avatar:'#0ea87e',risk:'LOW'},
+  '2409240001':{name:'Khant Hpone',major:'Computer Science',gpa:4.0,terms:4,completed:['ENG101','ENG102','ENG103','MIS103','PSY102','MAT101','STA101','BSC210','CSC475','BSC101','BSC102','BSC103','BSC104','BSC479','CSC240','CSC221','CSC222'],freeElective:['ITE231'],registered:[],avatar:'#f59e0b',risk:'LOW'},
+  'test':{name:'Test Student',major:'Information Technology',gpa:4.0,terms:4,completed:['ENG101','ENG102'],freeElective:[],registered:[],avatar:'#ef4444',risk:'HIGH'},
+};
+let notifications=[
+  {icon:'📚',msg:'ITE222 section 3 — 3 seats remaining',time:'2h ago',bg:'#eef0fc',read:false},
+  {icon:'⚠️',msg:'Student "test" flagged as HIGH risk',time:'4h ago',bg:'#fee2e2',read:false},
+  {icon:'✅',msg:'Victoria approved 3 registrations',time:'Yesterday',bg:'#e6f9f4',read:true},
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let me=null,attempts=0,currentView='dashboard',modalAction=null,modalCtx=null,chartInst=null,darkMode=false;
+const $=id=>document.getElementById(id);
+
+// ── PROGRESS BAR ──────────────────────────────────────────────────────────────
+function startProgress(){const b=$('progress-bar');b.style.width='0';b.style.opacity='1';setTimeout(()=>b.style.width='70%',50);}
+function endProgress(){const b=$('progress-bar');b.style.width='100%';setTimeout(()=>{b.style.opacity='0';setTimeout(()=>b.style.width='0',300);},200);}
+
+// ── LANDING ───────────────────────────────────────────────────────────────────
+function goToLogin(){$('landing').classList.add('hide');$('login-screen').style.display='flex';setTimeout(()=>$('username').focus(),100);}
+function backToLanding(){$('landing').classList.remove('hide');$('login-screen').style.display='none';}
+function scrollToFeatures(){$('land-features').scrollIntoView({behavior:'smooth'});}
+
+// ── THEME ─────────────────────────────────────────────────────────────────────
+function toggleDark(){
+  darkMode=!darkMode;
+  document.documentElement.setAttribute('data-theme',darkMode?'dark':'light');
+  const ic=darkMode?'ti-sun':'ti-moon';
+  $('dark-icon').className=`ti ${ic}`;
+  if($('dark-icon2'))$('dark-icon2').className=`ti ${ic}`;
+}
+
+// ── PWD TOGGLE ────────────────────────────────────────────────────────────────
+function togglePwd(){const i=$('password');i.type=i.type==='password'?'text':'password';document.querySelector('.fi.ti-eye,fi.ti-eye-off').className=`ti ${i.type==='password'?'ti-eye':'ti-eye-off'} fi`;}
+
+// ── LOGIN ─────────────────────────────────────────────────────────────────────
+function doLogin(){
+  const u=$('username').value.trim(),p=$('password').value.trim();
+  const btn=$('login-btn');btn.textContent='Signing in…';btn.disabled=true;
+  startProgress();
+  setTimeout(()=>{
+    const user=USERS.find(x=>x.u===u&&x.p===p);
+    const err=$('login-err');
+    if(user){me=user;attempts=0;$('login-screen').style.display='none';endProgress();setTimeout(launchApp,100);}
+    else{
+      endProgress();attempts++;err.classList.add('show');
+      const left=3-attempts;
+      if(left<=0){$('err-msg').textContent='Account locked.';btn.disabled=true;btn.textContent='Locked';}
+      else{$('err-msg').textContent=`Incorrect credentials. ${left} attempt${left>1?'s':''} left.`;btn.disabled=false;btn.textContent='Sign in to Dashboard';}
+    }
+  },700);
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&$('login-screen').style.display!=='none'){doLogin();return;}
+  if(!me)return;
+  if((e.ctrlKey||e.metaKey)&&e.key==='k'){e.preventDefault();$('search-input').focus();}
+  if(e.key==='?'&&document.activeElement.tagName!=='INPUT'){showView('help');}
+  if(e.key==='d'&&!e.ctrlKey&&document.activeElement.tagName!=='INPUT'){toggleDark();}
+  if(e.key==='Escape'){closeModal();closeNotif();}
+  if(e.key==='1'&&document.activeElement.tagName!=='INPUT'){showView('dashboard');}
+});
+
+// ── LAUNCH ────────────────────────────────────────────────────────────────────
+function launchApp(){
+  const app=$('app'),sb=$('sidebar'),main=$('main');
+  app.classList.add('show');app.style.display='flex';
+  setTimeout(()=>{sb.classList.add('open');setTimeout(()=>main.classList.add('ready'),150);},50);
+  $('sb-av').innerHTML=me.name[0]+'<div class="online-dot"></div>';
+  $('sb-name').textContent=me.name;
+  $('sb-role').textContent=me.role.charAt(0).toUpperCase()+me.role.slice(1);
+  const rp=$('role-pill');rp.textContent=me.role.charAt(0).toUpperCase()+me.role.slice(1);rp.className='role-pill rp-'+me.role;
+  updateNotifBadge();buildNav();showView('dashboard');
+}
+
+// ── MOBILE ────────────────────────────────────────────────────────────────────
+function openSidebar(){$('sidebar').classList.add('open');$('sb-overlay').classList.add('show');}
+function closeSidebar(){if(window.innerWidth<=768){$('sidebar').classList.remove('open');$('sb-overlay').classList.remove('show');}}
+
+// ── NAV ───────────────────────────────────────────────────────────────────────
+const NAVS={
+  admin:[{icon:'ti-layout-dashboard',label:'Dashboard',v:'dashboard'},{icon:'ti-books',label:'Curriculum',v:'curriculum'},{icon:'ti-calendar',label:'Schedule',v:'schedule'},{icon:'ti-chart-bar',label:'Statistics',v:'stats'}],
+  advisor:[{icon:'ti-layout-dashboard',label:'Dashboard',v:'dashboard'},{icon:'ti-users',label:'Students',v:'students'},{icon:'ti-chart-line',label:'Progress',v:'progress'},{icon:'ti-alert-triangle',label:'Grad Risks',v:'risks',badge:1}],
+  student:[{icon:'ti-layout-dashboard',label:'Dashboard',v:'dashboard'},{icon:'ti-check',label:'Completed',v:'completed'},{icon:'ti-chart-line',label:'My Progress',v:'myprogress'},{icon:'ti-plus',label:'Register',v:'register'},{icon:'ti-calendar',label:'My Schedule',v:'myschedule'},{icon:'ti-file-text',label:'Transcript',v:'transcript'}],
+};
+function buildNav(){
+  const nav=$('sb-nav');nav.innerHTML='<div class="sb-section">Menu</div>';
+  (NAVS[me.role]||[]).forEach((item,i)=>{
+    const btn=document.createElement('button');btn.className='nav-item'+(i===0?' active':'');
+    btn.innerHTML=`<i class="ti ${item.icon}"></i>${item.label}${item.badge?`<span class="nav-badge">${item.badge}</span>`:''}`;
+    btn.onclick=()=>{document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));btn.classList.add('active');showView(item.v);closeSidebar();};
+    nav.appendChild(btn);
+  });
+}
+
+// ── VIEW ROUTER ───────────────────────────────────────────────────────────────
+const VIEW_TITLES={dashboard:'Dashboard',schedule:'Term Schedule',myschedule:'My Schedule',stats:'Statistics',students:'Students',progress:'Progress Reports',risks:'Graduation Risks',register:'Register Course',completed:'Completed Courses',myprogress:'My Progress',curriculum:'Curriculum',transcript:'Academic Transcript',help:'Help'};
+
+function showView(v){
+  startProgress();
+  currentView=v;$('tb-title').textContent=VIEW_TITLES[v]||'Dashboard';
+  if(chartInst){chartInst.destroy();chartInst=null;}
+  const c=$('content');c.innerHTML='';
+  const wrap=document.createElement('div');wrap.className='view-content';c.appendChild(wrap);
+  setTimeout(()=>{
+    ({dashboard:()=>renderDashboard(wrap),schedule:()=>renderSchedule(wrap),myschedule:()=>renderMySchedule(wrap),stats:()=>renderStats(wrap),students:()=>renderStudents(wrap),progress:()=>renderProgressSelect(wrap),risks:()=>renderRisks(wrap),register:()=>renderRegister(wrap),completed:()=>renderCompleted(wrap),myprogress:()=>renderMyProgress(wrap),curriculum:()=>renderCurriculum(wrap),transcript:()=>renderTranscript(wrap),help:()=>renderHelp(wrap)}[v]||(() => wrap.innerHTML=`<div class="card"><div class="empty"><i class="ti ti-tools"></i><h3>Coming soon</h3></div></div>`))();
+    endProgress();
+  },100);
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function toastOk(msg){$('tok-msg').textContent=msg;const t=$('toast-ok');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200);}
+function toastErr(msg){$('terr-msg').textContent=msg;const t=$('toast-err');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),4000);}
+function currentCredits(rec){return(rec.completed.length+rec.freeElective.length)*4;}
+function checkPrereqs(code,rec){const p=PREREQS[code];if(!p)return{ok:true};if(p[0]==='CREDITS_148'){return currentCredits(rec)>=148?{ok:true}:{ok:false,msg:`Need 148 credits for INTERN. You have ${currentCredits(rec)}.`};}const miss=p.filter(x=>!rec.completed.includes(x)&&!rec.freeElective.includes(x));return miss.length?{ok:false,msg:`Missing: ${miss.join(', ')}`}:{ok:true};}
+function validateReg(sid,code,sec){const rec=STUDENTS[sid];if(!rec)return{ok:false,msg:'Student not found.'};const key=`${code}-${sec}`;if(rec.completed.includes(code)||rec.freeElective.includes(code))return{ok:false,msg:`${code} already completed.`};if(rec.registered.includes(key))return{ok:false,msg:'Already registered.'};if(rec.registered.length>=4)return{ok:false,msg:'Max 4 courses per term.'};const pc=checkPrereqs(code,rec);if(!pc.ok)return pc;const slot=schedule.find(s=>s.code===code&&s.sec===parseInt(sec));if(!slot)return{ok:false,msg:'Section not found.'};if(!slot.open)return{ok:false,msg:'Section is closed.'};if(slot.seats<=0)return{ok:false,msg:'No seats available.'};const taken=rec.registered.map(r=>{const[c,s]=r.split('-');const f=schedule.find(x=>x.code===c&&x.sec===parseInt(s));return f?f.time:null;}).filter(Boolean);if(taken.includes(slot.time))return{ok:false,msg:`Time conflict at ${slot.time}.`};return{ok:true,slot};}
+
+// ── CREDIT ARC (signature element) ────────────────────────────────────────────
+function buildCreditArc(credits,total=160){
+  const pct=Math.min(credits/total,1);
+  const r=70,cx=90,cy=90;
+  const startAngle=Math.PI*0.75,endAngle=Math.PI*2.25;
+  const arcLen=(endAngle-startAngle)*r;
+  const filled=arcLen*pct;
+  const gap=arcLen-filled;
+  function pt(angle){return[cx+r*Math.cos(angle),cy+r*Math.sin(angle)];}
+  const [sx,sy]=pt(startAngle);const [ex,ey]=pt(endAngle);
+  const big=endAngle-startAngle>Math.PI?1:0;
+  const color=pct>=0.9?'#0ea87e':pct>=0.5?'#5b5fc7':'#f59e0b';
+  return`<svg class="credit-arc-svg" width="180" height="160" viewBox="0 0 180 160">
+    <defs><linearGradient id="arcGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="${color}"/><stop offset="100%" stop-color="${color}cc"/>
+    </linearGradient></defs>
+    <path class="arc-track" d="M ${sx} ${sy} A ${r} ${r} 0 ${big} 1 ${ex} ${ey}"/>
+    <path class="arc-fill" d="M ${sx} ${sy} A ${r} ${r} 0 ${big} 1 ${ex} ${ey}"
+      stroke-dasharray="${filled} ${gap+0.1}" stroke-dashoffset="0" style="stroke:${color}"/>
+    <text class="arc-center-val" x="${cx}" y="${cy+6}" style="fill:var(--text)">${credits}</text>
+    <text class="arc-center-lbl" x="${cx}" y="${cy+22}" style="fill:var(--text2)">/ ${total} credits</text>
+  </svg>
+  <div class="arc-legend">
+    <div class="arc-leg-item"><div class="arc-leg-dot" style="background:${color}"></div>${Math.round(pct*100)}% complete</div>
+    <div class="arc-leg-item"><div class="arc-leg-dot" style="background:var(--border)"></div>${total-credits} remaining</div>
+  </div>`;
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────────────────────────
+function renderDashboard(c){
+  const r=me.role;
+  const h=new Date().getHours();
+  const greeting=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
+  const statsByRole={
+    admin:[['Sections Open',schedule.filter(s=>s.open).length,'ti-books','sc1','↑ 2 this week'],['Total Seats',schedule.reduce((a,s)=>a+s.total,0),'ti-armchair','sc2','All sections'],['Students',Object.keys(STUDENTS).length,'ti-users','sc3','Active'],['Fill Rate',Math.round(schedule.reduce((a,s)=>a+(s.total-s.seats),0)/schedule.reduce((a,s)=>a+s.total,0)*100)+'%','ti-chart-pie','sc4','System avg']],
+    advisor:[['Students',Object.keys(STUDENTS).length,'ti-users','sc1','Active'],['At Risk',Object.values(STUDENTS).filter(s=>s.risk==='HIGH').length,'ti-alert-triangle','sc4','Need attention'],['On Track',Object.values(STUDENTS).filter(s=>s.risk==='LOW').length,'ti-circle-check','sc2','On pace'],['Sections',schedule.filter(s=>s.open).length,'ti-calendar','sc3','Open']],
+    student:(()=>{const rec=STUDENTS[me.id];return rec?[['Completed',rec.completed.length+rec.freeElective.length,'ti-check','sc2','Courses'],['Credits',currentCredits(rec),'ti-award','sc1','Earned'],['GPA',rec.gpa,'ti-star','sc3','Current'],['Registered',rec.registered.length,'ti-calendar','sc4','This term']]:[];})(),
+  };
+  const stats=statsByRole[r]||[];
+  const acts=[{icon:'📚',msg:'<b>ITE222</b> — 3 seats remaining',time:'2h ago',bg:'#eef0fc'},{icon:'👤',msg:'<b>Khant Hpone</b> registered CSC351',time:'4h ago',bg:'#e6f9f4'},{icon:'⚠️',msg:'<b>test</b> flagged HIGH risk',time:'Yesterday',bg:'#fee2e2'},{icon:'✅',msg:'<b>Victoria</b> approved 3 registrations',time:'Yesterday',bg:'#fef3dc'}];
+  const rec=me.role==='student'?STUDENTS[me.id]:null;
+  c.innerHTML=`
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+    <div><div style="font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:700">${greeting}, ${me.name}! 👋</div>
+    <div style="font-size:11px;color:var(--text2);margin-top:2px">${new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}</div></div>
+    <button class="btn btn-primary" style="font-size:11px" onclick="showView('${r==='admin'?'schedule':r==='advisor'?'students':'register'}')"><i class="ti ti-plus"></i>${r==='admin'?'Open Section':r==='advisor'?'View Students':'Register Course'}</button>
+  </div>
+  <div class="stat-grid">${stats.map(([lbl,val,icon,cls,sub],i)=>`<div class="stat-card ${cls}" style="animation-delay:${i*.06}s"><div class="sc-label">${lbl}</div><div class="sc-val">${val}</div><div class="sc-sub">${sub}</div><i class="ti ${icon} sc-icon"></i></div>`).join('')}</div>
+  <div class="row row-70-30">
+    <div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-chart-line"></i>Registration Activity</div><span style="font-size:10px;color:var(--text2)">Last 8 weeks</span></div><div class="chart-wrap"><canvas id="main-chart"></canvas></div></div>
+    ${r==='student'&&rec?`<div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-award"></i>Credit Progress</div></div><div class="credit-arc-wrap">${buildCreditArc(currentCredits(rec))}</div></div>`:
+    `<div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-clock"></i>Activity</div></div>${acts.map(a=>`<div class="act-item"><div class="act-dot" style="background:${a.bg}">${a.icon}</div><div><div class="act-msg">${a.msg}</div><div class="act-time">${a.time}</div></div></div>`).join('')}</div>`}
+  </div>
+  <div class="row row-3col">${r==='admin'?adminQA():r==='advisor'?advisorQA():studentQA()}</div>`;
+  setTimeout(()=>{
+    const ctx=$('main-chart');if(!ctx)return;
+    chartInst=new Chart(ctx,{type:'line',data:{labels:['Wk1','Wk2','Wk3','Wk4','Wk5','Wk6','Wk7','Wk8'],datasets:[{label:'Registrations',data:[4,7,5,12,9,15,11,18],borderColor:'#5b5fc7',backgroundColor:'rgba(91,95,199,.06)',tension:.4,fill:true,pointBackgroundColor:'#5b5fc7',pointRadius:3,pointHoverRadius:5},{label:'Withdrawals',data:[1,2,1,3,2,2,1,3],borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.04)',tension:.4,fill:true,pointBackgroundColor:'#ef4444',pointRadius:3,pointHoverRadius:5,borderDash:[5,3]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10,padding:14}}},scales:{y:{beginAtZero:true,grid:{color:'rgba(0,0,0,.03)'},ticks:{font:{size:9},color:'var(--text3)'}},x:{grid:{display:false},ticks:{font:{size:9},color:'var(--text3)'}}}}});
+  },150);
+}
+
+function adminQA(){return`
+  <div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-bolt"></i>Curriculum</div></div><div class="qa-grid">
+    <div class="qa-item" onclick="openModal('addCourse')"><div class="qa-dot" style="background:#eef0fc"><i class="ti ti-plus" style="color:var(--indigo)"></i></div><div><div class="qa-text">Add course</div></div></div>
+    <div class="qa-item" onclick="showView('curriculum')"><div class="qa-dot" style="background:#e6f9f4"><i class="ti ti-books" style="color:#0ea87e"></i></div><div><div class="qa-text">View catalogue</div></div></div>
+  </div></div>
+  <div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-calendar"></i>Schedule</div></div><div class="qa-grid">
+    <div class="qa-item" onclick="openModal('openSection')"><div class="qa-dot" style="background:#fef3dc"><i class="ti ti-calendar-plus" style="color:#f59e0b"></i></div><div><div class="qa-text">Open section</div></div></div>
+    <div class="qa-item" onclick="showView('schedule')"><div class="qa-dot" style="background:#fee2e2"><i class="ti ti-table" style="color:#ef4444"></i></div><div><div class="qa-text">View schedule</div></div></div>
+  </div></div>
+  <div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-chart-bar"></i>Reports</div></div><div class="qa-grid">
+    <div class="qa-item" onclick="showView('stats')"><div class="qa-dot" style="background:#f3effe"><i class="ti ti-chart-pie" style="color:#8b5cf6"></i></div><div><div class="qa-text">Statistics</div></div></div>
+    <div class="qa-item" onclick="showView('students')"><div class="qa-dot" style="background:#e6f9f4"><i class="ti ti-users" style="color:#0ea87e"></i></div><div><div class="qa-text">Students</div></div></div>
+  </div></div>`;}
+function advisorQA(){return`
+  <div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-users"></i>Students</div></div><div class="qa-grid">
+    <div class="qa-item" onclick="showView('students')"><div class="qa-dot" style="background:#eef0fc"><i class="ti ti-search" style="color:var(--indigo)"></i></div><div><div class="qa-text">Search</div></div></div>
+    <div class="qa-item" onclick="showView('risks')"><div class="qa-dot" style="background:#fee2e2"><i class="ti ti-alert-triangle" style="color:#ef4444"></i></div><div><div class="qa-text">Risk report</div></div></div>
+  </div></div>
+  <div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-calendar"></i>Courses</div></div><div class="qa-grid">
+    <div class="qa-item" onclick="openModal('advRegister')"><div class="qa-dot" style="background:#e6f9f4"><i class="ti ti-plus" style="color:#0ea87e"></i></div><div><div class="qa-text">Register</div></div></div>
+    <div class="qa-item" onclick="openModal('advWithdraw')"><div class="qa-dot" style="background:#fef3dc"><i class="ti ti-minus" style="color:#f59e0b"></i></div><div><div class="qa-text">Withdraw</div></div></div>
+  </div></div>
+  <div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-chart-line"></i>Progress</div></div><div class="qa-grid">
+    <div class="qa-item" onclick="showView('progress')"><div class="qa-dot" style="background:#f3effe"><i class="ti ti-progress" style="color:#8b5cf6"></i></div><div><div class="qa-text">View progress</div></div></div>
+    <div class="qa-item" onclick="showView('risks')"><div class="qa-dot" style="background:#eef0fc"><i class="ti ti-chart-bar" style="color:var(--indigo)"></i></div><div><div class="qa-text">Grad risks</div></div></div>
+  </div></div>`;}
+function studentQA(){return`
+  <div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-plus"></i>Registration</div></div><div class="qa-grid">
+    <div class="qa-item" onclick="showView('register')"><div class="qa-dot" style="background:#eef0fc"><i class="ti ti-plus" style="color:var(--indigo)"></i></div><div><div class="qa-text">Add course</div></div></div>
+    <div class="qa-item" onclick="openModal('dropCourse')"><div class="qa-dot" style="background:#fee2e2"><i class="ti ti-minus" style="color:#ef4444"></i></div><div><div class="qa-text">Drop course</div></div></div>
+  </div></div>
+  <div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-chart-line"></i>Progress</div></div>
+    ${[['General',72,'#5b5fc7'],['CS Core',80,'#0ea87e'],['Major',60,'#f59e0b']].map(([l,p,col])=>`<div style="margin-bottom:9px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-size:10px;font-weight:600">${l}</span><span style="font-size:10px;font-weight:700;color:${col}">${p}%</span></div><div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden"><div style="width:${p}%;height:100%;background:${col};border-radius:3px;transition:width .8s cubic-bezier(.16,1,.3,1)"></div></div></div>`).join('')}
+  </div>
+  <div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-file-text"></i>Records</div></div><div class="qa-grid">
+    <div class="qa-item" onclick="showView('completed')"><div class="qa-dot" style="background:#e6f9f4"><i class="ti ti-check" style="color:#0ea87e"></i></div><div><div class="qa-text">Completed</div></div></div>
+    <div class="qa-item" onclick="showView('transcript')"><div class="qa-dot" style="background:#fef3dc"><i class="ti ti-file-text" style="color:#f59e0b"></i></div><div><div class="qa-text">Transcript</div></div></div>
+  </div></div>`;}
+
+// ── SCHEDULE ──────────────────────────────────────────────────────────────────
+function renderSchedule(c){
+  const ts=schedule.reduce((a,s)=>a+s.total,0),tk=schedule.reduce((a,s)=>a+(s.total-s.seats),0);
+  c.innerHTML=`
+  <div class="stat-grid"><div class="stat-card sc1"><div class="sc-label">Sections</div><div class="sc-val">${schedule.length}</div><i class="ti ti-books sc-icon"></i></div><div class="stat-card sc2"><div class="sc-label">Seats</div><div class="sc-val">${ts}</div><i class="ti ti-armchair sc-icon"></i></div><div class="stat-card sc3"><div class="sc-label">Taken</div><div class="sc-val">${tk}</div><i class="ti ti-user sc-icon"></i></div><div class="stat-card sc4"><div class="sc-label">Fill Rate</div><div class="sc-val">${Math.round(tk/ts*100)}%</div><i class="ti ti-chart-pie sc-icon"></i></div></div>
+  <div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-calendar"></i>Term Schedule</div>
+  ${me.role==='admin'?`<button class="btn btn-primary" onclick="openModal('openSection')" style="font-size:11px;padding:6px 12px"><i class="ti ti-plus"></i>Open Section</button>`:''}
+  </div>
+  <table class="data-table"><thead><tr><th>Course</th><th>Sec</th><th>Time Slot</th><th>Seats</th><th>Status</th>${me.role==='admin'?'<th>Actions</th>':''}</tr></thead>
+  <tbody>${schedule.map((s,i)=>{const t=s.total-s.seats,p=Math.round(t/s.total*100),fc=p>=80?'#ef4444':p>=50?'#f59e0b':'#0ea87e';return`<tr>
+    <td><b>${s.code}</b></td><td><span class="tag tag-blue">${s.sec}</span></td>
+    <td style="font-size:10px;color:var(--text2)">${s.time}</td>
+    <td><div class="seat-bar"><span style="font-size:11px;font-weight:700;min-width:18px">${s.seats}</span><div class="seat-track"><div class="seat-fill" style="width:${p}%;background:${fc}"></div></div><span style="font-size:9px;color:var(--text2)">${p}%</span></div></td>
+    <td><span class="tag ${s.open?'tag-green':'tag-red'}">${s.open?'Open':'Closed'}</span></td>
+    ${me.role==='admin'?`<td><div style="display:flex;gap:4px"><button class="btn btn-ghost" onclick="openModal('editSeats',${i})" style="font-size:10px;padding:4px 8px">Edit seats</button><button class="btn" onclick="toggleSec(${i})" style="font-size:10px;padding:4px 8px;border:none;background:${s.open?'#fee2e2':'#dcfce7'};color:${s.open?'#dc2626':'#15803d'}">${s.open?'Close':'Open'}</button></div></td>`:''}
+  </tr>`;}).join('')}</tbody></table></div>`;
+}
+function toggleSec(i){schedule[i].open=!schedule[i].open;addNotif(schedule[i].open?'📂':'🔒',`${schedule[i].code}-${schedule[i].sec} ${schedule[i].open?'opened':'closed'}`,'Just now',schedule[i].open?'#e6f9f4':'#fee2e2');toastOk(`${schedule[i].code}-${schedule[i].sec} ${schedule[i].open?'opened':'closed'}.`);renderSchedule(document.querySelector('.view-content'));}
+
+// ── MY SCHEDULE ───────────────────────────────────────────────────────────────
+function renderMySchedule(c){
+  const rec=STUDENTS[me.id];if(!rec){c.innerHTML=`<div class="card"><div class="empty"><i class="ti ti-calendar"></i><h3>No record</h3></div></div>`;return;}
+  const regs=rec.registered.map(r=>{const[cd,sec]=r.split('-');const sl=schedule.find(s=>s.code===cd&&s.sec===parseInt(sec));return sl?{code:cd,sec,time:sl.time,r}:null;}).filter(Boolean);
+  c.innerHTML=`
+  <div class="stat-grid" style="grid-template-columns:repeat(3,1fr)"><div class="stat-card sc1"><div class="sc-label">Registered</div><div class="sc-val">${regs.length}/4</div></div><div class="stat-card sc2"><div class="sc-label">Credits</div><div class="sc-val">${regs.length*4}</div></div><div class="stat-card sc3"><div class="sc-label">Slots Left</div><div class="sc-val">${4-regs.length}</div></div></div>
+  <div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-calendar"></i>My Registered Courses</div><button class="btn btn-primary" onclick="showView('register')" style="font-size:11px;padding:6px 12px"><i class="ti ti-plus"></i>Add</button></div>
+  ${regs.length===0?`<div class="empty"><i class="ti ti-calendar"></i><h3>No courses registered</h3><p>Go to Register Course to add courses.</p></div>`:
+  `<table class="data-table"><thead><tr><th>Course</th><th>Section</th><th>Time Slot</th><th></th></tr></thead><tbody>${regs.map(r=>`<tr><td><b>${r.code}</b></td><td><span class="tag tag-blue">${r.sec}</span></td><td style="font-size:10px;color:var(--text2)">${r.time}</td><td><button class="btn btn-ghost" onclick="withdrawCourse('${r.r}')" style="font-size:10px;padding:4px 8px;color:#ef4444;border-color:#fca5a5">Drop</button></td></tr>`).join('')}</tbody></table>`}
+  </div>`;
+}
+function withdrawCourse(key){const rec=STUDENTS[me.id];if(!rec)return;const idx=rec.registered.indexOf(key);if(idx===-1){toastErr('Not found.');return;}const[cd,sec]=key.split('-');rec.registered.splice(idx,1);const sl=schedule.find(s=>s.code===cd&&s.sec===parseInt(sec));if(sl)sl.seats++;addNotif('📤',`Dropped ${cd}-${sec}`,'Just now','#fee2e2');toastOk(`Dropped ${cd}-${sec}.`);renderMySchedule(document.querySelector('.view-content'));}
+
+// ── REGISTER ──────────────────────────────────────────────────────────────────
+function renderRegister(c){
+  const rec=STUDENTS[me.id];
+  c.innerHTML=`
+  <div class="card" style="margin-bottom:14px"><div style="display:flex;gap:18px;flex-wrap:wrap;font-size:11px;color:var(--text2)">
+    <span>Registered: <b style="color:var(--text)">${rec?rec.registered.length:0}/4</b></span>
+    <span>Credits: <b style="color:var(--text)">${rec?currentCredits(rec):0}/160</b></span>
+    <span>Max per term: <b style="color:var(--text)">4 courses</b></span>
+  </div></div>
+  <div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-calendar-plus"></i>Available Sections</div></div>
+  <table class="data-table"><thead><tr><th>Course</th><th>Sec</th><th>Time</th><th>Seats</th><th>Prerequisites</th><th></th></tr></thead>
+  <tbody>${schedule.filter(s=>s.open).map(s=>{
+    const prereqs=PREREQS[s.code];
+    const ph=prereqs?prereqs[0]==='CREDITS_148'?`<span class="prereq-tag">148 cr</span>`:prereqs.map(p=>`<span class="prereq-tag">${p}</span>`).join(''):'<span style="font-size:9px;color:var(--text3)">None</span>';
+    const done=rec&&(rec.completed.includes(s.code)||rec.freeElective.includes(s.code));
+    const reged=rec&&rec.registered.includes(`${s.code}-${s.sec}`);
+    const state=done?'done':reged?'reg':s.seats<=0?'full':'ok';
+    const bm={done:['✓ Done','btn-ghost',true],reg:['✓ Added','btn-ghost',true],full:['Full','btn-ghost',true],ok:['Register','btn-primary',false]};
+    const[txt,cls,dis]=bm[state];
+    return`<tr><td><b>${s.code}</b></td><td><span class="tag tag-blue">${s.sec}</span></td><td style="font-size:10px;color:var(--text2)">${s.time}</td>
+    <td><span class="tag ${s.seats>5?'tag-green':s.seats>0?'tag-amber':'tag-red'}">${s.seats}</span></td>
+    <td>${ph}</td><td><button class="btn ${cls}" onclick="doRegister('${s.code}',${s.sec})" style="font-size:10px;padding:5px 10px" ${dis?'disabled':''}>${txt}</button></td></tr>`;
+  }).join('')}</tbody></table></div>`;
+}
+function doRegister(code,sec){const r=validateReg(me.id,code,sec);if(!r.ok){toastErr(r.msg);return;}const rec=STUDENTS[me.id];rec.registered.push(`${code}-${sec}`);r.slot.seats--;addNotif('📚',`Registered ${code}-${sec}`,'Just now','#eef0fc');toastOk(`Registered for ${code}-${sec}!`);renderRegister(document.querySelector('.view-content'));}
+
+// ── COMPLETED ────────────────────────────────────────────────────────────────
+function renderCompleted(c){
+  const rec=STUDENTS[me.id]||Object.values(STUDENTS)[0];const all=[...rec.completed,...rec.freeElective];
+  c.innerHTML=`
+  <div class="stat-grid"><div class="stat-card sc2"><div class="sc-label">Completed</div><div class="sc-val">${all.length}</div></div><div class="stat-card sc1"><div class="sc-label">Credits</div><div class="sc-val">${currentCredits(rec)}</div></div><div class="stat-card sc3"><div class="sc-label">GPA</div><div class="sc-val">${rec.gpa}</div></div><div class="stat-card sc4"><div class="sc-label">Terms</div><div class="sc-val">${rec.terms}</div></div></div>
+  <div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-check"></i>Completed Courses</div><span style="font-size:10px;color:var(--text2)">${all.length} courses · ${currentCredits(rec)} credits</span></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:6px">
+    ${all.map(code=>`<div style="display:flex;align-items:center;gap:5px;padding:7px 9px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:7px;transition:transform .15s;cursor:default" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+      <i class="ti ti-circle-check" style="color:#0ea87e;font-size:12px;flex-shrink:0"></i>
+      <span style="font-size:10px;font-weight:700;font-family:monospace;color:#065f46">${code}</span>
+    </div>`).join('')}
+  </div></div>`;
+}
+
+// ── MY PROGRESS ───────────────────────────────────────────────────────────────
+function renderMyProgress(c){
+  const rec=STUDENTS[me.id]||Object.values(STUDENTS)[0];const all=[...rec.completed,...rec.freeElective];
+  const colors=['#5b5fc7','#0ea87e','#f59e0b','#ef4444','#8b5cf6','#06b6d4'];
+  c.innerHTML=`
+  <div class="stat-grid"><div class="stat-card sc2"><div class="sc-label">Done</div><div class="sc-val">${all.length}</div></div><div class="stat-card sc1"><div class="sc-label">Credits</div><div class="sc-val">${currentCredits(rec)}/160</div></div><div class="stat-card sc3"><div class="sc-label">GPA</div><div class="sc-val">${rec.gpa}</div></div><div class="stat-card sc4"><div class="sc-label">To Graduate</div><div class="sc-val">${160-currentCredits(rec)} cr</div></div></div>
+  <div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-chart-line"></i>Progress — ${rec.major}</div><div class="credit-arc-wrap" style="flex-direction:row;gap:8px;align-items:center">${buildCreditArc(currentCredits(rec))}</div></div>
+  ${Object.entries(CURRICULUM_CS).map(([section,{total,courses}],idx)=>{
+    const done=section==='Free Elective'?rec.freeElective.length:courses.filter(c=>all.includes(c)).length;
+    const pct=Math.round(done/total*100),col=colors[idx%colors.length];
+    return`<div class="prog-section"><div class="prog-section-title"><span>${section}</span><span style="color:${col};font-weight:700">${done}/${total} · ${pct}%</span></div>
+    <div style="height:7px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:8px"><div style="width:${pct}%;height:100%;background:${col};border-radius:3px;transition:width .8s cubic-bezier(.16,1,.3,1) ${idx*.08}s"></div></div>
+    <div style="display:flex;flex-wrap:wrap;gap:4px">${section==='Free Elective'?rec.freeElective.map(c=>`<span style="background:#f0fdf4;border:1px solid #bbf7d0;color:#065f46;padding:1px 7px;border-radius:4px;font-size:9px;font-weight:700;font-family:monospace">✅ ${c}</span>`).join('')||'<span style="font-size:10px;color:var(--text3)">None yet</span>':courses.map(c=>{const d=all.includes(c);return`<span style="background:${d?'#f0fdf4':'var(--canvas)'};border:1px solid ${d?'#bbf7d0':'var(--border)'};color:${d?'#065f46':'var(--text2)'};padding:1px 7px;border-radius:4px;font-size:9px;font-weight:700;font-family:monospace">${d?'✅':'⏳'} ${c}</span>`;}).join('')}</div></div>`;
+  }).join('')}</div>`;
+}
+
+// ── TRANSCRIPT (new in v5) ────────────────────────────────────────────────────
+function renderTranscript(c){
+  const rec=STUDENTS[me.id]||Object.values(STUDENTS)[0];const all=[...rec.completed,...rec.freeElective];
+  const now=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  c.innerHTML=`
+  <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+    <button class="btn btn-primary" onclick="window.print()" style="font-size:11px"><i class="ti ti-printer"></i>Print Transcript</button>
+    <button class="btn btn-ghost" onclick="showView('myprogress')" style="font-size:11px"><i class="ti ti-chart-line"></i>View Progress</button>
+  </div>
+  <div class="print-card" id="transcript-content">
+    <div style="text-align:center;padding-bottom:20px;border-bottom:2px solid var(--border);margin-bottom:24px">
+      <div style="font-size:22px;margin-bottom:4px">🎓</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:var(--text)">Stamford University</div>
+      <div style="font-size:12px;color:var(--text2);margin-top:2px">Official Academic Transcript</div>
+      <div style="font-size:10px;color:var(--text3);margin-top:6px">Issued: ${now}</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
+      <div><div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);margin-bottom:3px">Student Name</div><div style="font-size:14px;font-weight:700;color:var(--text)">${rec.name}</div></div>
+      <div><div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);margin-bottom:3px">Student ID</div><div style="font-size:14px;font-weight:700;font-family:monospace;color:var(--text)">${me.id||'N/A'}</div></div>
+      <div><div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);margin-bottom:3px">Major</div><div style="font-size:14px;font-weight:700;color:var(--text)">${rec.major}</div></div>
+      <div><div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);margin-bottom:3px">Terms Completed</div><div style="font-size:14px;font-weight:700;color:var(--text)">${rec.terms}</div></div>
+      <div><div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);margin-bottom:3px">Cumulative GPA</div><div style="font-size:14px;font-weight:700;color:var(--c2)">${rec.gpa} / 4.00</div></div>
+      <div><div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);margin-bottom:3px">Total Credits</div><div style="font-size:14px;font-weight:700;color:var(--indigo)">${currentCredits(rec)} / 160</div></div>
+    </div>
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)">Completed Courses</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:20px">
+      ${all.map((code,i)=>`<div style="display:flex;align-items:center;gap:6px;padding:7px 10px;background:var(--canvas);border:1px solid var(--border);border-radius:6px">
+        <span style="font-size:9px;font-weight:700;color:var(--text2);min-width:18px">${i+1}</span>
+        <span style="font-size:10px;font-weight:700;font-family:monospace;color:var(--text)">${code}</span>
+        <span style="margin-left:auto;font-size:9px;font-weight:700;color:var(--c2)">A</span>
+      </div>`).join('')}
+    </div>
+    ${rec.registered.length>0?`
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)">Currently Registered</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px">
+      ${rec.registered.map(r=>`<span style="background:#eef0fc;color:var(--indigo2);padding:4px 10px;border-radius:5px;font-size:10px;font-weight:700;font-family:monospace">${r}</span>`).join('')}
+    </div>`:''}
+    <div style="margin-top:24px;padding-top:16px;border-top:2px solid var(--border);display:flex;justify-content:space-between;align-items:flex-end">
+      <div style="font-size:10px;color:var(--text3)">This is an unofficial transcript generated from the Stamford University Registration System.<br>For official purposes, contact the Registrar's Office.</div>
+      <div style="text-align:center">
+        <div style="width:100px;border-top:1px solid var(--text);padding-top:4px;font-size:9px;color:var(--text2)">Registrar</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── STATS ─────────────────────────────────────────────────────────────────────
+function renderStats(c){
+  c.innerHTML=`
+  <div class="row row-2col">
+    <div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-chart-bar"></i>Seats per section</div></div><div class="chart-wrap" style="height:230px"><canvas id="bar-chart"></canvas></div></div>
+    <div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-chart-pie"></i>Fill rate</div></div><div class="chart-wrap" style="height:150px"><canvas id="donut-chart"></canvas></div>
+    <div style="text-align:center;margin-top:8px"><div style="font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;color:var(--indigo)">${Math.round(schedule.reduce((a,s)=>a+(s.total-s.seats),0)/schedule.reduce((a,s)=>a+s.total,0)*100)}%</div><div style="font-size:10px;color:var(--text2)">Average fill rate</div></div></div>
+  </div>
+  <div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-table"></i>Section breakdown</div></div>
+  <table class="data-table"><thead><tr><th>Course</th><th>Sec</th><th>Time</th><th>Taken</th><th>Available</th><th>Fill</th><th>Status</th></tr></thead>
+  <tbody>${schedule.map(s=>{const t=s.total-s.seats,p=Math.round(t/s.total*100),fc=p>=80?'#ef4444':p>=50?'#f59e0b':'#0ea87e';return`<tr><td><b>${s.code}</b></td><td>${s.sec}</td><td style="font-size:10px;color:var(--text2)">${s.time}</td><td><b>${t}</b></td><td>${s.seats}</td><td><div class="seat-bar"><div class="seat-track"><div class="seat-fill" style="width:${p}%;background:${fc}"></div></div><span style="font-size:10px;font-weight:700;color:${fc};min-width:28px">${p}%</span></div></td><td><span class="tag ${s.open?'tag-green':'tag-red'}">${s.open?'Open':'Closed'}</span></td></tr>`;}).join('')}</tbody></table></div>`;
+  setTimeout(()=>{
+    new Chart($('bar-chart'),{type:'bar',data:{labels:schedule.map(s=>s.code),datasets:[{label:'Taken',data:schedule.map(s=>s.total-s.seats),backgroundColor:'#5b5fc7',borderRadius:4},{label:'Available',data:schedule.map(s=>s.seats),backgroundColor:'rgba(91,95,199,.1)',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:9,padding:12}}},scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:9},color:'var(--text3)'}},y:{stacked:true,grid:{color:'rgba(0,0,0,.03)'},ticks:{font:{size:9},color:'var(--text3)'}}}}});
+    const tk=schedule.reduce((a,s)=>a+(s.total-s.seats),0),av=schedule.reduce((a,s)=>a+s.seats,0);
+    new Chart($('donut-chart'),{type:'doughnut',data:{labels:['Filled','Available'],datasets:[{data:[tk,av],backgroundColor:['#5b5fc7','rgba(91,95,199,.1)'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'72%',plugins:{legend:{display:false}}}});
+  },100);
+}
+
+// ── STUDENTS ──────────────────────────────────────────────────────────────────
+function renderStudents(c){
+  const list=Object.entries(STUDENTS);
+  c.innerHTML=`
+  <div class="stat-grid"><div class="stat-card sc1"><div class="sc-label">Total</div><div class="sc-val">${list.length}</div></div><div class="stat-card sc2"><div class="sc-label">Low Risk</div><div class="sc-val">${list.filter(([,s])=>s.risk==='LOW').length}</div></div><div class="stat-card sc3"><div class="sc-label">Med Risk</div><div class="sc-val">${list.filter(([,s])=>s.risk==='MEDIUM').length}</div></div><div class="stat-card sc4"><div class="sc-label">High Risk</div><div class="sc-val">${list.filter(([,s])=>s.risk==='HIGH').length}</div></div></div>
+  <div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-users"></i>Students</div>${me.role==='advisor'?`<button class="btn btn-primary" onclick="openModal('advRegister')" style="font-size:11px;padding:6px 12px">Register Course</button>`:''}</div>
+  <table class="data-table"><thead><tr><th>Student</th><th>ID</th><th>Major</th><th>GPA</th><th>Credits</th><th>Done</th><th>Risk</th>${me.role==='advisor'?'<th></th>':''}</tr></thead>
+  <tbody>${list.map(([id,s])=>{const cr=currentCredits(s),done=s.completed.length+s.freeElective.length;return`<tr>
+    <td><div style="display:flex;align-items:center;gap:7px"><div style="width:28px;height:28px;border-radius:50%;background:${s.avatar};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff">${s.name[0]}</div><b>${s.name}</b></div></td>
+    <td style="font-family:monospace;font-size:10px;color:var(--text2)">${id}</td><td style="font-size:10px">${s.major.replace('Computer Science','CS').replace('Information Technology','IT')}</td>
+    <td><b style="color:${s.gpa>=3.5?'#0ea87e':'#f59e0b'}">${s.gpa}</b></td><td>${cr}/160</td><td>${done}</td>
+    <td><span class="tag ${s.risk==='HIGH'?'tag-red':s.risk==='MEDIUM'?'tag-amber':'tag-green'}">${s.risk==='HIGH'?'⚠ HIGH':s.risk==='MEDIUM'?'~ MED':'✓ LOW'}</span></td>
+    ${me.role==='advisor'?`<td><button class="btn btn-ghost" onclick="openProgressFor('${id}')" style="font-size:10px;padding:4px 8px">Progress</button></td>`:''}
+  </tr>`;}).join('')}</tbody></table></div>`;
+}
+
+// ── PROGRESS SELECT ───────────────────────────────────────────────────────────
+function renderProgressSelect(c){
+  c.innerHTML=`<div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-chart-line"></i>Select student</div></div>
+  ${Object.entries(STUDENTS).map(([id,s])=>`<div class="stu-card" onclick="openProgressFor('${id}')">
+    <div class="stu-av" style="background:${s.avatar}">${s.name[0]}</div>
+    <div><div class="stu-name">${s.name}</div><div class="stu-meta">${id} · ${s.major}</div></div>
+    <div class="stu-gpa">${s.gpa}</div>
+    <span class="tag ${s.risk==='HIGH'?'tag-red':s.risk==='MEDIUM'?'tag-amber':'tag-green'}" style="margin-left:10px">${s.risk}</span>
+    <i class="ti ti-chevron-right" style="color:var(--text3);margin-left:6px"></i>
+  </div>`).join('')}</div>`;
+}
+function openProgressFor(id){
+  const rec=STUDENTS[id];if(!rec)return;const all=[...rec.completed,...rec.freeElective];
+  const colors=['#5b5fc7','#0ea87e','#f59e0b','#ef4444','#8b5cf6','#06b6d4'];
+  const c=document.querySelector('.view-content');
+  c.innerHTML=`<button class="btn btn-ghost" onclick="showView('progress')" style="margin-bottom:14px;font-size:11px"><i class="ti ti-arrow-left"></i>Back</button>
+  <div class="stat-grid"><div class="stat-card sc2"><div class="sc-label">Done</div><div class="sc-val">${all.length}</div></div><div class="stat-card sc1"><div class="sc-label">Credits</div><div class="sc-val">${currentCredits(rec)}</div></div><div class="stat-card sc3"><div class="sc-label">GPA</div><div class="sc-val">${rec.gpa}</div></div><div class="stat-card ${rec.risk==='HIGH'?'sc4':rec.risk==='MEDIUM'?'sc3':'sc2'}"><div class="sc-label">Risk</div><div class="sc-val">${rec.risk}</div></div></div>
+  <div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-chart-line"></i>${rec.name} — Progress</div><div class="credit-arc-wrap" style="flex-direction:row">${buildCreditArc(currentCredits(rec))}</div></div>
+  ${Object.entries(CURRICULUM_CS).map(([section,{total,courses}],idx)=>{
+    const done=section==='Free Elective'?rec.freeElective.length:courses.filter(c=>all.includes(c)).length;
+    const pct=Math.round(done/total*100),col=colors[idx%colors.length];
+    return`<div class="prog-section"><div class="prog-section-title"><span>${section}</span><span style="color:${col};font-weight:700">${done}/${total} (${pct}%)</span></div>
+    <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:7px"><div style="width:${pct}%;height:100%;background:${col};border-radius:3px;transition:width .7s cubic-bezier(.16,1,.3,1) ${idx*.07}s"></div></div>
+    <div style="display:flex;flex-wrap:wrap;gap:4px">${section==='Free Elective'?rec.freeElective.map(c=>`<span style="background:#f0fdf4;border:1px solid #bbf7d0;color:#065f46;padding:1px 6px;border-radius:4px;font-size:9px;font-weight:700;font-family:monospace">✅ ${c}</span>`).join('')||'<span style="font-size:10px;color:var(--text3)">None</span>':courses.map(c=>{const d=all.includes(c);return`<span style="background:${d?'#f0fdf4':'var(--canvas)'};border:1px solid ${d?'#bbf7d0':'var(--border)'};color:${d?'#065f46':'var(--text2)'};padding:1px 6px;border-radius:4px;font-size:9px;font-weight:700;font-family:monospace">${d?'✅':'⏳'} ${c}</span>`;}).join('')}</div></div>`;
+  }).join('')}</div>`;
+}
+
+// ── RISKS ─────────────────────────────────────────────────────────────────────
+function renderRisks(c){
+  const list=Object.entries(STUDENTS);
+  c.innerHTML=`
+  <div class="stat-grid" style="grid-template-columns:repeat(3,1fr)"><div class="stat-card sc2"><div class="sc-label">Low</div><div class="sc-val">${list.filter(([,s])=>s.risk==='LOW').length}</div></div><div class="stat-card sc3"><div class="sc-label">Medium</div><div class="sc-val">${list.filter(([,s])=>s.risk==='MEDIUM').length}</div></div><div class="stat-card sc4"><div class="sc-label">High</div><div class="sc-val">${list.filter(([,s])=>s.risk==='HIGH').length}</div></div></div>
+  <div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-alert-triangle"></i>Graduation Risk Report</div></div>
+  <table class="data-table"><thead><tr><th>Student</th><th>ID</th><th>Done</th><th>Per Term</th><th>Credits</th><th>Risk</th></tr></thead>
+  <tbody>${list.map(([id,s])=>{const done=s.completed.length+s.freeElective.length,per=Math.round(done/s.terms*10)/10,risk=per<2?'HIGH':per<4?'MEDIUM':'LOW';return`<tr>
+    <td><div style="display:flex;align-items:center;gap:7px"><div style="width:26px;height:26px;border-radius:50%;background:${s.avatar};display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff">${s.name[0]}</div><b>${s.name}</b></div></td>
+    <td style="font-family:monospace;font-size:10px;color:var(--text2)">${id}</td><td>${done}</td><td><b>${per}</b>/term</td><td>${currentCredits(s)}/160</td>
+    <td><span class="tag ${risk==='HIGH'?'tag-red':risk==='MEDIUM'?'tag-amber':'tag-green'}">${risk==='HIGH'?'⚠ HIGH':risk==='MEDIUM'?'~ MED':'✓ LOW'}</span></td>
+  </tr>`;}).join('')}</tbody></table></div>`;
+}
+
+// ── CURRICULUM ────────────────────────────────────────────────────────────────
+function renderCurriculum(c){
+  const colors=['#5b5fc7','#0ea87e','#f59e0b','#ef4444','#8b5cf6','#06b6d4'];
+  c.innerHTML=`<div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-books"></i>CS Curriculum</div><button class="btn btn-primary" onclick="openModal('addCourse')" style="font-size:11px;padding:6px 12px"><i class="ti ti-plus"></i>Add Course</button></div>
+  ${Object.entries(CURRICULUM_CS).map(([section,{courses}],idx)=>`<div class="prog-section"><div class="prog-section-title" style="color:${colors[idx%colors.length]}"><span>${section}</span><span style="font-size:10px;color:var(--text2);font-weight:500">${courses.length} courses</span></div><div style="display:flex;flex-wrap:wrap;gap:5px">${courses.map(c=>`<span style="background:var(--canvas);border:1px solid var(--border);color:var(--text);padding:2px 8px;border-radius:5px;font-size:10px;font-weight:700;font-family:monospace;transition:all .15s;cursor:default" onmouseover="this.style.background='${colors[idx%colors.length]}20';this.style.borderColor='${colors[idx%colors.length]}'" onmouseout="this.style.background='';this.style.borderColor=''">${c}</span>`).join('')}</div></div>`).join('')}</div>`;
+}
+
+// ── HELP ──────────────────────────────────────────────────────────────────────
+function renderHelp(c){
+  const shortcuts=[['Ctrl+K','Focus search'],['1','Dashboard'],['D','Toggle dark mode'],['?','Open help'],['Esc','Close modal / panel']];
+  c.innerHTML=`<div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-keyboard"></i>Keyboard shortcuts</div></div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:7px">
+    ${shortcuts.map(([k,d])=>`<div style="display:flex;align-items:center;gap:9px;padding:9px 11px;background:var(--canvas);border:1px solid var(--border);border-radius:7px"><kbd style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;font-family:monospace">${k}</kbd><span style="font-size:11px;color:var(--text2)">${d}</span></div>`).join('')}
+  </div></div>
+  <div class="card" style="margin-top:14px"><div class="card-head"><div class="card-title"><i class="ti ti-info-circle"></i>About</div></div>
+  <p style="font-size:12px;color:var(--text2);line-height:1.8">Stamford University Registration System — <b>Web Frontend v5</b> (Final)<br>Pure HTML · CSS · JavaScript — no frameworks, no build step.<br>Single file, fully portable. Open in any modern browser.<br><br>Features: Landing page · Dark mode · 10-step registration validation · Credit arc · Printable transcript · Mobile responsive · Keyboard shortcuts · Live notifications</p>
+  <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-size:10px;color:var(--text3)">© 2025 Stamford University · Built for portfolio demonstration</div></div>`;
+}
+
+// ── NOTIFICATIONS ─────────────────────────────────────────────────────────────
+function updateNotifBadge(){const u=notifications.filter(n=>!n.read).length;$('notif-dot').style.display=u>0?'block':'none';}
+function addNotif(icon,msg,time,bg){notifications.unshift({icon,msg,time,bg,read:false});updateNotifBadge();}
+function renderNotifs(){
+  $('notif-list').innerHTML=notifications.length===0?`<div style="padding:18px;text-align:center;font-size:11px;color:var(--text2)">No notifications</div>`:
+  notifications.map(n=>`<div class="notif-item"><div class="notif-icon" style="background:${n.bg}">${n.icon}</div><div style="flex:1"><div class="notif-msg">${n.msg}</div><div class="notif-time">${n.time}</div></div>${!n.read?'<div class="notif-unread"></div>':''}</div>`).join('');
+}
+function toggleNotif(){const p=$('notif-panel');if(p.classList.contains('show')){closeNotif();}else{renderNotifs();p.classList.add('show');notifications.forEach(n=>n.read=true);setTimeout(updateNotifBadge,200);}}
+function closeNotif(){$('notif-panel').classList.remove('show');}
+function clearNotifs(){notifications=[];renderNotifs();updateNotifBadge();}
+document.addEventListener('click',e=>{if(!$('notif-panel').contains(e.target)&&!e.target.closest('.icon-btn[onclick*="toggleNotif"]'))closeNotif();});
+
+// ── SEARCH ────────────────────────────────────────────────────────────────────
+function handleSearch(q){
+  if(!q||q.length<2)return;const lq=q.toLowerCase();
+  const map=[['sched','schedule'],['student','students'],['stat','stats'],['risk','risks'],['prog','progress'],['reg','register'],['comp','completed'],['curr','curriculum'],['trans','transcript']];
+  for(const[k,v]of map){if(lq.includes(k)){showView(v);return;}}
+}
+
+// ── MODALS ────────────────────────────────────────────────────────────────────
+let modalAction=null,modalCtx=null;
+function openModal(action,ctx=null){
+  modalAction=action;modalCtx=ctx;
+  const el=$('modal-result');el.className='modal-result';
+  const titles={addCourse:'Add course',openSection:'Open course section',editSeats:'Edit seat limit',advRegister:'Register course for student',advWithdraw:'Withdraw course for student',dropCourse:'Drop a course'};
+  const subs={addCourse:'Add a new course to the curriculum.',openSection:'Open a new section in the term schedule.',editSeats:'Update the seat limit for this section.',advRegister:'Register a course on behalf of a student.',advWithdraw:'Withdraw a course from a student.',dropCourse:'Remove a course from your registrations.'};
+  $('modal-title').textContent=titles[action]||action;$('modal-sub').textContent=subs[action]||'';
+  const bodies={
+    addCourse:`<div class="modal-field"><label>Category</label><select id="m-cat"><option>CS Major Requirements</option><option>CS Basic Core</option><option>General Courses</option><option>IT Major Requirements</option></select></div><div class="modal-field"><label>Course Code</label><input id="m-code" placeholder="e.g. CSC999"/></div><div class="modal-field"><label>Course Name</label><input id="m-name" placeholder="e.g. Advanced Systems Programming"/></div>`,
+    openSection:`<div class="modal-field"><label>Course Code</label><input id="m-code" placeholder="e.g. CSC351"/></div><div class="modal-field"><label>Section</label><input id="m-sec" type="number" placeholder="1" min="1"/></div><div class="modal-field"><label>Time Slot</label><input id="m-time" placeholder="e.g. Tue/Fri 10:30-12:30"/></div><div class="modal-field"><label>Seat Limit</label><input id="m-seats" type="number" placeholder="25" min="1"/></div>`,
+    editSeats:ctx!==null?`<div class="modal-field"><label>Course</label><input value="${schedule[ctx].code} — Sec ${schedule[ctx].sec}" readonly style="background:var(--canvas)"/></div><div class="modal-field"><label>New Seat Limit</label><input id="m-seats" type="number" value="${schedule[ctx].total}" min="1"/></div>`:'',
+    advRegister:`<div class="modal-field"><label>Student</label><select id="m-sid">${Object.entries(STUDENTS).map(([id,s])=>`<option value="${id}">${s.name} (${id})</option>`).join('')}</select></div><div class="modal-field"><label>Course Code</label><input id="m-code" placeholder="e.g. ITE222"/></div><div class="modal-field"><label>Section</label><input id="m-sec" type="number" placeholder="3"/></div>`,
+    advWithdraw:`<div class="modal-field"><label>Student</label><select id="m-sid">${Object.entries(STUDENTS).map(([id,s])=>`<option value="${id}">${s.name} (${id})</option>`).join('')}</select></div><div class="modal-field"><label>Course Code</label><input id="m-code" placeholder="e.g. ITE222"/></div><div class="modal-field"><label>Section</label><input id="m-sec" type="number" placeholder="3"/></div>`,
+    dropCourse:`<div class="modal-field"><label>Course Code</label><input id="m-code" placeholder="e.g. ITE222"/></div><div class="modal-field"><label>Section</label><input id="m-sec" type="number" placeholder="3"/></div>`,
+  };
+  $('modal-body').innerHTML=bodies[action]||'';
+  $('modal-bg').classList.add('show');
+}
+function closeModal(){$('modal-bg').classList.remove('show');}
+function showRes(msg,type){const el=$('modal-result');el.textContent=msg;el.className=`modal-result ${type}`;}
+const g=id=>{const el=document.getElementById(id);return el?el.value.trim():'';}
+function submitModal(){
+  if(modalAction==='addCourse'){const code=g('m-code'),name=g('m-name');if(!code||!name){showRes('Fill in all fields.','error');return;}addNotif('📚',`Course ${code} added`,'Just now','#eef0fc');toastOk(`Course ${code} added.`);closeModal();}
+  else if(modalAction==='openSection'){const code=g('m-code'),sec=parseInt(g('m-sec')),time=g('m-time'),seats=parseInt(g('m-seats'))||25;if(!code||!sec||!time){showRes('Fill in all fields.','error');return;}if(schedule.find(s=>s.code===code&&s.sec===sec)){showRes('Section already exists.','error');return;}schedule.push({code,sec,time,seats,total:seats,open:true});addNotif('📅',`${code}-${sec} opened`,'Just now','#e6f9f4');toastOk(`Section ${code}-${sec} opened.`);closeModal();if(currentView==='schedule')showView('schedule');}
+  else if(modalAction==='editSeats'&&modalCtx!==null){const seats=parseInt(g('m-seats'));if(!seats||seats<1){showRes('Invalid.','error');return;}schedule[modalCtx].total=seats;schedule[modalCtx].seats=seats;toastOk(`Seat limit updated to ${seats}.`);closeModal();if(currentView==='schedule')showView('schedule');}
+  else if(modalAction==='advRegister'){const sid=g('m-sid'),code=g('m-code'),sec=g('m-sec');if(!sid||!code||!sec){showRes('Fill in all fields.','error');return;}const r=validateReg(sid,code,parseInt(sec));if(!r.ok){showRes(r.msg,'error');return;}STUDENTS[sid].registered.push(`${code}-${sec}`);r.slot.seats--;addNotif('✅',`${code}-${sec} registered for ${STUDENTS[sid].name}`,'Just now','#e6f9f4');toastOk(`Registered ${code}-${sec} for ${STUDENTS[sid].name}.`);closeModal();}
+  else if(modalAction==='advWithdraw'){const sid=g('m-sid'),code=g('m-code'),sec=g('m-sec');if(!sid||!code||!sec){showRes('Fill in all fields.','error');return;}const key=`${code}-${sec}`,rec=STUDENTS[sid];if(!rec||!rec.registered.includes(key)){showRes('Registration not found.','error');return;}rec.registered=rec.registered.filter(r=>r!==key);const sl=schedule.find(s=>s.code===code&&s.sec===parseInt(sec));if(sl)sl.seats++;toastOk(`Withdrawn ${code}-${sec} for ${rec.name}.`);closeModal();}
+  else if(modalAction==='dropCourse'){const code=g('m-code'),sec=g('m-sec'),rec=STUDENTS[me.id];const key=`${code}-${sec}`;if(!rec||!rec.registered.includes(key)){showRes('Not found in your registrations.','error');return;}rec.registered=rec.registered.filter(r=>r!==key);const sl=schedule.find(s=>s.code===code&&s.sec===parseInt(sec));if(sl)sl.seats++;toastOk(`Dropped ${code}-${sec}.`);closeModal();if(currentView==='myschedule')showView('myschedule');}
+}
+
+// ── MOBILE ────────────────────────────────────────────────────────────────────
+function openSidebar(){$('sidebar').classList.add('open');$('sb-overlay').classList.add('show');}
+function closeSidebar(){if(window.innerWidth<=768){$('sidebar').classList.remove('open');$('sb-overlay').classList.remove('show');}}
+
+// ── LOGOUT ────────────────────────────────────────────────────────────────────
+function doLogout(){
+  me=null;attempts=0;notifications=[];
+  $('app').classList.remove('show');$('app').style.display='none';
+  $('sidebar').classList.remove('open');$('main').classList.remove('ready');$('sb-overlay').classList.remove('show');
+  $('landing').classList.remove('hide');
+  const btn=$('login-btn');btn.disabled=false;btn.textContent='Sign in to Dashboard';
+  $('username').value='';$('password').value='';
+  $('login-err').classList.remove('show');
+  setTimeout(()=>{$('app').style.display='';},100);
+}
+</script>
+</body>
+</html>
