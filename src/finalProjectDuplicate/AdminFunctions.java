@@ -17,8 +17,7 @@ public class AdminFunctions {
     private static int    type;
     private static int    section;
     private static String timeSlot;
-    private static int    seat;
-    private static String category;
+
 
     /** Displays the admin role menu options. */
     public void menu() {
