@@ -54,6 +54,9 @@ public class AdvisorFunctions {
 
     /**
      * Withdraws a course on behalf of a student — delegates to StudentFunctions.
+     * @param studentID  the student's login ID
+     * @param courseCode the course code to withdraw
+     * @param section    the section number
 
      */
     public void withdrawCourse(String studentID, String courseCode, int section) {
